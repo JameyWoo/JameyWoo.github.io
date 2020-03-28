@@ -281,5 +281,14 @@
       <description>这篇博客我将介绍数论中的扩展欧几里得算法(extended Euclidean algorithm ),以及其在**解线性同余方程(乘法逆元)**中的运用. 首先要了解几个概念: 欧</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://fiveplus.top/about/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fiveplus.top/about/about/</guid>
+      <description>hello </description>
+    </item>
+    
   </channel>
 </rss>
