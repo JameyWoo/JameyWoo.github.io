@@ -48,7 +48,7 @@
 <meta itemprop="description" content="以前使用telnet的时候, 经常是输入字符但是它不显示, 感觉输入无效. 今天看自顶向下, 才知道原来在telnet(基于TCP)客户端上, 用户输">
 <meta itemprop="datePublished" content="2020-04-01T10:10:22&#43;08:00" />
 <meta itemprop="dateModified" content="2020-04-01T10:10:22&#43;08:00" />
-<meta itemprop="wordCount" content="1724">
+<meta itemprop="wordCount" content="1818">
 
 
 
@@ -124,7 +124,7 @@
         <div class="post-category">
             <a href="../../categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"> 计算机网络 </a>
             </div>
-          <span class="more-meta"> 1724 words </span>
+          <span class="more-meta"> 1818 words </span>
           <span class="more-meta"> 4 mins read </span>
         
       </div>
@@ -146,6 +146,9 @@
 </li>
 <li>
 <p>超时重传会一直重传吗?</p>
+<p>不会. 一定的次数尝试之后就会停止.</p>
+<p>快重传: 指的是如果接收到了1 + 3次同一个ACK, 那么会触发快重传.</p>
+<p>这里的快重传是相对超时重传的, 普通的超时重传为通过指数增长的超时时间计时来决定是否重传.</p>
 </li>
 <li>
 <p>定时器的作用?</p>
@@ -269,7 +272,11 @@
 <footer class="post-footer">
       
       <nav class="post-nav">
-        
+        <a class="prev" href="../../post/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Vscode配置C&#43;&#43;单文件和makefile编译debug</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         <a class="next" href="../../post/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/">
             <span class="next-text nav-default">Git设置http及ssh代理 Win10与ubuntu18</span>
             <span class="next-text nav-mobile">Next</span>

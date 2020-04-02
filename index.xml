@@ -6,10 +6,19 @@
     <description>Recent content on 姬小野的部落</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 01 Apr 2020 10:10:22 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 02 Apr 2020 08:38:01 +0800</lastBuildDate>
     
 	<atom:link href="https://fiveplus.top/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Vscode配置C&#43;&#43;单文件和makefile编译debug</title>
+      <link>https://fiveplus.top/post/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/</link>
+      <pubDate>Thu, 02 Apr 2020 08:38:01 +0800</pubDate>
+      
+      <guid>https://fiveplus.top/post/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/</guid>
+      <description>vscode配置C++非常麻烦, 我之前配置了好几次都失败了, 更别说配置debug. 今天又尝试了以下, 惊奇的配置成功了. 就几个简单的步骤, 以前</description>
+    </item>
     
     <item>
       <title>Tcp笔记</title>
