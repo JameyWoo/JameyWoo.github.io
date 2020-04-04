@@ -48,11 +48,11 @@
 <meta itemprop="description" content="合并两个有序链表 leetcode链接 今天重做这道题, 发现之前的代码写的太糟糕了(虽然这次也一般). 刚好这一段可以用在排序链表那里. 空间复杂度">
 <meta itemprop="datePublished" content="2020-04-02T10:41:45&#43;08:00" />
 <meta itemprop="dateModified" content="2020-04-02T10:41:45&#43;08:00" />
-<meta itemprop="wordCount" content="3058">
+<meta itemprop="wordCount" content="3947">
 
 
 
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="链表," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Leetcode链表专题"/>
 <meta name="twitter:description" content="合并两个有序链表 leetcode链接 今天重做这道题, 发现之前的代码写的太糟糕了(虽然这次也一般). 刚好这一段可以用在排序链表那里. 空间复杂度"/>
 
@@ -121,9 +121,11 @@
 
       <div class="post-meta">
         <span class="post-time"> 2020-04-02 </span>
-        
-          <span class="more-meta"> 3058 words </span>
-          <span class="more-meta"> 7 mins read </span>
+        <div class="post-category">
+            <a href="../../categories/%E7%AE%97%E6%B3%95/"> 算法 </a>
+            </div>
+          <span class="more-meta"> 3947 words </span>
+          <span class="more-meta"> 8 mins read </span>
         
       </div>
     </header>
@@ -136,12 +138,16 @@
     <li><a href="#合并两个有序链表">合并两个有序链表</a></li>
     <li><a href="#排序链表">排序链表</a></li>
     <li><a href="#分隔链表">分隔链表</a></li>
+    <li><a href="#倒数第k个结点">倒数第k个结点</a></li>
     <li><a href="#环形链表">环形链表</a></li>
     <li><a href="#环形链表2">环形链表2</a></li>
     <li><a href="#删除排序链表中的重复元素">删除排序链表中的重复元素</a></li>
     <li><a href="#删除排序链表中的重复元素2">删除排序链表中的重复元素2</a></li>
     <li><a href="#奇偶链表">奇偶链表</a></li>
+    <li><a href="#重排链表">重排链表</a></li>
+    <li><a href="#反转链表">反转链表</a></li>
     <li><a href="#反转链表2">反转链表2</a></li>
+    <li><a href="#k个一组反转链表">k个一组反转链表</a></li>
   </ul>
 </nav>
   </div>
@@ -777,6 +783,55 @@
 <span class="p">};</span>
 </code></pre></td></tr></table>
 </div>
+</div><h2 id="倒数第k个结点">倒数第k个结点</h2>
+<blockquote>
+<p>输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。例如，一个链表有6个节点，从头节点开始，它们的值依次是1、2、3、4、5、6。这个链表的倒数第3个节点是值为4的节点。</p>
+<p>示例：</p>
+<p>给定一个链表: 1-&gt;2-&gt;3-&gt;4-&gt;5, 和 k = 2.</p>
+<p>返回链表 4-&gt;5.</p>
+<p>来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+</blockquote>
+<p>这道题还挺有意思, 要想知道倒数第k个结点, 只需要用两个指针, 第一个先走k步, 然后同步走. 慢的那个最后就是倒数第k个结点了.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">getKthFromEnd</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">start</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="n">start</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">slow</span> <span class="o">=</span> <span class="n">start</span><span class="p">,</span> <span class="o">*</span><span class="n">fast</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">fast</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">slow</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
 </div><h2 id="环形链表">环形链表</h2>
 <p><a href="https://leetcode-cn.com/problems/linked-list-cycle/">leetcode链接</a></p>
 <p>这道题只需要判断是否有环, 而不需要判断环入口的地址.</p>
@@ -1079,9 +1134,121 @@
 <span class="p">};</span>
 </code></pre></td></tr></table>
 </div>
+</div><h2 id="重排链表">重排链表</h2>
+<blockquote>
+<p>给定一个单链表 L：L0→L1→…→Ln-1→Ln ，
+将其重新排列后变为： L0→Ln→L1→Ln-1→L2→Ln-2→…</p>
+<p>你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。</p>
+<p>示例 1:</p>
+<p>给定链表 1-&gt;2-&gt;3-&gt;4, 重新排列为 1-&gt;4-&gt;2-&gt;3.
+示例 2:</p>
+<p>给定链表 1-&gt;2-&gt;3-&gt;4-&gt;5, 重新排列为 1-&gt;5-&gt;2-&gt;4-&gt;3.</p>
+<p>来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/reorder-list
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+</blockquote>
+<p>把所有链表结点的值存到vector中, 然后两个指针, 一个从头一个从尾, 分别遍历过来.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">reorderList</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">iter</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">ListNode</span><span class="o">*&gt;</span> <span class="n">ps</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">iter</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">ps</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
+            <span class="n">iter</span> <span class="o">=</span> <span class="n">iter</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">debug_list</span><span class="p">(</span><span class="n">head</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">ps</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">ps</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">ps</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">ps</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">ps</span><span class="p">[</span><span class="n">b</span><span class="p">];</span>
+            <span class="n">a</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">b</span><span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">ps</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="n">debug_list</span><span class="p">(</span><span class="n">head</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>或者也可以将链表分为左右两半, 然后第二半调用反转链表的方法, 之后合并.</p>
+<h2 id="反转链表">反转链表</h2>
+<p>这种题是真的烦, 操作太细节了.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">reverseList</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">toBeZero</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">ListNode</span><span class="o">*</span> <span class="n">start</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="n">start</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">ListNode</span><span class="o">*</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">pos</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">ListNode</span> <span class="o">*</span><span class="n">tmp</span> <span class="o">=</span> <span class="n">pos</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">pos</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">start</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">start</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">pos</span><span class="p">;</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">start</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
 </div><h2 id="反转链表2">反转链表2</h2>
 <p><a href="https://leetcode-cn.com/problems/reverse-linked-list-ii/">leetcode链接</a></p>
 <p>反转位置在[2, 4]的链表, 索引从1开始计数. <strong>要求只有一趟扫描</strong></p>
+<h2 id="k个一组反转链表">k个一组反转链表</h2>
 
     </div>
 
@@ -1101,7 +1268,9 @@
   
 </div>
 <footer class="post-footer">
-      
+      <div class="post-tags">
+          <a href="../../tags/%E9%93%BE%E8%A1%A8/">链表</a>
+          </div>
       <nav class="post-nav">
         <a class="prev" href="../../post/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/">
             <i class="iconfont icon-left"></i>
