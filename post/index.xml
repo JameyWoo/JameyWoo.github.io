@@ -6,23 +6,14 @@
     <description>Recent content in Posts on 姬小野的部落</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 06 Dec 2020 08:59:30 +0800</lastBuildDate><atom:link href="https://fiveplus.top/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 01 Nov 2020 22:13:43 +0800</lastBuildDate><atom:link href="https://fiveplus.top/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Mindmap</title>
-      <link>https://fiveplus.top/post/mindmap/</link>
-      <pubDate>Sun, 06 Dec 2020 08:59:30 +0800</pubDate>
+      <title>GFS文件系统</title>
+      <link>https://fiveplus.top/post/gfs/</link>
+      <pubDate>Sun, 01 Nov 2020 22:13:43 +0800</pubDate>
       
-      <guid>https://fiveplus.top/post/mindmap/</guid>
-      <description>这是一个思维导图测试 * { margin: 0; padding: 0; } #mindmap { display: block; width: 100vw; height: 100vh; } (r = { setTimeout(r); })(function anonymous( ) { const toolbar = new markmap.Toolbar(); toolbar.attach(mm); const el = toolbar.render(); el.setAttribute(&amp;lsquo;style&amp;rsquo;, &amp;lsquo;position:absolute;bottom:20px;right:20px&amp;rsquo;); document.body.append(el); })((getMarkmap, data) =&amp;gt; { const { Markmap } = getMarkmap(); window.mm = Markmap.create(&amp;lsquo;svg#mindmap&amp;rsquo;, null, data); })(() =&amp;gt; window.markmap,{&amp;ldquo;t&amp;rdquo;:&amp;ldquo;heading&amp;rdquo;,&amp;ldquo;d&amp;rdquo;:1,&amp;ldquo;p&amp;rdquo;:{},&amp;ldquo;v&amp;rdquo;:&amp;ldquo;hek&amp;rdquo;,&amp;ldquo;c&amp;rdquo;:[{&amp;ldquo;t&amp;rdquo;:&amp;ldquo;heading&amp;rdquo;,&amp;ldquo;d&amp;rdquo;:2,&amp;ldquo;p&amp;rdquo;:{},&amp;ldquo;v&amp;rdquo;:&amp;ldquo;shit&amp;rdquo;},{&amp;ldquo;t&amp;rdquo;:&amp;ldquo;heading&amp;rdquo;,&amp;ldquo;d&amp;rdquo;:2,&amp;ldquo;p&amp;rdquo;:{},&amp;ldquo;v&amp;rdquo;:&amp;ldquo;hello&amp;rdquo;,&amp;ldquo;c&amp;rdquo;:[{&amp;ldquo;t&amp;rdquo;:&amp;ldquo;bullet_list&amp;rdquo;,&amp;ldquo;d&amp;rdquo;:3,&amp;ldquo;p&amp;rdquo;:{},&amp;ldquo;v&amp;rdquo;:&amp;quot;&amp;quot;,&amp;ldquo;c&amp;rdquo;:[{&amp;ldquo;t&amp;rdquo;:&amp;ldquo;list_item&amp;rdquo;,&amp;ldquo;d&amp;rdquo;:4,&amp;ldquo;p&amp;rdquo;:{},&amp;ldquo;v&amp;rdquo;:&amp;ldquo;nihao&amp;rdquo;},{&amp;ldquo;t&amp;rdquo;:&amp;ldquo;list_item&amp;rdquo;,&amp;ldquo;d&amp;rdquo;:4,&amp;ldquo;p&amp;rdquo;:{},&amp;ldquo;v&amp;rdquo;:&amp;ldquo;shit&amp;rdquo;}]},{&amp;ldquo;t&amp;rdquo;:&amp;ldquo;heading&amp;rdquo;,&amp;ldquo;d&amp;rdquo;:3,&amp;ldquo;p&amp;rdquo;:{},&amp;ldquo;v&amp;rdquo;:&amp;ldquo;fuck&amp;rdquo;},{&amp;ldquo;t&amp;rdquo;:&amp;ldquo;heading&amp;rdquo;,&amp;ldquo;d&amp;rdquo;:3,&amp;ldquo;p&amp;rdquo;:{},&amp;ldquo;v&amp;rdquo;:&amp;ldquo;shit&amp;rdquo;}]}]}) end</description>
-    </item>
-    
-    <item>
-      <title>Mubutest</title>
-      <link>https://fiveplus.top/post/mubutest/</link>
-      <pubDate>Sun, 01 Nov 2020 10:54:13 +0800</pubDate>
-      
-      <guid>https://fiveplus.top/post/mubutest/</guid>
-      <description>LevelDB概述持久化键值存储特性1. key和value都是任意长度的字节数组；2. entry（即一条K-V记录）默认是按照key的字典顺</description>
+      <guid>https://fiveplus.top/post/gfs/</guid>
+      <description>GFS要点和其他分布式文件系统进行比较, 这个容易被问到我觉得实现的时候给出自己的创新, 可以优化某一个部分要有性能测试, 因为给出了性能的比较才</description>
     </item>
     
     <item>
