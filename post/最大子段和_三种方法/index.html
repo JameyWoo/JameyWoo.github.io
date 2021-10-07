@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.68.3 with theme even" />
+<meta name="generator" content="Hugo 0.88.1 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%AE%B5%E5%92%8C_%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95/" />
@@ -41,17 +41,14 @@
 <meta property="og:title" content="最大子段和_三种方法" />
 <meta property="og:description" content="今天参加了一场洛谷网的比赛, 深受打击. 寒假过了这么多天, 一直没有认真学习算法, 以至于现在的水平比两个月前还要低. 本来就没有多少底子, 又退步了" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fiveplus.top/post/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%AE%B5%E5%92%8C_%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95/" />
+<meta property="og:url" content="https://fiveplus.top/post/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%AE%B5%E5%92%8C_%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2018-02-09T00:00:00+00:00" />
 <meta property="article:modified_time" content="2018-02-09T00:00:00+00:00" />
+
 <meta itemprop="name" content="最大子段和_三种方法">
-<meta itemprop="description" content="今天参加了一场洛谷网的比赛, 深受打击. 寒假过了这么多天, 一直没有认真学习算法, 以至于现在的水平比两个月前还要低. 本来就没有多少底子, 又退步了">
-<meta itemprop="datePublished" content="2018-02-09T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2018-02-09T00:00:00&#43;00:00" />
+<meta itemprop="description" content="今天参加了一场洛谷网的比赛, 深受打击. 寒假过了这么多天, 一直没有认真学习算法, 以至于现在的水平比两个月前还要低. 本来就没有多少底子, 又退步了"><meta itemprop="datePublished" content="2018-02-09T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2018-02-09T00:00:00+00:00" />
 <meta itemprop="wordCount" content="1457">
-
-
-
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="最大子段和_三种方法"/>
 <meta name="twitter:description" content="今天参加了一场洛谷网的比赛, 深受打击. 寒假过了这么多天, 一直没有认真学习算法, 以至于现在的水平比两个月前还要低. 本来就没有多少底子, 又退步了"/>
@@ -146,7 +143,7 @@
 <p>样例的数据是非常大的, 所以用n^3的办法一个样例都过不了</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -174,7 +171,7 @@
 </span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
 #include &lt;algorithm&gt; 
 
 using namespace std;
@@ -205,7 +202,7 @@ int main()
 </div><p>稍微优化一下, 使用<strong>前缀和以及差分</strong>, 可以有效地将复杂度降为O(n^2), 可是, 对于这道题来说, 这个时间还是太多了. 只能通过40%的样例</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -233,7 +230,7 @@ int main()
 </span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
 #include &lt;cstdio&gt;
 #include &lt;algorithm&gt;
 
@@ -272,7 +269,7 @@ int main()
 <p>第一阶段的代码是这样的</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -294,7 +291,7 @@ int main()
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
 #include &lt;cstdio&gt;
 #include &lt;algorithm&gt;
 
@@ -322,7 +319,7 @@ int main()
 <p>妙哉!</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -343,7 +340,7 @@ int main()
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
 #include &lt;cstdio&gt;
 #include &lt;algorithm&gt;
 
@@ -370,10 +367,10 @@ int main()
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">std::ios::sync_with_stdio(false);
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">std::ios::sync_with_stdio(false);
 </code></pre></td></tr></table>
 </div>
 </div><p>此为巩固</p>
@@ -383,11 +380,11 @@ int main()
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">long long int n;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">long long int n;
 scanf(&#34;%lld&#34;, &amp;n);
 </code></pre></td></tr></table>
 </div>
@@ -401,7 +398,7 @@ scanf(&#34;%lld&#34;, &amp;n);
 <p>今天程序设计训练测试出了这道题, 时隔多月再次写这道入门DP, 发现实现方法略有不同.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -426,7 +423,7 @@ scanf(&#34;%lld&#34;, &amp;n);
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
 #include &lt;algorithm&gt;
 #include &lt;vector&gt;
 using namespace std;
@@ -526,7 +523,7 @@ int main()
   <span class="copyright-year">
     &copy; 
     2018 - 
-    2020
+    2021
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

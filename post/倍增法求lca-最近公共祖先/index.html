@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.68.3 with theme even" />
+<meta name="generator" content="Hugo 0.88.1 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/%E5%80%8D%E5%A2%9E%E6%B3%95%E6%B1%82lca-%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" />
@@ -41,17 +41,14 @@
 <meta property="og:title" content="倍增法求Lca-最近公共祖先" />
 <meta property="og:description" content="一. 明确问题 看标题便知道了, 这篇博客力求解决的问题是求出一棵树的两个结点的最近公共祖先(LCA), 方法是倍增法. 那么什么是Lca呢? 它是一棵" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fiveplus.top/post/%E5%80%8D%E5%A2%9E%E6%B3%95%E6%B1%82lca-%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" />
+<meta property="og:url" content="https://fiveplus.top/post/%E5%80%8D%E5%A2%9E%E6%B3%95%E6%B1%82lca-%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2018-07-16T00:00:00+00:00" />
 <meta property="article:modified_time" content="2018-07-16T00:00:00+00:00" />
+
 <meta itemprop="name" content="倍增法求Lca-最近公共祖先">
-<meta itemprop="description" content="一. 明确问题 看标题便知道了, 这篇博客力求解决的问题是求出一棵树的两个结点的最近公共祖先(LCA), 方法是倍增法. 那么什么是Lca呢? 它是一棵">
-<meta itemprop="datePublished" content="2018-07-16T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2018-07-16T00:00:00&#43;00:00" />
+<meta itemprop="description" content="一. 明确问题 看标题便知道了, 这篇博客力求解决的问题是求出一棵树的两个结点的最近公共祖先(LCA), 方法是倍增法. 那么什么是Lca呢? 它是一棵"><meta itemprop="datePublished" content="2018-07-16T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2018-07-16T00:00:00+00:00" />
 <meta itemprop="wordCount" content="2804">
-
-
-
 <meta itemprop="keywords" content="算法," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="倍增法求Lca-最近公共祖先"/>
 <meta name="twitter:description" content="一. 明确问题 看标题便知道了, 这篇博客力求解决的问题是求出一棵树的两个结点的最近公共祖先(LCA), 方法是倍增法. 那么什么是Lca呢? 它是一棵"/>
@@ -198,7 +195,7 @@ parents[u][2], 是u结点的2²祖先结点, 即4祖先, 也即(父亲的父亲)
 <p><strong>理解这个关系很重要, 这也是通过父亲结点获取整个祖先结点的关键.</strong> 现在可以先跳过.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -214,7 +211,7 @@ parents[u][2], 是u结点的2²祖先结点, 即4祖先, 也即(父亲的父亲)
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">getData</span><span class="p">()</span>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">getData</span><span class="p">()</span>
 <span class="p">{</span>
 	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
 	<span class="kt">int</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">;</span>
@@ -234,7 +231,7 @@ parents[u][2], 是u结点的2²祖先结点, 即4祖先, 也即(父亲的父亲)
 <p><strong>获取各结点的深度, 可以用DFS或这BFS方法</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -259,7 +256,7 @@ parents[u][2], 是u结点的2²祖先结点, 即4祖先, 也即(父亲的父亲)
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">void getDepth_dfs(int u) // DFS求深度
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">void getDepth_dfs(int u) // DFS求深度
 {
 	int len = G[u].size();
 	for (int i = 0; i &lt; len; ++i) {
@@ -296,7 +293,7 @@ void getDepth_bfs(int u) // BFS求深度
 <p>这是构造此数组的公式. 不难理解, **父亲的父亲就是爷爷, 爷爷的爷爷就是4倍祖先. ** 请读者结合现实意义去理解.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -306,7 +303,7 @@ void getDepth_bfs(int u) // BFS求深度
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">void getParents()
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">void getParents()
 {
 	for (int up = 1; (1 &lt;&lt; up) &lt;= n; ++up) {
 		for (int i = 1; i &lt;= n; ++i) {
@@ -321,7 +318,7 @@ void getDepth_bfs(int u) // BFS求深度
 <p>因此, 我们可以敏锐的想到: <strong>Lca算法适合查询次数比较多的情况, 不然, 光是预处理就花了那么多时间了</strong>. 所以说, 查询是我们享受成果的时候了.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -348,7 +345,7 @@ void getDepth_bfs(int u) // BFS求深度
 </span><span class="lnt">25
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">int Lca(int u, int v)
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">int Lca(int u, int v)
 {
 	if (depth[u] &lt; depth[v]) swap(u, v); // 使满足u深度更大, 便于后面操作 
 	int i = -1, j;
@@ -393,7 +390,7 @@ void getDepth_bfs(int u) // BFS求深度
 <h2 id="完整代码">完整代码</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">  1
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
 </span><span class="lnt">  2
 </span><span class="lnt">  3
 </span><span class="lnt">  4
@@ -521,7 +518,7 @@ void getDepth_bfs(int u) // BFS求深度
 </span><span class="lnt">126
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
 #include &lt;algorithm&gt;
 #include &lt;cstring&gt;
 #include &lt;queue&gt;
@@ -726,7 +723,7 @@ int main()
   <span class="copyright-year">
     &copy; 
     2018 - 
-    2020
+    2021
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
