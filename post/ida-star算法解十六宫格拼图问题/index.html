@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/ida-star%E7%AE%97%E6%B3%95%E8%A7%A3%E5%8D%81%E5%85%AD%E5%AE%AB%E6%A0%BC%E6%8B%BC%E5%9B%BE%E9%97%AE%E9%A2%98/" />
@@ -41,14 +41,17 @@
 <meta property="og:title" content="IDA Star算法解十六宫格拼图问题" />
 <meta property="og:description" content="IDA*算法, ID(Iterative Deepening)指的是迭代加深. 它的思想是重复进行限制最大深度的深度优先搜索(此限制从某个最小值遍历到最大值), 也称为深" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fiveplus.top/post/ida-star%E7%AE%97%E6%B3%95%E8%A7%A3%E5%8D%81%E5%85%AD%E5%AE%AB%E6%A0%BC%E6%8B%BC%E5%9B%BE%E9%97%AE%E9%A2%98/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://fiveplus.top/post/ida-star%E7%AE%97%E6%B3%95%E8%A7%A3%E5%8D%81%E5%85%AD%E5%AE%AB%E6%A0%BC%E6%8B%BC%E5%9B%BE%E9%97%AE%E9%A2%98/" />
 <meta property="article:published_time" content="2018-10-01T00:00:00+00:00" />
 <meta property="article:modified_time" content="2018-10-01T00:00:00+00:00" />
-
 <meta itemprop="name" content="IDA Star算法解十六宫格拼图问题">
-<meta itemprop="description" content="IDA*算法, ID(Iterative Deepening)指的是迭代加深. 它的思想是重复进行限制最大深度的深度优先搜索(此限制从某个最小值遍历到最大值), 也称为深"><meta itemprop="datePublished" content="2018-10-01T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2018-10-01T00:00:00+00:00" />
+<meta itemprop="description" content="IDA*算法, ID(Iterative Deepening)指的是迭代加深. 它的思想是重复进行限制最大深度的深度优先搜索(此限制从某个最小值遍历到最大值), 也称为深">
+<meta itemprop="datePublished" content="2018-10-01T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2018-10-01T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1830">
+
+
+
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="IDA Star算法解十六宫格拼图问题"/>
 <meta name="twitter:description" content="IDA*算法, ID(Iterative Deepening)指的是迭代加深. 它的思想是重复进行限制最大深度的深度优先搜索(此限制从某个最小值遍历到最大值), 也称为深"/>
@@ -190,7 +193,7 @@ y坐标距离 <code>abs(i % N - j % N)</code>
 <p>IDA*完整代码</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+<pre class="chroma"><code><span class="lnt">  1
 </span><span class="lnt">  2
 </span><span class="lnt">  3
 </span><span class="lnt">  4
@@ -292,7 +295,7 @@ y坐标距离 <code>abs(i % N - j % N)</code>
 </span><span class="lnt">100
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp">
 </span><span class="cp"></span>
 <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
@@ -397,7 +400,7 @@ y坐标距离 <code>abs(i % N - j % N)</code>
 </div><p>参考数据:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -433,7 +436,7 @@ y坐标距离 <code>abs(i % N - j % N)</code>
 </span><span class="lnt">34
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">6</span> <span class="mi">13</span> <span class="mi">5</span> <span class="mi">2</span>
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">6</span> <span class="mi">13</span> <span class="mi">5</span> <span class="mi">2</span>
 <span class="mi">8</span> <span class="mi">1</span> <span class="mi">10</span> <span class="mi">12</span>
 <span class="mi">3</span> <span class="mi">7</span> <span class="mi">15</span> <span class="mi">9</span>
 <span class="mi">14</span> <span class="mi">4</span> <span class="mi">0</span> <span class="mi">11</span> <span class="c1">// 53
@@ -472,7 +475,7 @@ y坐标距离 <code>abs(i % N - j % N)</code>
 </div><p>十六宫格随机数据: <strong>排列置乱算法</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -498,7 +501,7 @@ y坐标距离 <code>abs(i % N - j % N)</code>
 </span><span class="lnt">24
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+<pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp">
 </span><span class="cp">#define RAND(l, r) l+(int)(r-l+1)*rand()/(RAND_MAX+1)
@@ -599,7 +602,7 @@ y坐标距离 <code>abs(i % N - j % N)</code>
   <span class="copyright-year">
     &copy; 
     2018 - 
-    2021
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

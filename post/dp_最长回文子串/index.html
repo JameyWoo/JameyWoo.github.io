@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/dp_%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/" />
@@ -41,14 +41,17 @@
 <meta property="og:title" content="DP_最长回文子串" />
 <meta property="og:description" content="####DP问题, 最长回文子串 最长回文子串问题指的是在一个字符串中, 是回文子串的长度的最大值. 这里的回文子串是连续的. 如字符串&quot;P" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fiveplus.top/post/dp_%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://fiveplus.top/post/dp_%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/" />
 <meta property="article:published_time" content="2018-07-11T00:00:00+00:00" />
 <meta property="article:modified_time" content="2018-07-11T00:00:00+00:00" />
-
 <meta itemprop="name" content="DP_最长回文子串">
-<meta itemprop="description" content="####DP问题, 最长回文子串 最长回文子串问题指的是在一个字符串中, 是回文子串的长度的最大值. 这里的回文子串是连续的. 如字符串&quot;P"><meta itemprop="datePublished" content="2018-07-11T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2018-07-11T00:00:00+00:00" />
-<meta itemprop="wordCount" content="860">
+<meta itemprop="description" content="####DP问题, 最长回文子串 最长回文子串问题指的是在一个字符串中, 是回文子串的长度的最大值. 这里的回文子串是连续的. 如字符串&quot;P">
+<meta itemprop="datePublished" content="2018-07-11T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2018-07-11T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="863">
+
+
+
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DP_最长回文子串"/>
 <meta name="twitter:description" content="####DP问题, 最长回文子串 最长回文子串问题指的是在一个字符串中, 是回文子串的长度的最大值. 这里的回文子串是连续的. 如字符串&quot;P"/>
@@ -121,7 +124,7 @@
         <div class="post-category">
             <a href="../../categories/%E7%AE%97%E6%B3%95/"> 算法 </a>
             </div>
-          <span class="more-meta"> 860 words </span>
+          <span class="more-meta"> 863 words </span>
           <span class="more-meta"> 2 mins read </span>
         
       </div>
@@ -136,7 +139,7 @@
     <div class="post-content">
       <p>####DP问题, 最长回文子串</p>
 <p>最长回文子串问题指的是在一个字符串中, 是回文子串的长度的最大值. 这里的回文子串是<strong>连续的</strong>.</p>
-<p><em>如字符串&quot;PATZJUJZTACCBCC&quot;, 他的最长回文子串是&quot;ATZJUJZTA&quot;, 长度为9, 当然它还有其他回文子串如&quot;CCBCC&quot;, 但是长度不够长.</em></p>
+<p><em>如字符串&quot;PATZJUJZTACCBCC&rdquo;, 他的最长回文子串是&quot;ATZJUJZTA&rdquo;, 长度为9, 当然它还有其他回文子串如&quot;CCBCC&rdquo;, 但是长度不够长.</em></p>
 <p>这类问题似乎有多种解法, 复杂度从O(n^3)到O(n)不等.</p>
 <p>下面介绍一种**时间复杂度为O(n^2)**的.</p>
 <p>思路是典型的DP思路, 我们可以考量这样一个数组, dp[i][j], bool类型, 值为1代表字符串从S[i]到S[j]是回文子串, 值为0代表不是.</p>
@@ -149,7 +152,7 @@
 <p>代码实现上, <strong>注意前面初始化长度 2时对ans赋恰当的值.</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -182,7 +185,7 @@
 </span><span class="lnt">31
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
 using namespace std;
 
 int main()
@@ -290,7 +293,7 @@ PATZJUJZTACCBCC    ans = 9
   <span class="copyright-year">
     &copy; 
     2018 - 
-    2021
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

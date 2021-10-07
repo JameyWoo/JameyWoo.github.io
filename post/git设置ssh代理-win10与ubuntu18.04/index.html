@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/" />
@@ -41,14 +41,17 @@
 <meta property="og:title" content="Git设置http及ssh代理 Win10与ubuntu18" />
 <meta property="og:description" content="https 代理 之前在网上一直用的是如下设置. 1 2 3 4 5 6 7 8 9 10 11 // 设置 http 代理 git config --global http.proxy &#34;http://127.0.0.1:8080&#34; git config --global https.proxy &#34;http://127.0.0.1:8080&#34; // 或者 socks5 代理 git config --global http.proxy &#34;socks5://127.0.0.1:1080&#34; git config --global https.proxy &#34;socks5://127.0.0.1:1080&#34; // 取消代理 git config --global --unset" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fiveplus.top/post/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://fiveplus.top/post/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/" />
 <meta property="article:published_time" content="2020-03-30T19:36:47+08:00" />
 <meta property="article:modified_time" content="2020-03-30T19:36:47+08:00" />
-
 <meta itemprop="name" content="Git设置http及ssh代理 Win10与ubuntu18">
-<meta itemprop="description" content="https 代理 之前在网上一直用的是如下设置. 1 2 3 4 5 6 7 8 9 10 11 // 设置 http 代理 git config --global http.proxy &#34;http://127.0.0.1:8080&#34; git config --global https.proxy &#34;http://127.0.0.1:8080&#34; // 或者 socks5 代理 git config --global http.proxy &#34;socks5://127.0.0.1:1080&#34; git config --global https.proxy &#34;socks5://127.0.0.1:1080&#34; // 取消代理 git config --global --unset"><meta itemprop="datePublished" content="2020-03-30T19:36:47+08:00" />
-<meta itemprop="dateModified" content="2020-03-30T19:36:47+08:00" />
+<meta itemprop="description" content="https 代理 之前在网上一直用的是如下设置. 1 2 3 4 5 6 7 8 9 10 11 // 设置 http 代理 git config --global http.proxy &#34;http://127.0.0.1:8080&#34; git config --global https.proxy &#34;http://127.0.0.1:8080&#34; // 或者 socks5 代理 git config --global http.proxy &#34;socks5://127.0.0.1:1080&#34; git config --global https.proxy &#34;socks5://127.0.0.1:1080&#34; // 取消代理 git config --global --unset">
+<meta itemprop="datePublished" content="2020-03-30T19:36:47&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-30T19:36:47&#43;08:00" />
 <meta itemprop="wordCount" content="503">
+
+
+
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Git设置http及ssh代理 Win10与ubuntu18"/>
 <meta name="twitter:description" content="https 代理 之前在网上一直用的是如下设置. 1 2 3 4 5 6 7 8 9 10 11 // 设置 http 代理 git config --global http.proxy &#34;http://127.0.0.1:8080&#34; git config --global https.proxy &#34;http://127.0.0.1:8080&#34; // 或者 socks5 代理 git config --global http.proxy &#34;socks5://127.0.0.1:1080&#34; git config --global https.proxy &#34;socks5://127.0.0.1:1080&#34; // 取消代理 git config --global --unset"/>
@@ -148,7 +151,7 @@
 <p>之前在网上一直用的是如下设置.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -161,7 +164,7 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">// 设置 http 代理
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// 设置 http 代理
 git config --global http.proxy &#34;http://127.0.0.1:8080&#34;
 git config --global https.proxy &#34;http://127.0.0.1:8080&#34;
 
@@ -181,7 +184,7 @@ git config --global --unset https.proxy
 <p>在 win10 中, 需要在 <code>~/.ssh/config</code> 文件中添加以下内容</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -191,7 +194,7 @@ git config --global --unset https.proxy
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Host github.com
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Host github.com
   User git
   Port 22
   Hostname github.com
@@ -205,17 +208,17 @@ git config --global --unset https.proxy
 <p>connect 是一个exe可执行程序, 在我的电脑中是在下面的目录</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">C:\Program Files\Git\mingw64\bin\connect.exe
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">C:\Program Files\Git\mingw64\bin\connect.exe
 </code></pre></td></tr></table>
 </div>
 </div><p>要使用这个命令, 需要将目录 <code>C:\Program Files\Git\mingw64\bin</code> 添加到环境变量</p>
 <p>执行 <code>connect -h</code> 可获取相关帮助</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -225,7 +228,7 @@ git config --global --unset https.proxy
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">$ connect -h
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">$ connect -h
 connect --- simple relaying command via proxy.
 Version 1.105
 usage: C:\Program Files\Git\mingw64\bin\connect.exe [-dnhst45] [-p local-port]
@@ -240,7 +243,7 @@ usage: C:\Program Files\Git\mingw64\bin\connect.exe [-dnhst45] [-p local-port]
 <p>同样的, 在 <code>~/.ssh/config</code> 中写入以下配置</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -249,7 +252,7 @@ usage: C:\Program Files\Git\mingw64\bin\connect.exe [-dnhst45] [-p local-port]
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Host github.com
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Host github.com
     HostName github.com
     User git
     # http 代理方法
@@ -335,7 +338,7 @@ usage: C:\Program Files\Git\mingw64\bin\connect.exe [-dnhst45] [-p local-port]
   <span class="copyright-year">
     &copy; 
     2018 - 
-    2021
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

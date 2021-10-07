@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E4%B8%8E%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/" />
@@ -41,14 +41,17 @@
 <meta property="og:title" content="条件变量与生产者消费者问题" />
 <meta property="og:description" content="本文主要是探讨&laquo;操作系统导论&raquo;一书第30章-条件变量的知识. 书中介绍了条件变量的概念, 并将条件变量运用在生产者消费者" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fiveplus.top/post/%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E4%B8%8E%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://fiveplus.top/post/%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E4%B8%8E%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/" />
 <meta property="article:published_time" content="2019-12-16T11:36:23+08:00" />
 <meta property="article:modified_time" content="2019-12-16T11:36:23+08:00" />
-
 <meta itemprop="name" content="条件变量与生产者消费者问题">
-<meta itemprop="description" content="本文主要是探讨&laquo;操作系统导论&raquo;一书第30章-条件变量的知识. 书中介绍了条件变量的概念, 并将条件变量运用在生产者消费者"><meta itemprop="datePublished" content="2019-12-16T11:36:23+08:00" />
-<meta itemprop="dateModified" content="2019-12-16T11:36:23+08:00" />
+<meta itemprop="description" content="本文主要是探讨&laquo;操作系统导论&raquo;一书第30章-条件变量的知识. 书中介绍了条件变量的概念, 并将条件变量运用在生产者消费者">
+<meta itemprop="datePublished" content="2019-12-16T11:36:23&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-16T11:36:23&#43;08:00" />
 <meta itemprop="wordCount" content="3055">
+
+
+
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="条件变量与生产者消费者问题"/>
 <meta name="twitter:description" content="本文主要是探讨&laquo;操作系统导论&raquo;一书第30章-条件变量的知识. 书中介绍了条件变量的概念, 并将条件变量运用在生产者消费者"/>
@@ -157,7 +160,7 @@
 <p>看下面这份代码(由于抢占难以正确模拟, 所以使用“先使消费者线程睡眠, 再手动唤醒”的方式来实现抢占, 这种方式是概率性的, 有可能不成功)</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -242,7 +245,7 @@
 </span><span class="lnt">83
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c">    <span class="cm">/**
+<pre class="chroma"><code class="language-c" data-lang="c">    <span class="cm">/**
 </span><span class="cm">     * 第一版生产者消费者问题:
 </span><span class="cm">     * 1. 使用 if 而不是 while
 </span><span class="cm">     * 2. 使用一个条件变量
@@ -340,7 +343,7 @@
 <p>看下面这份代码</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -429,7 +432,7 @@
 </span><span class="lnt">87
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/**
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/**
 </span><span class="cm"> * 第二版生产者消费者问题:
 </span><span class="cm"> * 1. 使用一个条件变量
 </span><span class="cm"> * @Desc: 如果有一个生产者而有多个消费者且消费者唤醒消费者而不是生产者将会导致所有的线程进入睡眠
@@ -528,7 +531,7 @@
 <p>完整程序如下</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -619,7 +622,7 @@
 </span><span class="lnt">89
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/**
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/**
 </span><span class="cm"> * 第三版生产者消费者问题
 </span><span class="cm"> * 1. 使用while
 </span><span class="cm"> * 2. 使用两个条件变量
@@ -714,7 +717,7 @@
 <p>上面探究的是缓冲区只有一个大小的情况, 而实际上缓冲区是有一定空间的, 下面的代码将缓冲区扩展为一个数组</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+<pre class="chroma"><code><span class="lnt">  1
 </span><span class="lnt">  2
 </span><span class="lnt">  3
 </span><span class="lnt">  4
@@ -818,7 +821,7 @@
 </span><span class="lnt">102
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/**
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cm">/**
 </span><span class="cm"> * 第四版生产者消费者问题
 </span><span class="cm"> * 1. 使用while
 </span><span class="cm"> * 2. 使用两个条件变量
@@ -997,7 +1000,7 @@
   <span class="copyright-year">
     &copy; 
     2018 - 
-    2021
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

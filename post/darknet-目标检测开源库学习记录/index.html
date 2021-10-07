@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/darknet-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%BC%80%E6%BA%90%E5%BA%93%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" />
@@ -41,14 +41,17 @@
 <meta property="og:title" content="Darknet  目标检测开源库学习记录" />
 <meta property="og:description" content="1. 效果展示 官网链接 darknet 实现了c语言版本的yolo v3, 不依赖任何其他库. 因此安装非常简单. 效果图: 2. 安装方法 如何安装? 1 2 3 git clone https://github.com/pjreddie/darknet cd darknet make 然后下载y" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fiveplus.top/post/darknet-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%BC%80%E6%BA%90%E5%BA%93%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" /><meta property="article:section" content="post" />
+<meta property="og:url" content="https://fiveplus.top/post/darknet-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%BC%80%E6%BA%90%E5%BA%93%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" />
 <meta property="article:published_time" content="2019-06-28T00:00:00+00:00" />
 <meta property="article:modified_time" content="2019-06-28T00:00:00+00:00" />
-
 <meta itemprop="name" content="Darknet  目标检测开源库学习记录">
-<meta itemprop="description" content="1. 效果展示 官网链接 darknet 实现了c语言版本的yolo v3, 不依赖任何其他库. 因此安装非常简单. 效果图: 2. 安装方法 如何安装? 1 2 3 git clone https://github.com/pjreddie/darknet cd darknet make 然后下载y"><meta itemprop="datePublished" content="2019-06-28T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2019-06-28T00:00:00+00:00" />
+<meta itemprop="description" content="1. 效果展示 官网链接 darknet 实现了c语言版本的yolo v3, 不依赖任何其他库. 因此安装非常简单. 效果图: 2. 安装方法 如何安装? 1 2 3 git clone https://github.com/pjreddie/darknet cd darknet make 然后下载y">
+<meta itemprop="datePublished" content="2019-06-28T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-06-28T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1555">
+
+
+
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Darknet  目标检测开源库学习记录"/>
 <meta name="twitter:description" content="1. 效果展示 官网链接 darknet 实现了c语言版本的yolo v3, 不依赖任何其他库. 因此安装非常简单. 效果图: 2. 安装方法 如何安装? 1 2 3 git clone https://github.com/pjreddie/darknet cd darknet make 然后下载y"/>
@@ -158,12 +161,12 @@
 <p>如何安装?</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">git clone https://github.com/pjreddie/darknet
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://github.com/pjreddie/darknet
 <span class="nb">cd</span> darknet
 make
 </code></pre></td></tr></table>
@@ -176,7 +179,7 @@ make
 <p>以下是几个常用的检测命令</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -195,7 +198,7 @@ make
 </span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"># 调用摄像头进行目标检测
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># 调用摄像头进行目标检测
 ./darknet detector demo cfg/coco.data cfg/yolov3.cfg yolov3.weights
 
 # 对视频进行目标检测
@@ -244,7 +247,7 @@ make
 复制下面这段代码做一个bash脚本, 然后执行它.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -257,7 +260,7 @@ make
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /tmp/
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /tmp/
 sudo apt-get install linux-headers-<span class="sb">`</span>uname -r<span class="sb">`</span>
 <span class="nv">bits</span><span class="o">=</span><span class="sb">`</span>getconf LONG_BIT<span class="sb">`</span>
 wget https://www.dev47apps.com/files/600/droidcam-<span class="si">${</span><span class="nv">bits</span><span class="si">}</span>bit.tar.bz2
@@ -275,7 +278,7 @@ sudo ./install
 拷贝下面的代码进去</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -287,7 +290,7 @@ sudo ./install
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">[Desktop Entry]
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[Desktop Entry]
 Version=1.0
 Type=Application
 Terminal=false
@@ -326,7 +329,7 @@ Name[it]=droidcam
 <p>下面是修改了的bash脚本, 保存为run.sh</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -334,7 +337,7 @@ Name[it]=droidcam
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="ch">#!/bin/bash</span>
+<pre class="chroma"><code class="language-py" data-lang="py"><span class="ch">#!/bin/bash</span>
 
 <span class="o">./</span><span class="n">darknet</span> <span class="n">detector</span> <span class="n">demo</span> <span class="n">cfg</span><span class="o">/</span><span class="n">coco</span><span class="o">.</span><span class="n">data</span> <span class="n">cfg</span><span class="o">/</span><span class="n">yolov3</span><span class="o">.</span><span class="n">cfg</span> <span class="n">yolov3</span><span class="o">.</span><span class="n">weights</span> <span class="err">$</span><span class="mi">1</span> <span class="o">-</span><span class="n">prefix</span> <span class="o">./</span><span class="n">tmp</span><span class="o">/</span><span class="n">pictures</span>
 <span class="n">ffmpeg</span> <span class="o">-</span><span class="n">i</span> <span class="o">./</span><span class="n">tmp</span><span class="o">/</span><span class="n">pictures_</span><span class="o">%</span><span class="mi">08</span><span class="n">d</span><span class="o">.</span><span class="n">jpg</span> <span class="err">$</span><span class="mi">2</span>
@@ -346,10 +349,10 @@ Name[it]=droidcam
 执行这条命令就可以保存视频了</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">./run.sh ./data/test-5.mp4 ./outputfiles/test-5.mp4
+<pre class="chroma"><code class="language-bash" data-lang="bash">./run.sh ./data/test-5.mp4 ./outputfiles/test-5.mp4
 </code></pre></td></tr></table>
 </div>
 </div><p>调用摄像头然后保存的话, 也稍微修改一下脚本就好了</p>
@@ -430,7 +433,7 @@ Name[it]=droidcam
   <span class="copyright-year">
     &copy; 
     2018 - 
-    2021
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
