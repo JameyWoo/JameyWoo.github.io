@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据库 on 姬小野的部落</title>
+    <link>https://fiveplus.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+    <description>Recent content in 数据库 on 姬小野的部落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 08 Oct 2021 20:23:55 +0800</lastBuildDate><atom:link href="https://fiveplus.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CMU 15-445系列x: 索引</title>
+      <link>https://fiveplus.top/post/cmu15-445/%E7%B4%A2%E5%BC%95/</link>
+      <pubDate>Fri, 08 Oct 2021 20:23:55 +0800</pubDate>
+      
+      <guid>https://fiveplus.top/post/cmu15-445/%E7%B4%A2%E5%BC%95/</guid>
+      <description>大纲 介绍各种类型的索引，包括B+Tree，HahsTable，倒排索引，聚簇索引，覆盖索引，联合索引等等 主要是介绍CMU 15445课程中的内</description>
+    </item>
+    
+    <item>
+      <title>《Architecture of Database System》- 数据库系统架构</title>
+      <link>https://fiveplus.top/post/%E6%95%B0%E6%8D%AE%E5%BA%93/architecture-of-database-system/</link>
+      <pubDate>Sun, 22 Aug 2021 17:18:51 +0800</pubDate>
+      
+      <guid>https://fiveplus.top/post/%E6%95%B0%E6%8D%AE%E5%BA%93/architecture-of-database-system/</guid>
+      <description>概述 本博文主要介绍数据库系统的基本架构，内容主要包括对《Architecture of Database System》的总结和理解。本文只是对数据库基本架构进行</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -9,10 +9,10 @@
     <lastBuildDate>Wed, 01 Apr 2020 10:10:22 +0800</lastBuildDate><atom:link href="https://fiveplus.top/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Tcp笔记</title>
-      <link>https://fiveplus.top/post/tcp%E7%AC%94%E8%AE%B0/</link>
+      <link>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/tcp%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Wed, 01 Apr 2020 10:10:22 +0800</pubDate>
       
-      <guid>https://fiveplus.top/post/tcp%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/tcp%E7%AC%94%E8%AE%B0/</guid>
       <description>以前使用telnet的时候, 经常是输入字符但是它不显示, 感觉输入无效. 今天看自顶向下, 才知道原来在telnet(基于TCP)客户端上, 用户输</description>
     </item>
     

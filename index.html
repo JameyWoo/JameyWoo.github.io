@@ -36,7 +36,8 @@
 <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
 
 
-<link href="./dist/even.c2a46f00.min.css" rel="stylesheet">
+
+<link href="./sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -81,14 +82,25 @@
         <li class="mobile-menu-item">标签</li>
       </a><a href="./categories/">
         <li class="mobile-menu-item">分类</li>
+      </a><a href="./about/">
+        <li class="mobile-menu-item">关于</li>
       </a>
   </ul>
+
+  
+
+
 </nav>
+
   <div class="container" id="mobile-panel">
     <header id="header" class="header">
         <div class="logo-wrapper">
   <a href="./" class="logo">姬小野</a>
 </div>
+
+
+
+
 
 <nav class="site-navbar">
   <ul id="menu" class="menu">
@@ -100,9 +112,12 @@
         <a class="menu-item-link" href="./tags/">标签</a>
       </li><li class="menu-item">
         <a class="menu-item-link" href="./categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="./about/">关于</a>
       </li>
   </ul>
 </nav>
+
     </header>
 
     <main id="main" class="main">
@@ -111,7 +126,76 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="./post/gfs/">GFS文件系统</a></h1>
+    <h1 class="post-title"><a class="post-link" href="./post/mit-6.824/lab4/">MIT6.824 Lab 4</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-10-09 </span>
+      <div class="post-category">
+          <a href="./categories/mit-6.824%E7%B3%BB%E5%88%97/"> MIT 6.824系列 </a>
+          </div>
+        <span class="more-meta"> 6293 words </span>
+        <span class="more-meta"> 13 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      一. 概述 lab4分为两部分，第一部分是master，负责管理所有的分片shards和raft groups元数据，在src/shardmast
+    </div>
+    <div class="read-more">
+      <a href="./post/mit-6.824/lab4/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="./post/cmu15-445/%E7%B4%A2%E5%BC%95/">CMU 15-445系列x: 索引</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-10-08 </span>
+      <div class="post-category">
+          <a href="./categories/cmu-15-445%E7%B3%BB%E5%88%97/"> CMU 15-445系列 </a>
+          </div>
+        <span class="more-meta"> 3637 words </span>
+        <span class="more-meta"> 8 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      大纲 介绍各种类型的索引，包括B+Tree，HahsTable，倒排索引，聚簇索引，覆盖索引，联合索引等等 主要是介绍CMU 15445课程中的内
+    </div>
+    <div class="read-more">
+      <a href="./post/cmu15-445/%E7%B4%A2%E5%BC%95/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="./post/%E6%95%B0%E6%8D%AE%E5%BA%93/architecture-of-database-system/">《Architecture of Database System》- 数据库系统架构</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-08-22 </span>
+      <div class="post-category">
+          <a href="./categories/%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/"> 论文系列 </a>
+          </div>
+        <span class="more-meta"> 5859 words </span>
+        <span class="more-meta"> 12 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      概述 本博文主要介绍数据库系统的基本架构，内容主要包括对《Architecture of Database System》的总结和理解。本文只是对数据库基本架构进行
+    </div>
+    <div class="read-more">
+      <a href="./post/%E6%95%B0%E6%8D%AE%E5%BA%93/architecture-of-database-system/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/gfs/">GFS文件系统</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-11-01 </span>
       
@@ -125,14 +209,14 @@
       GFS要点和其他分布式文件系统进行比较, 这个容易被问到我觉得实现的时候给出自己的创新, 可以优化某一个部分要有性能测试, 因为给出了性能的比较才
     </div>
     <div class="read-more">
-      <a href="./post/gfs/" class="read-more-link">Read more...</a>
+      <a href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/gfs/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="./post/mysql%E6%93%8D%E4%BD%9C%E5%AE%9E%E9%AA%8C/">Mysql操作实验</a></h1>
+    <h1 class="post-title"><a class="post-link" href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/mysql%E6%93%8D%E4%BD%9C%E5%AE%9E%E9%AA%8C/">Mysql操作实验</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-04-04 </span>
       <div class="post-category">
@@ -148,14 +232,14 @@
       实验1.1 数据库定义语言实验 （1）实验目的 理解和掌握数据库DDL语言，能够熟练地使用SQL DDL语句创建、修改和删除数据库、模式和基本表。 （
     </div>
     <div class="read-more">
-      <a href="./post/mysql%E6%93%8D%E4%BD%9C%E5%AE%9E%E9%AA%8C/" class="read-more-link">Read more...</a>
+      <a href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/mysql%E6%93%8D%E4%BD%9C%E5%AE%9E%E9%AA%8C/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="./post/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/">Vscode中leetcode的debug环境snippet设置</a></h1>
+    <h1 class="post-title"><a class="post-link" href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/">Vscode中leetcode的debug环境snippet设置</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-04-03 </span>
       <div class="post-category">
@@ -171,14 +255,14 @@
       这篇博客介绍一个在vscode中调试leetcode代码的方法(技巧). 众所周知, leetcode中做题和其他OJ有很大区别, 其他OJ大多都
     </div>
     <div class="read-more">
-      <a href="./post/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/" class="read-more-link">Read more...</a>
+      <a href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="./post/leetcode%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/">Leetcode链表专题</a></h1>
+    <h1 class="post-title"><a class="post-link" href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/leetcode%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/">Leetcode链表专题</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-04-02 </span>
       <div class="post-category">
@@ -194,14 +278,14 @@
       合并两个有序链表 leetcode链接 今天重做这道题, 发现之前的代码写的太糟糕了(虽然这次也一般). 刚好这一段可以用在排序链表那里. 空间复杂度
     </div>
     <div class="read-more">
-      <a href="./post/leetcode%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/" class="read-more-link">Read more...</a>
+      <a href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/leetcode%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="./post/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/">Vscode配置C&#43;&#43;单文件和makefile编译debug</a></h1>
+    <h1 class="post-title"><a class="post-link" href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/">Vscode配置C&#43;&#43;单文件和makefile编译debug</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-04-02 </span>
       <div class="post-category">
@@ -217,14 +301,14 @@
       vscode配置C++非常麻烦, 我之前配置了好几次都失败了, 更别说配置debug. 今天又尝试了以下, 惊奇的配置成功了. 就几个简单的步骤, 以前
     </div>
     <div class="read-more">
-      <a href="./post/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/" class="read-more-link">Read more...</a>
+      <a href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="./post/tcp%E7%AC%94%E8%AE%B0/">Tcp笔记</a></h1>
+    <h1 class="post-title"><a class="post-link" href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/tcp%E7%AC%94%E8%AE%B0/">Tcp笔记</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-04-01 </span>
       <div class="post-category">
@@ -240,14 +324,14 @@
       以前使用telnet的时候, 经常是输入字符但是它不显示, 感觉输入无效. 今天看自顶向下, 才知道原来在telnet(基于TCP)客户端上, 用户输
     </div>
     <div class="read-more">
-      <a href="./post/tcp%E7%AC%94%E8%AE%B0/" class="read-more-link">Read more...</a>
+      <a href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/tcp%E7%AC%94%E8%AE%B0/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="./post/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/">Git设置http及ssh代理 Win10与ubuntu18</a></h1>
+    <h1 class="post-title"><a class="post-link" href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/">Git设置http及ssh代理 Win10与ubuntu18</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-03-30 </span>
       <div class="post-category">
@@ -263,75 +347,7 @@
       https 代理 之前在网上一直用的是如下设置. 1 2 3 4 5 6 7 8 9 10 11 // 设置 http 代理 git config --global http.proxy &#34;http://127.0.0.1:8080&#34; git config --global https.proxy &#34;http://127.0.0.1:8080&#34; // 或者 socks5 代理 git config --global http.proxy &#34;socks5://127.0.0.1:1080&#34; git config --global https.proxy &#34;socks5://127.0.0.1:1080&#34; // 取消代理 git config --global --unset
     </div>
     <div class="read-more">
-      <a href="./post/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="./post/wsl-%E5%AE%89%E8%A3%85mysql5.7%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%86%E7%A0%81/">Wsl 安装mysql5.7初始化密码</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-03-30 </span>
-      <div class="post-category">
-          <a href="./categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"> 数据库 </a>
-          <a href="./categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"> 开发工具 </a>
-          </div>
-        <span class="more-meta"> 304 words </span>
-        <span class="more-meta"> 1 min read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      在 wsl 里 安装 mysql5.7, 设置密码的时候折腾了半天, 看了几十个教程, 都没用, 最后终于看到了一篇, 解决了问题, 特此记录. 最后帮我解决问题的是这篇博客. 根据我
-    </div>
-    <div class="read-more">
-      <a href="./post/wsl-%E5%AE%89%E8%A3%85mysql5.7%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%86%E7%A0%81/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="./post/%E5%AE%9E%E7%8E%B0c%E8%AF%AD%E8%A8%80%E7%9A%84memcpy%E5%87%BD%E6%95%B0/">实现c语言的memcpy函数</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-03-22 </span>
-      <div class="post-category">
-          <a href="./categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"> 操作系统 </a>
-          </div>
-        <span class="more-meta"> 414 words </span>
-        <span class="more-meta"> 1 min read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      实现c语言的memcpy函数 C 库函数 void *memcpy(void *str1, const void *str2, size_t n) 从存储区 str2 复制 n 个字符到存储区 str1。 实现这个函数需要注意以下几个点: 传递进入memc
-    </div>
-    <div class="read-more">
-      <a href="./post/%E5%AE%9E%E7%8E%B0c%E8%AF%AD%E8%A8%80%E7%9A%84memcpy%E5%87%BD%E6%95%B0/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="./post/%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E4%B8%8E%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/">条件变量与生产者消费者问题</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-12-16 </span>
-      
-        <span class="more-meta"> 3055 words </span>
-        <span class="more-meta"> 7 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      本文主要是探讨&laquo;操作系统导论&raquo;一书第30章-条件变量的知识. 书中介绍了条件变量的概念, 并将条件变量运用在生产者消费者
-    </div>
-    <div class="read-more">
-      <a href="./post/%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E4%B8%8E%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/" class="read-more-link">Read more...</a>
+      <a href="./post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -373,13 +389,10 @@
   <span class="copyright-year">
     &copy; 
     2018 - 
-    2021
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">姬小野</span>
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
   </span>
 </div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -390,15 +403,18 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="./dist/even.26188efa.min.js"></script>
+
+
+
+<script type="text/javascript" src="./js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
   <script type="text/javascript">
     window.MathJax = {
-      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-      showProcessingMessages: false,
-      messageStyle: 'none'
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
     };
   </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
 
 
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>论文系列 on 姬小野的部落</title>
+    <link>https://fiveplus.top/categories/%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/</link>
+    <description>Recent content in 论文系列 on 姬小野的部落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 22 Aug 2021 17:18:51 +0800</lastBuildDate><atom:link href="https://fiveplus.top/categories/%E8%AE%BA%E6%96%87%E7%B3%BB%E5%88%97/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>《Architecture of Database System》- 数据库系统架构</title>
+      <link>https://fiveplus.top/post/%E6%95%B0%E6%8D%AE%E5%BA%93/architecture-of-database-system/</link>
+      <pubDate>Sun, 22 Aug 2021 17:18:51 +0800</pubDate>
+      
+      <guid>https://fiveplus.top/post/%E6%95%B0%E6%8D%AE%E5%BA%93/architecture-of-database-system/</guid>
+      <description>概述 本博文主要介绍数据库系统的基本架构，内容主要包括对《Architecture of Database System》的总结和理解。本文只是对数据库基本架构进行</description>
+    </item>
+    
+  </channel>
+</rss>

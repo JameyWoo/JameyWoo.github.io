@@ -9,64 +9,64 @@
     <lastBuildDate>Fri, 03 Apr 2020 14:41:01 +0800</lastBuildDate><atom:link href="https://fiveplus.top/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Vscode中leetcode的debug环境snippet设置</title>
-      <link>https://fiveplus.top/post/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/</link>
+      <link>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/</link>
       <pubDate>Fri, 03 Apr 2020 14:41:01 +0800</pubDate>
       
-      <guid>https://fiveplus.top/post/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/</guid>
+      <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/</guid>
       <description>这篇博客介绍一个在vscode中调试leetcode代码的方法(技巧). 众所周知, leetcode中做题和其他OJ有很大区别, 其他OJ大多都</description>
     </item>
     
     <item>
       <title>Vscode配置C&#43;&#43;单文件和makefile编译debug</title>
-      <link>https://fiveplus.top/post/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/</link>
+      <link>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/</link>
       <pubDate>Thu, 02 Apr 2020 08:38:01 +0800</pubDate>
       
-      <guid>https://fiveplus.top/post/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/</guid>
+      <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/</guid>
       <description>vscode配置C++非常麻烦, 我之前配置了好几次都失败了, 更别说配置debug. 今天又尝试了以下, 惊奇的配置成功了. 就几个简单的步骤, 以前</description>
     </item>
     
     <item>
       <title>Git设置http及ssh代理 Win10与ubuntu18</title>
-      <link>https://fiveplus.top/post/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/</link>
+      <link>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/</link>
       <pubDate>Mon, 30 Mar 2020 19:36:47 +0800</pubDate>
       
-      <guid>https://fiveplus.top/post/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/</guid>
+      <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/</guid>
       <description>https 代理 之前在网上一直用的是如下设置. 1 2 3 4 5 6 7 8 9 10 11 // 设置 http 代理 git config --global http.proxy &amp;#34;http://127.0.0.1:8080&amp;#34; git config --global https.proxy &amp;#34;http://127.0.0.1:8080&amp;#34; // 或者 socks5 代理 git config --global http.proxy &amp;#34;socks5://127.0.0.1:1080&amp;#34; git config --global https.proxy &amp;#34;socks5://127.0.0.1:1080&amp;#34; // 取消代理 git config --global --unset</description>
     </item>
     
     <item>
       <title>Wsl 安装mysql5.7初始化密码</title>
-      <link>https://fiveplus.top/post/wsl-%E5%AE%89%E8%A3%85mysql5.7%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%86%E7%A0%81/</link>
+      <link>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/wsl-%E5%AE%89%E8%A3%85mysql5.7%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%86%E7%A0%81/</link>
       <pubDate>Mon, 30 Mar 2020 13:47:39 +0800</pubDate>
       
-      <guid>https://fiveplus.top/post/wsl-%E5%AE%89%E8%A3%85mysql5.7%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%86%E7%A0%81/</guid>
+      <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/wsl-%E5%AE%89%E8%A3%85mysql5.7%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%86%E7%A0%81/</guid>
       <description>在 wsl 里 安装 mysql5.7, 设置密码的时候折腾了半天, 看了几十个教程, 都没用, 最后终于看到了一篇, 解决了问题, 特此记录. 最后帮我解决问题的是这篇博客. 根据我</description>
     </item>
     
     <item>
       <title>IDEA及其他开发工具日常使用指南</title>
-      <link>https://fiveplus.top/post/idea%E5%8F%8A%E5%85%B6%E4%BB%96%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <link>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/idea%E5%8F%8A%E5%85%B6%E4%BB%96%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
       <pubDate>Mon, 08 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://fiveplus.top/post/idea%E5%8F%8A%E5%85%B6%E4%BB%96%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/idea%E5%8F%8A%E5%85%B6%E4%BB%96%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
       <description>1. 引入依赖包 通过如图所示的路径添加tar文件, 即可引入外部包. 2. 单独运行一个java文件 在java文件上右键, 如果你写好了main函数就可以</description>
     </item>
     
     <item>
       <title>Anaconda虚拟环境及PyCharm项目环境设置</title>
-      <link>https://fiveplus.top/post/anaconda%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E5%8F%8Apycharm%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/</link>
+      <link>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/anaconda%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E5%8F%8Apycharm%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/</link>
       <pubDate>Sun, 05 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://fiveplus.top/post/anaconda%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E5%8F%8Apycharm%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/</guid>
+      <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/anaconda%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E5%8F%8Apycharm%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/</guid>
       <description>Anaconda虚拟环境 1、创建环境 conda create --name your_env_name python=3.6 或者 conda create -n your_env_name python=3.7 新建一个环境 2、查看环境 进入Anaconda Prompt，使用conda info -e查</description>
     </item>
     
     <item>
       <title>Chrome浏览器使用指南</title>
-      <link>https://fiveplus.top/post/chrome%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <link>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/chrome%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
       <pubDate>Fri, 28 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://fiveplus.top/post/chrome%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/chrome%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
       <description>目录 废话 从ie到国产，从国产到火狐，最后终于到了Chrome，这条路可谓是曲折，与Chrome相见恨晚。用过这么多浏览器，对现在用的Chro</description>
     </item>
     

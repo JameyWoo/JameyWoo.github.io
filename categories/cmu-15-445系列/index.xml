@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CMU 15-445系列 on 姬小野的部落</title>
+    <link>https://fiveplus.top/categories/cmu-15-445%E7%B3%BB%E5%88%97/</link>
+    <description>Recent content in CMU 15-445系列 on 姬小野的部落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 08 Oct 2021 20:23:55 +0800</lastBuildDate><atom:link href="https://fiveplus.top/categories/cmu-15-445%E7%B3%BB%E5%88%97/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CMU 15-445系列x: 索引</title>
+      <link>https://fiveplus.top/post/cmu15-445/%E7%B4%A2%E5%BC%95/</link>
+      <pubDate>Fri, 08 Oct 2021 20:23:55 +0800</pubDate>
+      
+      <guid>https://fiveplus.top/post/cmu15-445/%E7%B4%A2%E5%BC%95/</guid>
+      <description>大纲 介绍各种类型的索引，包括B+Tree，HahsTable，倒排索引，聚簇索引，覆盖索引，联合索引等等 主要是介绍CMU 15445课程中的内</description>
+    </item>
+    
+  </channel>
+</rss>
