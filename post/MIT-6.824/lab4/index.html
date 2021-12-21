@@ -49,7 +49,7 @@
 <meta itemprop="name" content="MIT6.824 Lab 4">
 <meta itemprop="description" content="一. 概述 lab4分为两部分，第一部分是master，负责管理所有的分片shards和raft groups元数据，在src/shardmast"><meta itemprop="datePublished" content="2021-10-09T17:29:14+08:00" />
 <meta itemprop="dateModified" content="2021-10-09T17:29:14+08:00" />
-<meta itemprop="wordCount" content="6293">
+<meta itemprop="wordCount" content="8222">
 <meta itemprop="keywords" content="分布式,MIT 6.824," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="MIT6.824 Lab 4"/>
 <meta name="twitter:description" content="一. 概述 lab4分为两部分，第一部分是master，负责管理所有的分片shards和raft groups元数据，在src/shardmast"/>
@@ -136,8 +136,8 @@
         <div class="post-category">
             <a href="../../../categories/mit-6.824%E7%B3%BB%E5%88%97/"> MIT 6.824系列 </a>
             </div>
-          <span class="more-meta"> 6293 words </span>
-          <span class="more-meta"> 13 mins read </span>
+          <span class="more-meta"> 8222 words </span>
+          <span class="more-meta"> 17 mins read </span>
         
       </div>
     </header>
@@ -159,6 +159,8 @@
       <ul>
         <li><a href="#内容介绍-1">内容介绍</a></li>
         <li><a href="#实现思路-1">实现思路</a></li>
+        <li><a href="#调试日志">调试日志</a></li>
+        <li><a href="#testsnapshot">TestSnapshot</a></li>
       </ul>
     </li>
     <li><a href="#四-坑点注意点">四. 坑点&amp;注意点</a>
@@ -295,10 +297,10 @@
 <p>可以发送整个map在RPC中，让shard迁移更简单</p>
 </li>
 <li>
-<p>为了避免竞争RPC的map需要是一份copy。server在RPC读取它的时候可能reading 它, 因此传递给RPC的应该是map的一个拷贝以保证线程安全。</p>
+<p><strong>为了避免竞争RPC的map需要是一份copy</strong>。server在RPC读取它的时候可能reading 它, 因此传递给RPC的应该是map的一个拷贝以保证线程安全。</p>
 </li>
 <li>
-<p>从applyCh那里接受到map后也需要copy；否则可能发生race，而race是在server修改map/slice和Raft做持久化时读取它的时候发生的。</p>
+<p><strong>从applyCh那里接受到map后也需要copy；否则可能发生race（靠谱）</strong>，而race是在server修改map/slice和Raft做持久化时读取它的时候发生的。</p>
 </li>
 <li>
 <p>两个groups之间可能需要互相给对方移动shards，如果发生死锁了这个可能是原因。</p>
@@ -308,19 +310,21 @@
 <p>总结了一下 todo</p>
 <ul>
 <li><input disabled="" type="checkbox"> 完成StartServer，注意 labgod的注册</li>
-<li><input disabled="" type="checkbox"> 完成像lab3一样的raft group框架，apply时分shard进行写</li>
-<li><input disabled="" type="checkbox"> client标识命令唯一性，以及server端对重复命令的处理</li>
-<li><input disabled="" type="checkbox"> 增加WrongGroup逻辑，看hint 6，结合client request唯一性</li>
-<li><input disabled="" type="checkbox"> 临界区加锁，使用go test -race 检测竞争条件，先copy map再操作</li>
+<li><input checked="" disabled="" type="checkbox"> 完成像lab3一样的raft group框架，apply时分shard进行写</li>
+<li><input checked="" disabled="" type="checkbox"> client标识命令唯一性，以及server端对重复命令的处理</li>
+<li><input checked="" disabled="" type="checkbox"> 增加WrongGroup逻辑，看hint 6，结合client request唯一性</li>
+<li><input disabled="" type="checkbox"> 临界区加锁，使用go test -race 检测竞争条件，<strong>先copy map再操作</strong></li>
 <li><input disabled="" type="checkbox"> 我认为，re-configurations逻辑也需要apply，只能由leader同步这个状态</li>
-<li><input disabled="" type="checkbox"> 状态机部分，每个shard都有一个map来保存结构，数据结构中增加shard信息</li>
+<li><input checked="" disabled="" type="checkbox"> 状态机部分，每个shard都有一个map来保存结构，数据结构中增加shard信息</li>
 <li><input disabled="" type="checkbox"> 实现shardkv server定时从shardmaster获取config，注意超时重试机制</li>
 <li><input disabled="" type="checkbox"> 实现shard迁移机制（RPC，记得注册！），Task1用不到，Task2需要；这个比较麻烦</li>
 </ul>
+<h3 id="调试日志">调试日志</h3>
+<h4 id="teststaticshards">TestStaticShards</h4>
 <p>在调试的时候，shardmaster和shardkv各有自己的raft，因此日志混合在一起了。。有点乱</p>
 <p>写好一个基本实现后，发现在PutAppend里一直是WrongGroup，而没有执行日志复制。</p>
 <p>在最开始的时候有时候会一直循环，有时候又不会。打断点之后发现，死循环是执行Put的时候产生的，并且下面给Err赋值为OK的bug修复之后，依然是死循环，因为根本没有执行opt。</p>
-<p>忘记了正常情况下给PutAppend和Get返回的Err赋值为OK，导致Err一直为空，于是client的PutAppend和Get一直死循环。</p>
+<p><strong>忘记了正常情况下给PutAppend和Get返回的Err赋值为OK，导致Err一直为空，于是client的PutAppend和Get一直死循环。</strong></p>
 <p>虽然还有些导致死循环的bug，但是这个static测试终于Pass一次了！还有两个bug：</p>
 <ol>
 <li>
@@ -377,6 +381,116 @@
 </div><p>解决了第一种bug之后，第二个bug也没有出现了。</p>
 </li>
 </ol>
+<h4 id="testjoinleave">TestJoinLeave</h4>
+<p>通过第一个测试之后直接来到第二个，不出所料没通过，原因就是执行Leave后，gid100没有shards了，所以返回空数据。**接下来要实现的逻辑就是在leave的时候将gid100的数据传递给gid101. **</p>
+<p>但是有个小问题就是，client本应该收到server那边ErrWrongGroup错误的，但是没有，是因为我把ErrWrongGroup这个判断放到了RPC最开始，不需要进入raft的apply环节就可以判断，所以最新的config还没有来得及更新。<strong>在实现数据迁移环节前，应该先调整ErrWrongGroup结构，把他放到apply里去处理好一点</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">2021/10/12 08:59:26 [WARNING] server.go:76	 gid: 101, [0] Get args: &amp;{Key:0}
+2021/10/12 08:59:26 [WARNING] server.go:50	 gid: 101, [0] prepare to opt: {Ch:0xc000351500 Req:{Key:0}}
+2021/10/12 08:59:26 [WARNING] server.go:153	 gid: 101, [0] apply: {Ch:0xc000351500 Req:{Key:0}}
+2021/10/12 08:59:26 [WARNING] server.go:128	 gid: 101, [0] get key: 0, value: 
+2021/10/12 08:59:26 [WARNING] server.go:153	 gid: 101, [1] apply: {Ch:&lt;nil&gt; Req:{Key:0}}
+2021/10/12 08:59:26 [WARNING] server.go:128	 gid: 101, [1] get key: 0, value: 
+2021/10/12 08:59:26 [WARNING] server.go:153	 gid: 101, [2] apply: {Ch:&lt;nil&gt; Req:{Key:0}}
+2021/10/12 08:59:26 [WARNING] server.go:128	 gid: 101, [2] get key: 0, value: 
+    TestJoinLeave: test_test.go:21: Get(0): expected:
+        Dg6DN7YYzr
+        received:
+--- FAIL: TestJoinLeave (5.75s)
+FAIL
+</code></pre></td></tr></table>
+</div>
+</div><p>后面这种出现value为空，而ErrWrongGroup为false的情况，是因为没有将shards数据进行迁移，导致在Join，Leave之后，gid101的raft servers里没有数据，所以即使gid匹配了，value都是空，所以一直会出错。</p>
+<p>急匆匆实现了一个RPC逻辑，以及在updateConfig的时候进行shard数据迁移，没想到进行TestJoinLeave的时候一遍过了。还以为又要调试到爆炸。不过还是不完善的，因为这个测试还比较基本，没有什么错误的逻辑，所以我这个基本的逻辑也可以过了。</p>
+<h3 id="testsnapshot">TestSnapshot</h3>
+<p>在上一个测试中，Join、Leave等都不是连续的（有的操作间还sleep了1s），所以shardkv可以比较从容地传输数据。但是在这个测试里，很多操作都是连续的，所以这里需要处理他们的顺序，怎么让他们依次执行并且不会出错。</p>
+<p>上一节留下的坑：是否只有leader才可以向其他server的leader发送shard数据。上一节实现的逻辑是让follower也发送了，不太应该。</p>
+<p>让我感到非常莫名其妙的是，run和debug（不打断点）两种模式下，出现的Fail原因是不一样的，而且每次都是不一样的，这太奇怪了。</p>
+<p>执行测试，一堆很长很长的运行错误。。。而执行debug，则没有运行错误，而是在checklogs的时候出现这个<code>maxraftstate</code>错误；这可太诡异了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">TestSnapshot: config.go:94: persister.RaftStateSize() 11094, but maxraftstate 1000
+</code></pre></td></tr></table>
+</div>
+</div><p>看了一下运行错误的报错，发现它是提示map的并发写（可是debug模式执行为什么没有这个问题，debug模式难道不会并发吗？）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">fatal error: concurrent map iteration and map write
+</code></pre></td></tr></table>
+</div>
+</div><p>这就是lab文档中多次提到的问题，我在前面实现的代码中为了先追求简单而忽略了这个问题！于是回去检查，发现几个要修改的点：</p>
+<ol>
+<li>
+<p>shard migration数据apply时候，应该对args的kv数据进行一份copy，再赋值给kv；否则会发生竞争。</p>
+</li>
+<li>
+<p>在进行shard migration的时候，需要通过RPC传递map数据，这时不能直接用kv的map赋值，而是应该先copy一份，用copy的map传递给RPC，避免出错。</p>
+<p>PS. 但我感觉对于map很大的情况，这样copy map是一个很消耗内存和CPU的操作。是否可以实现一个（或使用一个）支持并发的map，让它本身支持多协程并发，从而避免拷贝。</p>
+</li>
+</ol>
+<p>修改第一个点之后，果然没有了那个运行错误。</p>
+<p>目前看到的还剩两个问题：</p>
+<ol>
+<li>persister.RaftStateSize() 11094, but maxraftstate 1000 问题，在checklog那里产生的</li>
+<li>中间变更状态导致状态、数据不一致的问题（通过在Join、Leave之后添加sleep可以缓解这一点，但治标不治本）</li>
+</ol>
+<p>造成第一个问题的原因是因为先前没有实现snapshot逻辑，所以它checklog检测时出现了问题，日志长度过大。把snapshot的逻辑添加进去，但是它出现了奇怪的循环现象</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">2021/10/12 18:56:10 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
+2021/10/12 18:56:10 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
+2021/10/12 18:56:10 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
+2021/10/12 18:56:10 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
+2021/10/12 18:56:11 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
+2021/10/12 18:56:11 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
+2021/10/12 18:56:12 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
+2021/10/12 18:56:12 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
+</code></pre></td></tr></table>
+</div>
+</div><p>一直在执行snapshot，而这个RaftStateSize一直没有减少。很奇怪。</p>
+<p>定位问题到saveSnapshot逻辑，调试发现有很多很多协程在raft实现的persist这里阻塞了，而这里的逻辑是在persist之后，通知apply触发快照。尝试给applyCh加了很大size的缓冲，于是不阻塞了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">rf.applyCh &lt;- msg
+</code></pre></td></tr></table>
+</div>
+</div><p>解决了第一个问题，这个测试有时候能够通过，但是有时候会出现check失败的情况，所以第二个问题还是存在的。</p>
+<p>尽管Pass的情况比Fail要多，但是这个问题还是尽量要解决掉。出现这个问题的根源应该还是shardkv更新config以及迁移shard数据的细节造成的。</p>
 <h2 id="四-坑点注意点">四. 坑点&amp;注意点</h2>
 <h3 id="注册自定义rpc-struct">注册自定义RPC struct</h3>
 <p><strong>记得将RPC中的自定义struct使用labgod注册</strong>！尤其是这个Config（如果实现中使用了它）</p>
@@ -436,7 +550,11 @@
           <a href="../../../tags/mit-6.824/">MIT 6.824</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="../../../post/cmu15-445/join-algorithms/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CMU 15-445系列x: Join Algorithms</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         <a class="next" href="../../../post/cmu15-445/%E7%B4%A2%E5%BC%95/">
             <span class="next-text nav-default">CMU 15-445系列x: 索引</span>
             <span class="next-text nav-mobile">Next</span>

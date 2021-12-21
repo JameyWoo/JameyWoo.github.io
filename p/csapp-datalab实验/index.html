@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='datalab 实验
+代码如下
+/* * CS:APP Data Lab * * &amp;lt;Please put your name and userid here&amp;gt; * * bits.c - Source file with your solutions to the Lab. * This is the file you will hand in to your instructor. * * WARNING: Do not include the &amp;lt;stdio.h&amp;gt; header; it confuses the dlc * compiler. You can still use printf for debugging without including * &amp;lt;stdio.h&amp;gt;, although you might get a compiler warning.'><title>Csapp Datalab实验</title>
+
+<link rel='canonical' href='https://example.com/p/csapp-datalab%E5%AE%9E%E9%AA%8C/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Csapp Datalab实验'>
+<meta property='og:description' content='datalab 实验
+代码如下
+/* * CS:APP Data Lab * * &amp;lt;Please put your name and userid here&amp;gt; * * bits.c - Source file with your solutions to the Lab. * This is the file you will hand in to your instructor. * * WARNING: Do not include the &amp;lt;stdio.h&amp;gt; header; it confuses the dlc * compiler. You can still use printf for debugging without including * &amp;lt;stdio.h&amp;gt;, although you might get a compiler warning.'>
+<meta property='og:url' content='https://example.com/p/csapp-datalab%E5%AE%9E%E9%AA%8C/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2019-03-29T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2019-03-29T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Csapp Datalab实验">
+<meta name="twitter:description" content="datalab 实验
+代码如下
+/* * CS:APP Data Lab * * &amp;lt;Please put your name and userid here&amp;gt; * * bits.c - Source file with your solutions to the Lab. * This is the file you will hand in to your instructor. * * WARNING: Do not include the &amp;lt;stdio.h&amp;gt; header; it confuses the dlc * compiler. You can still use printf for debugging without including * &amp;lt;stdio.h&amp;gt;, although you might get a compiler warning.">
+    </head>
+    <body class="
+    article-page 
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        on-phone--column extended
+    
+">
+    
+        <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        <h1 class="site-name"><a href="https://example.com">Example Site</a></h1>
+        <h2 class="site-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' target="_blank">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" >
+                计算机系统
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/csapp-datalab%E5%AE%9E%E9%AA%8C/">Csapp Datalab实验</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 29, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    10 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <p>datalab 实验</p>
+<p>代码如下</p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/* 
+</span><span class="cm"> * CS:APP Data Lab 
+</span><span class="cm"> * 
+</span><span class="cm"> * &lt;Please put your name and userid here&gt;
+</span><span class="cm"> * 
+</span><span class="cm"> * bits.c - Source file with your solutions to the Lab.
+</span><span class="cm"> *          This is the file you will hand in to your instructor.
+</span><span class="cm"> *
+</span><span class="cm"> * WARNING: Do not include the &lt;stdio.h&gt; header; it confuses the dlc
+</span><span class="cm"> * compiler. You can still use printf for debugging without including
+</span><span class="cm"> * &lt;stdio.h&gt;, although you might get a compiler warning. In general,
+</span><span class="cm"> * it&#39;s not good practice to ignore compiler warnings, but in this
+</span><span class="cm"> * case it&#39;s OK.  
+</span><span class="cm"> */</span>
+
+<span class="cp">#if 0</span><span class="c">
+</span><span class="c">/*
+</span><span class="c"> * Instructions to Students:
+</span><span class="c"> *
+</span><span class="c"> * STEP 1: Read the following instructions carefully.
+</span><span class="c"> */
+</span><span class="c">
+</span><span class="c">You will provide your solution to the Data Lab by
+</span><span class="c">editing the collection of functions in this source file.
+</span><span class="c">
+</span><span class="c">INTEGER CODING RULES:
+</span><span class="c"> 
+</span><span class="c">  Replace the &#34;return&#34; statement in each function with one
+</span><span class="c">  or more lines of C code that implements the function. Your code 
+</span><span class="c">  must conform to the following style:
+</span><span class="c"> 
+</span><span class="c">  int Funct(arg1, arg2, ...) {
+</span><span class="c">      /* brief description of how your implementation works */
+</span><span class="c">      int var1 = Expr1;
+</span><span class="c">      ...
+</span><span class="c">      int varM = ExprM;
+</span><span class="c">
+</span><span class="c">      varJ = ExprJ;
+</span><span class="c">      ...
+</span><span class="c">      varN = ExprN;
+</span><span class="c">      return ExprR;
+</span><span class="c">  }
+</span><span class="c">
+</span><span class="c">  Each &#34;Expr&#34; is an expression using ONLY the following:
+</span><span class="c">  1. Integer constants 0 through 255 (0xFF), inclusive. You are
+</span><span class="c">      not allowed to use big constants such as 0xffffffff.
+</span><span class="c">  2. Function arguments and local variables (no global variables).
+</span><span class="c">  3. Unary integer operations ! ~
+</span><span class="c">  4. Binary integer operations &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="c">    
+</span><span class="c">  Some of the problems restrict the set of allowed operators even further.
+</span><span class="c">  Each &#34;Expr&#34; may consist of multiple operators. You are not restricted to
+</span><span class="c">  one operator per line.
+</span><span class="c">
+</span><span class="c">  You are expressly forbidden to:
+</span><span class="c">  1. Use any control constructs such as if, do, while, for, switch, etc.
+</span><span class="c">  2. Define or use any macros.
+</span><span class="c">  3. Define any additional functions in this file.
+</span><span class="c">  4. Call any functions.
+</span><span class="c">  5. Use any other operations, such as &amp;&amp;, ||, -, or ?:
+</span><span class="c">  6. Use any form of casting.
+</span><span class="c">  7. Use any data type other than int.  This implies that you
+</span><span class="c">     cannot use arrays, structs, or unions.
+</span><span class="c">
+</span><span class="c"> 
+</span><span class="c">  You may assume that your machine:
+</span><span class="c">  1. Uses 2s complement, 32-bit representations of integers.
+</span><span class="c">  2. Performs right shifts arithmetically.
+</span><span class="c">  3. Has unpredictable behavior when shifting an integer by more
+</span><span class="c">     than the word size.
+</span><span class="c">
+</span><span class="c">EXAMPLES OF ACCEPTABLE CODING STYLE:
+</span><span class="c">  /*
+</span><span class="c">   * pow2plus1 - returns 2^x + 1, where 0 &lt;= x &lt;= 31
+</span><span class="c">   */
+</span><span class="c">  int pow2plus1(int x) {
+</span><span class="c">     /* exploit ability of shifts to compute powers of 2 */
+</span><span class="c">     return (1 &lt;&lt; x) + 1;
+</span><span class="c">  }
+</span><span class="c">
+</span><span class="c">  /*
+</span><span class="c">   * pow2plus4 - returns 2^x + 4, where 0 &lt;= x &lt;= 31
+</span><span class="c">   */
+</span><span class="c">  int pow2plus4(int x) {
+</span><span class="c">     /* exploit ability of shifts to compute powers of 2 */
+</span><span class="c">     int result = (1 &lt;&lt; x);
+</span><span class="c">     result += 4;
+</span><span class="c">     return result;
+</span><span class="c">  }
+</span><span class="c">
+</span><span class="c">FLOATING POINT CODING RULES
+</span><span class="c">
+</span><span class="c">For the problems that require you to implent floating-point operations,
+</span><span class="c">the coding rules are less strict.  You are allowed to use looping and
+</span><span class="c">conditional control.  You are allowed to use both ints and unsigneds.
+</span><span class="c">You can use arbitrary integer and unsigned constants.
+</span><span class="c">
+</span><span class="c">You are expressly forbidden to:
+</span><span class="c">  1. Define or use any macros.
+</span><span class="c">  2. Define any additional functions in this file.
+</span><span class="c">  3. Call any functions.
+</span><span class="c">  4. Use any form of casting.
+</span><span class="c">  5. Use any data type other than int or unsigned.  This means that you
+</span><span class="c">     cannot use arrays, structs, or unions.
+</span><span class="c">  6. Use any floating point data types, operations, or constants.
+</span><span class="c">
+</span><span class="c">
+</span><span class="c">NOTES:
+</span><span class="c">  1. Use the dlc (data lab checker) compiler (described in the handout) to 
+</span><span class="c">     check the legality of your solutions.
+</span><span class="c">  2. Each function has a maximum number of operators (! ~ &amp; ^ | + &lt;&lt; &gt;&gt;)
+</span><span class="c">     that you are allowed to use for your implementation of the function. 
+</span><span class="c">     The max operator count is checked by dlc. Note that &#39;=&#39; is not 
+</span><span class="c">     counted; you may use as many of these as you want without penalty.
+</span><span class="c">  3. Use the btest test harness to check your functions for correctness.
+</span><span class="c">  4. Use the BDD checker to formally verify your functions
+</span><span class="c">  5. The maximum number of ops for each function is given in the
+</span><span class="c">     header comment for each function. If there are any inconsistencies 
+</span><span class="c">     between the maximum ops in the writeup and in this file, consider
+</span><span class="c">     this file the authoritative source.
+</span><span class="c">
+</span><span class="c">/*
+</span><span class="c"> * STEP 2: Modify the following functions according the coding rules.
+</span><span class="c"> * 
+</span><span class="c"> *   IMPORTANT. TO AVOID GRADING SURPRISES:
+</span><span class="c"> *   1. Use the dlc compiler to check that your solutions conform
+</span><span class="c"> *      to the coding rules.
+</span><span class="c"> *   2. Use the BDD checker to formally verify that your solutions produce 
+</span><span class="c"> *      the correct answers.
+</span><span class="c"> */
+</span><span class="c"></span><span class="cp">
+</span><span class="cp">
+</span><span class="cp">#endif
+</span><span class="cp"></span><span class="cm">/* 
+</span><span class="cm"> * bitAnd - x&amp;y using only ~ and | 
+</span><span class="cm"> *   Example: bitAnd(6, 5) = 4
+</span><span class="cm"> *   Legal ops: ~ |
+</span><span class="cm"> *   Max ops: 8
+</span><span class="cm"> *   Rating: 1
+</span><span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">bitAnd</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">~</span><span class="p">((</span><span class="o">~</span><span class="n">x</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="o">~</span><span class="n">y</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="cm">/* 
+</span><span class="cm"> * getByte - Extract byte n from word x
+</span><span class="cm"> *   Bytes numbered from 0 (LSB) to 3 (MSB)
+</span><span class="cm"> *   Examples: getByte(0x12345678,1) = 0x56
+</span><span class="cm"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 6
+</span><span class="cm"> *   Rating: 2
+</span><span class="cm"> */</span> 
+<span class="kt">int</span> <span class="nf">getByte</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+
+	<span class="kt">int</span> <span class="n">tmp</span> <span class="o">=</span> <span class="p">((</span><span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="p">((</span><span class="mi">4</span> <span class="o">+</span> <span class="p">(</span><span class="o">~</span><span class="n">n</span><span class="p">))</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span><span class="p">);</span>
+	
+	<span class="k">return</span> <span class="n">tmp</span><span class="o">&amp;</span><span class="mh">0x000000ff</span><span class="p">;</span>
+
+<span class="p">}</span>
+<span class="cm">/*
+</span><span class="cm">????Byte???????????????????24????????????????????n????????????????(3 - n = 3 + ~n + 1) &lt;&lt; 3????????
+</span><span class="cm">*/</span>
+<span class="cm">/* 
+</span><span class="cm"> * logicalShift - shift x to the right by n, using a logical shift
+</span><span class="cm"> *   Can assume that 0 &lt;= n &lt;= 31
+</span><span class="cm"> *   Examples: logicalShift(0x87654321,4) = 0x08765432
+</span><span class="cm"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 20
+</span><span class="cm"> *   Rating: 3 
+</span><span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">logicalShift</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x1</span> <span class="o">&lt;&lt;</span> <span class="mi">31</span><span class="p">)</span> <span class="o">^</span> <span class="p">((</span><span class="o">!</span><span class="n">n</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">31</span><span class="p">);</span>
+	<span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">t</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="o">~</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="cm">/*
+</span><span class="cm">??????????????????????1???????n = 0?????????????????
+</span><span class="cm">*/</span>
+<span class="cm">/*
+</span><span class="cm"> * bitCount - returns count of number of 1&#39;s in word
+</span><span class="cm"> *   Examples: bitCount(5) = 2, bitCount(7) = 3
+</span><span class="cm"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 40
+</span><span class="cm"> *   Rating: 4
+</span><span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">bitCount</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// ??????????????2?4?8?16?32?01??1???? 
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">bitcount</span><span class="p">;</span>
+    
+    <span class="kt">int</span> <span class="n">tmp1</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x55</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="mh">0x55</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">mask1</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp1</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">tmp1</span><span class="o">&lt;&lt;</span><span class="mi">16</span><span class="p">);</span>  <span class="c1">//????? 01010101��01010101
+</span><span class="c1"></span>    
+    <span class="kt">int</span> <span class="n">tmp2</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x33</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="mh">0x33</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">mask2</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp2</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">tmp2</span><span class="o">&lt;&lt;</span><span class="mi">16</span><span class="p">);</span>  <span class="c1">//????? 00110011��00110011
+</span><span class="c1"></span>    
+    <span class="kt">int</span> <span class="n">tmp3</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x0f</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="mh">0x0f</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">mask3</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp3</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">tmp3</span><span class="o">&lt;&lt;</span><span class="mi">16</span><span class="p">);</span>  <span class="c1">//????? 00001111��00001111
+</span><span class="c1"></span>    
+    <span class="kt">int</span> <span class="n">mask4</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xff</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="mh">0xff</span><span class="o">&lt;&lt;</span><span class="mi">16</span><span class="p">);</span>          <span class="c1">//????? 0000 0000 1111 1111 0000 0000 1111 1111
+</span><span class="c1"></span>    
+    <span class="kt">int</span> <span class="n">mask5</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xff</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="mh">0xff</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="p">);</span>           <span class="c1">//????? 0000 0000 0000 0000 1111 1111 1111 1111
+</span><span class="c1"></span>    
+    <span class="n">bitcount</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="n">mask1</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">x</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">mask1</span><span class="p">);</span>       <span class="c1">//??????2??????1??????????2??????1???????? 
+</span><span class="c1"></span>    <span class="n">bitcount</span> <span class="o">=</span> <span class="p">(</span><span class="n">bitcount</span> <span class="o">&amp;</span> <span class="n">mask2</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">bitcount</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">mask2</span><span class="p">);</span>
+    <span class="n">bitcount</span> <span class="o">=</span> <span class="p">(</span><span class="n">bitcount</span> <span class="o">+</span> <span class="p">(</span><span class="n">bitcount</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="n">mask3</span><span class="p">;</span>
+    <span class="n">bitcount</span> <span class="o">=</span> <span class="p">(</span><span class="n">bitcount</span> <span class="o">+</span> <span class="p">(</span><span class="n">bitcount</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">))</span> <span class="o">&amp;</span> <span class="n">mask4</span><span class="p">;</span>
+    <span class="n">bitcount</span> <span class="o">=</span> <span class="p">(</span><span class="n">bitcount</span> <span class="o">+</span> <span class="p">(</span><span class="n">bitcount</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">))</span> <span class="o">&amp;</span> <span class="n">mask5</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">bitcount</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cm">/* 
+</span><span class="cm"> * bang - Compute !x without using !
+</span><span class="cm"> *   Examples: bang(3) = 0, bang(0) = 1
+</span><span class="cm"> *   Legal ops: ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 12
+</span><span class="cm"> *   Rating: 4 
+</span><span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">bang</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">t</span> <span class="o">=</span> <span class="o">~</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="k">return</span> <span class="p">((</span><span class="n">t</span> <span class="o">|</span> <span class="n">x</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">31</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">//??0??+1????0?????x?0?????31???0?+1?????1. ????????????????????????????????31??????-1?+1?????0.
+</span><span class="c1"></span><span class="cm">/* 
+</span><span class="cm"> * tmin - return minimum two&#39;s complement integer 
+</span><span class="cm"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 4
+</span><span class="cm"> *   Rating: 1
+</span><span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">tmin</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">31</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// ???????????1????31??????????????????
+</span><span class="c1"></span><span class="cm">/* 
+</span><span class="cm"> * fitsBits - return 1 if x can be represented as an 
+</span><span class="cm"> *  n-bit, two&#39;s complement integer.
+</span><span class="cm"> *   1 &lt;= n &lt;= 32
+</span><span class="cm"> *   Examples: fitsBits(5,3) = 0, fitsBits(-4,3) = 1
+</span><span class="cm"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 15
+</span><span class="cm"> *   Rating: 2
+</span><span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">fitsBits</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// x????n???? ??32-n????32-n????????? 
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">shift</span> <span class="o">=</span> <span class="mi">32</span> <span class="o">+</span> <span class="o">~</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">t</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="n">shift</span> <span class="o">&gt;&gt;</span> <span class="n">shift</span><span class="p">;</span>
+	<span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="n">t</span> <span class="o">^</span> <span class="n">x</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// x?????n???? ??32-n????32-n????????????????
+</span><span class="c1"></span><span class="cm">/* 
+</span><span class="cm"> * divpwr2 - Compute x/(2^n), for 0 &lt;= n &lt;= 30
+</span><span class="cm"> *  Round toward zero
+</span><span class="cm"> *   Examples: divpwr2(15,1) = 7, divpwr2(-33,4) = -2
+</span><span class="cm"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 15
+</span><span class="cm"> *   Rating: 2
+</span><span class="cm"> */</span>
+
+<span class="kt">int</span> <span class="nf">divpwr2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// ?????????????????????????????????????-5/2 = -3??? 
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">sign</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">31</span><span class="p">;</span> <span class="c1">// ?? 
+</span><span class="c1">//    cout &lt;&lt; (1 &lt;&lt; n) + ~0 &lt;&lt; endl; 
+</span><span class="c1">//    cout &lt;&lt; &#34;(sign &amp; ((1 &lt;&lt; n) + ~0)) = &#34; &lt;&lt; (sign &amp; ((1 &lt;&lt; n) + ~0)) &lt;&lt; endl;
+</span><span class="c1"></span>    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">sign</span> <span class="o">&amp;</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="o">~</span><span class="mi">0</span><span class="p">)))</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// ???????0???????????????????-5/2 = -3???????0????????????????????????????????????
+</span><span class="c1"></span><span class="cm">/* 
+</span><span class="cm"> * negate - return -x 
+</span><span class="cm"> *   Example: negate(1) = -1.
+</span><span class="cm"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 5
+</span><span class="cm"> *   Rating: 2
+</span><span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">negate</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">~</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// ?????????+1.
+</span><span class="c1"></span><span class="cm">/* 
+</span><span class="cm"> * isPositive - return 1 if x &gt; 0, return 0 otherwise 
+</span><span class="cm"> *   Example: isPositive(-1) = 0.
+</span><span class="cm"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 8
+</span><span class="cm"> *   Rating: 3
+</span><span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">isPositive</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="p">((</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">31</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">!!</span><span class="p">(</span><span class="n">x</span><span class="p">));</span> <span class="c1">// ????????????0
+</span><span class="c1"></span> <span class="c1">// ????????????????
+</span><span class="c1"></span><span class="p">}</span>
+<span class="c1">// ????????????0
+</span><span class="c1"></span><span class="cm">/* 
+</span><span class="cm"> * isLessOrEqual - if x &lt;= y  then return 1, else return 0 
+</span><span class="cm"> *   Example: isLessOrEqual(4,5) = 1.
+</span><span class="cm"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 24
+</span><span class="cm"> *   Rating: 3
+</span><span class="cm"> */</span>
+
+<span class="kt">int</span> <span class="nf">isLessOrEqual</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// ??????????
+</span><span class="c1"></span><span class="kt">int</span> <span class="n">xl</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">31</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">yl</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">&gt;&gt;</span> <span class="mi">31</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">zl</span> <span class="o">=</span> <span class="p">((</span><span class="n">y</span> <span class="o">+</span> <span class="o">~</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">31</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">return</span> <span class="p">((</span><span class="n">xl</span> <span class="o">^</span> <span class="n">yl</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">xl</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">xl</span> <span class="o">^</span> <span class="n">yl</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">!</span><span class="n">zl</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// ??????????????isPositive?????????????????????
+</span><span class="c1">// ???????????????x&lt;0?y&gt;=0,????????1???????????y-x???????0???x????y?
+</span><span class="c1"></span>
+<span class="cm">/*
+</span><span class="cm"> * ilog2 - return floor(log base 2 of x), where x &gt; 0
+</span><span class="cm"> *   Example: ilog2(16) = 4
+</span><span class="cm"> *   Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;
+</span><span class="cm"> *   Max ops: 90
+</span><span class="cm"> *   Rating: 4
+</span><span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">ilog2</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// ???????1???+?????&lt;&lt;????????? 
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+	<span class="n">id</span> <span class="o">=</span> <span class="p">(</span><span class="o">!!</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">))</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">;</span>
+	<span class="n">id</span> <span class="o">=</span> <span class="n">id</span> <span class="o">+</span> <span class="p">((</span><span class="o">!!</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">id</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)))</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">);</span>
+	<span class="n">id</span> <span class="o">=</span> <span class="n">id</span> <span class="o">+</span> <span class="p">((</span><span class="o">!!</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">id</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)))</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">);</span>
+	<span class="n">id</span> <span class="o">=</span> <span class="n">id</span> <span class="o">+</span> <span class="p">((</span><span class="o">!!</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">id</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)))</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="n">id</span> <span class="o">=</span> <span class="n">id</span> <span class="o">+</span> <span class="p">((</span><span class="o">!!</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">);</span>
+	<span class="k">return</span> <span class="n">id</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// ??????log2?log2n?????????1???????????????1???????16?????????????????id??????id???????+?????&lt;&lt;????????? 
+</span><span class="c1"></span><span class="cm">/* 
+</span><span class="cm"> * float_neg - Return bit-level equivalent of expression -f for
+</span><span class="cm"> *   floating point argument f.
+</span><span class="cm"> *   Both the argument and result are passed as unsigned int&#39;s, but
+</span><span class="cm"> *   they are to be interpreted as the bit-level representations of
+</span><span class="cm"> *   single-precision floating point values.
+</span><span class="cm"> *   When argument is NaN, return argument.
+</span><span class="cm"> *   Legal ops: Any integer/unsigned operations incl. ||, &amp;&amp;. also if, while
+</span><span class="cm"> *   Max ops: 10
+</span><span class="cm"> *   Rating: 2
+</span><span class="cm"> */</span>
+<span class="kt">unsigned</span> <span class="nf">float_neg</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">uf</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">tmp</span> <span class="o">=</span> <span class="p">(</span><span class="n">uf</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(((</span><span class="n">tmp</span> <span class="o">&amp;</span> <span class="mh">0xFF000000</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0xFF000000</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">!=</span> <span class="mh">0xFF000000</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">uf</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">uf</span> <span class="o">+</span> <span class="mh">0x80000000</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 1????????NAN??????????NAN
+</span><span class="c1">// 2?????????????????????????????????????????????????+1??????????????
+</span><span class="c1"></span>
+<span class="cm">/* 
+</span><span class="cm"> * float_i2f - Return bit-level equivalent of expression (float) x
+</span><span class="cm"> *   Result is returned as unsigned int, but
+</span><span class="cm"> *   it is to be interpreted as the bit-level representation of a
+</span><span class="cm"> *   single-precision floating point values.
+</span><span class="cm"> *   Legal ops: Any integer/unsigned operations incl. ||, &amp;&amp;. also if, while
+</span><span class="cm"> *   Max ops: 30
+</span><span class="cm"> *   Rating: 4
+</span><span class="cm"> */</span>
+<span class="kt">unsigned</span> <span class="nf">float_i2f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// ????????????????????????????? 
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">sign</span><span class="p">,</span> <span class="n">id</span><span class="p">,</span> <span class="n">shr</span><span class="p">,</span> <span class="n">mid</span><span class="p">;</span>
+	<span class="kt">unsigned</span> <span class="n">tmp</span><span class="p">;</span> 
+	<span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="n">sign</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&amp;</span> <span class="mh">0x80000000</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">sign</span><span class="p">)</span> <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span><span class="p">;</span>
+	<span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+	<span class="n">tmp</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">tmp</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">tmp</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="n">id</span><span class="o">++</span><span class="p">;</span> <span class="c1">// x = 5, id = 2, ??????1?? 
+</span><span class="c1"></span>	<span class="p">}</span>
+	<span class="n">tmp</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="mi">32</span> <span class="o">-</span> <span class="n">id</span><span class="p">);</span> <span class="c1">// 23???????? 
+</span><span class="c1"></span>	<span class="n">shr</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">&amp;</span> <span class="mh">0x1ff</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// ???? 
+</span><span class="c1"></span>	<span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">&gt;&gt;</span> <span class="mi">9</span><span class="p">;</span> <span class="c1">// ?????
+</span><span class="c1"></span>	<span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="mi">127</span> <span class="o">+</span> <span class="n">id</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">;</span> <span class="c1">// ???
+</span><span class="c1"></span>	<span class="k">if</span> <span class="p">(</span><span class="n">shr</span> <span class="o">&gt;</span> <span class="mi">128</span> <span class="o">||</span> <span class="p">(</span><span class="n">shr</span> <span class="o">==</span> <span class="mi">128</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+		<span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="p">(</span><span class="n">tmp</span> <span class="o">+</span> <span class="n">mid</span> <span class="o">+</span> <span class="n">sign</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cm">/* 
+</span><span class="cm"> * float_twice - Return bit-level equivalent of expression 2*f for
+</span><span class="cm"> *   floating point argument f.
+</span><span class="cm"> *   Both the argument and result are passed as unsigned int&#39;s, but
+</span><span class="cm"> *   they are to be interfrpreted as the bit-level representation of
+</span><span class="cm"> *   single-precision floating point values.
+</span><span class="cm"> *   When argument is NaN, return argument
+</span><span class="cm"> *   Legal ops: Any integer/unsigned operations incl. ||, &amp;&amp;. also if, while
+</span><span class="cm"> *   Max ops: 30
+</span><span class="cm"> *   Rating: 4
+</span><span class="cm"> */</span>
+<span class="kt">unsigned</span> <span class="nf">float_twice</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">uf</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="n">uf</span> <span class="o">&amp;</span> <span class="mh">0x80000000</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">e</span> <span class="o">=</span> <span class="n">uf</span> <span class="o">&amp;</span> <span class="mh">0x7f800000</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">uf</span> <span class="o">&amp;</span> <span class="mh">0x007fffff</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="o">==</span> <span class="mh">0x7f800000</span><span class="p">)</span> <span class="k">return</span> <span class="n">uf</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="p">(</span><span class="n">m</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="k">else</span>  <span class="n">ans</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">e</span> <span class="o">+</span> <span class="mh">0x00800000</span> <span class="o">+</span> <span class="n">m</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// ????????????M??????????
+</span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 Example Site
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

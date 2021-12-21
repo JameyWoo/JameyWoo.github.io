@@ -6,14 +6,23 @@
     <description>Recent content in CMU 15-445 on 姬小野的部落</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 08 Oct 2021 20:23:55 +0800</lastBuildDate><atom:link href="https://fiveplus.top/tags/cmu-15-445/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Oct 2021 19:00:25 +0800</lastBuildDate><atom:link href="https://fiveplus.top/tags/cmu-15-445/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CMU 15-445系列x: Join Algorithms</title>
+      <link>https://fiveplus.top/post/cmu15-445/join-algorithms/</link>
+      <pubDate>Thu, 14 Oct 2021 19:00:25 +0800</pubDate>
+      
+      <guid>https://fiveplus.top/post/cmu15-445/join-algorithms/</guid>
+      <description>概述 这一节课Andy主要介绍了介绍了数据库中实现Join的算法。和普通的算法不同的是，普通算法可以假设数据都在内存上，但是对于DBMS来说，</description>
+    </item>
+    
     <item>
       <title>CMU 15-445系列x: 索引</title>
       <link>https://fiveplus.top/post/cmu15-445/%E7%B4%A2%E5%BC%95/</link>
       <pubDate>Fri, 08 Oct 2021 20:23:55 +0800</pubDate>
       
       <guid>https://fiveplus.top/post/cmu15-445/%E7%B4%A2%E5%BC%95/</guid>
-      <description>大纲 介绍各种类型的索引，包括B+Tree，HahsTable，倒排索引，聚簇索引，覆盖索引，联合索引等等 主要是介绍CMU 15445课程中的内</description>
+      <description>概述 本文围绕CMU 15-445中的Tree Indexes一课，对数据库引擎中的索引进行介绍和总结，点击下载课程的slide链接。本文不介绍B</description>
     </item>
     
   </channel>

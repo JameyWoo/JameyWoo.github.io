@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 姬小野的部落</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 09 Oct 2021 17:29:14 +0800</lastBuildDate><atom:link href="https://fiveplus.top/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Oct 2021 19:00:25 +0800</lastBuildDate><atom:link href="https://fiveplus.top/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CMU 15-445系列x: Join Algorithms</title>
+      <link>https://fiveplus.top/post/cmu15-445/join-algorithms/</link>
+      <pubDate>Thu, 14 Oct 2021 19:00:25 +0800</pubDate>
+      
+      <guid>https://fiveplus.top/post/cmu15-445/join-algorithms/</guid>
+      <description>概述 这一节课Andy主要介绍了介绍了数据库中实现Join的算法。和普通的算法不同的是，普通算法可以假设数据都在内存上，但是对于DBMS来说，</description>
+    </item>
+    
     <item>
       <title>MIT6.824 Lab 4</title>
       <link>https://fiveplus.top/post/mit-6.824/lab4/</link>
@@ -22,7 +31,7 @@
       <pubDate>Fri, 08 Oct 2021 20:23:55 +0800</pubDate>
       
       <guid>https://fiveplus.top/post/cmu15-445/%E7%B4%A2%E5%BC%95/</guid>
-      <description>大纲 介绍各种类型的索引，包括B+Tree，HahsTable，倒排索引，聚簇索引，覆盖索引，联合索引等等 主要是介绍CMU 15445课程中的内</description>
+      <description>概述 本文围绕CMU 15-445中的Tree Indexes一课，对数据库引擎中的索引进行介绍和总结，点击下载课程的slide链接。本文不介绍B</description>
     </item>
     
     <item>
@@ -401,6 +410,33 @@
       
       <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/%E5%88%9D%E6%AD%A5%E6%95%B0%E8%AE%BA-%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97-%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E6%96%B9%E7%A8%8B/</guid>
       <description>这篇博客我将介绍数论中的扩展欧几里得算法(extended Euclidean algorithm ),以及其在**解线性同余方程(乘法逆元)**中的运用. 首先要了解几个概念: 欧</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fiveplus.top/post/cmu15-445/buffer_pool/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fiveplus.top/post/cmu15-445/buffer_pool/</guid>
+      <description>project 1如何通过呢? 很奇怪, 提交了然后编译通过了但是就是测试不了, 每个测试都显示test not run 1 zip project0-submission.zip src/include/primer/p0_starter.h 这次终于顺利将代码提交到了Gradescop</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fiveplus.top/post/cmu15-445/project1-buffer-pool/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fiveplus.top/post/cmu15-445/project1-buffer-pool/</guid>
+      <description>1 2 3 4 5 title: &amp;#34;CMU 15-445系列x: project1 - buffer pool&amp;#34; date: 2021-10-27T22:08:37+08:00 draft: false tags: [&amp;#34;数据库&amp;#34;, &amp;#34;CMU 15-445&amp;#34;] categories: [&amp;#34;CMU 15-445系列&amp;#34;] 前言 简单记录一下做这个</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://fiveplus.top/post/cmu15-445/project2-extendible-hash-index/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fiveplus.top/post/cmu15-445/project2-extendible-hash-index/</guid>
+      <description>概述 第二个project是为BusTub实现一个基于磁盘的hash table index。 你需要使用可扩展(磁盘)散列方案实现一个散列表。该索引包含一</description>
     </item>
     
     <item>

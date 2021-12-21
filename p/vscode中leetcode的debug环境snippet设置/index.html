@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='这篇博客介绍一个在vscode中调试leetcode代码的方法(技巧).
+众所周知, leetcode中做题和其他OJ有很大区别, 其他OJ大多都是交完整代码, 自定义输入输出. 而leetcode定义了一个Solution类, 我们只需要专注于关键的实现部分, 并将结果作为返回值返回就好.
+这样的方便带来了一个问题, 那就是调试的不方便.
+在网页上, 我们没有本地的debug工具, 只能通过输出变量来进行调试.
+而如果拷贝到本地, 就需要自定义输入输出.
+这篇文章介绍的就是如何快速准备好本地运行环境.
+答案是使用 snippet. 我们只需要将leetcode通用的模板加入到snippet中, 然后命名为leetcode, 那么我们输入leetcode的时候, 就可以直接导入这部分代码片段.
+比如下面的模板, 包含了建立list, 建立tree的代码. 我们只需要很方便的在main函数中写上输入数据就可以了.
+#include &amp;lt;iostream&amp;gt;#include &amp;lt;map&amp;gt;#include &amp;lt;queue&amp;gt;#include &amp;lt;stack&amp;gt;#include &amp;lt;unordered_map&amp;gt;#include &amp;lt;vector&amp;gt;using namespace std; // debug 函数中是否输出的宏定义。 如果定义PRINT，那么在控制台中就会输出 // #define PRINT_DEBUG  // 链表结构 struct ListNode { int val; ListNode *next; ListNode(int v) { val = v; next = NULL; } }; // 树结构 struct TreeNode { int val; TreeNode *left, *right; TreeNode(int v) { val = v; left = right = NULL; } }; // 用来设置调试断点分隔的空函数 void stop() {} // 通过传入一个 vector 来得到一个 list ListNode *getList(vector&amp;lt;int&amp;gt; vec) { ListNode *head = new ListNode(0); ListNode *start = head; for (auto v : vec) { head-&amp;gt;next = new ListNode(v); head	= head-&amp;gt;next; } return start-&amp;gt;next; } // 传递解析了的参数之后真正进行建立树的函数 // leetcode 用的是层次遍历的方法 TreeNode *buildTree(vector&amp;lt;int&amp;gt; nums, unordered_map&amp;lt;int, int&amp;gt; isNULL) { if (nums.'><title>Vscode中leetcode的debug环境snippet设置</title>
+
+<link rel='canonical' href='https://example.com/p/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Vscode中leetcode的debug环境snippet设置'>
+<meta property='og:description' content='这篇博客介绍一个在vscode中调试leetcode代码的方法(技巧).
+众所周知, leetcode中做题和其他OJ有很大区别, 其他OJ大多都是交完整代码, 自定义输入输出. 而leetcode定义了一个Solution类, 我们只需要专注于关键的实现部分, 并将结果作为返回值返回就好.
+这样的方便带来了一个问题, 那就是调试的不方便.
+在网页上, 我们没有本地的debug工具, 只能通过输出变量来进行调试.
+而如果拷贝到本地, 就需要自定义输入输出.
+这篇文章介绍的就是如何快速准备好本地运行环境.
+答案是使用 snippet. 我们只需要将leetcode通用的模板加入到snippet中, 然后命名为leetcode, 那么我们输入leetcode的时候, 就可以直接导入这部分代码片段.
+比如下面的模板, 包含了建立list, 建立tree的代码. 我们只需要很方便的在main函数中写上输入数据就可以了.
+#include &amp;lt;iostream&amp;gt;#include &amp;lt;map&amp;gt;#include &amp;lt;queue&amp;gt;#include &amp;lt;stack&amp;gt;#include &amp;lt;unordered_map&amp;gt;#include &amp;lt;vector&amp;gt;using namespace std; // debug 函数中是否输出的宏定义。 如果定义PRINT，那么在控制台中就会输出 // #define PRINT_DEBUG  // 链表结构 struct ListNode { int val; ListNode *next; ListNode(int v) { val = v; next = NULL; } }; // 树结构 struct TreeNode { int val; TreeNode *left, *right; TreeNode(int v) { val = v; left = right = NULL; } }; // 用来设置调试断点分隔的空函数 void stop() {} // 通过传入一个 vector 来得到一个 list ListNode *getList(vector&amp;lt;int&amp;gt; vec) { ListNode *head = new ListNode(0); ListNode *start = head; for (auto v : vec) { head-&amp;gt;next = new ListNode(v); head	= head-&amp;gt;next; } return start-&amp;gt;next; } // 传递解析了的参数之后真正进行建立树的函数 // leetcode 用的是层次遍历的方法 TreeNode *buildTree(vector&amp;lt;int&amp;gt; nums, unordered_map&amp;lt;int, int&amp;gt; isNULL) { if (nums.'>
+<meta property='og:url' content='https://example.com/p/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='vscode' /><meta property='article:tag' content='leetcode' /><meta property='article:published_time' content='2020-04-03T14:41:01&#43;08:00'/><meta property='article:modified_time' content='2020-04-03T14:41:01&#43;08:00'/>
+<meta name="twitter:title" content="Vscode中leetcode的debug环境snippet设置">
+<meta name="twitter:description" content="这篇博客介绍一个在vscode中调试leetcode代码的方法(技巧).
+众所周知, leetcode中做题和其他OJ有很大区别, 其他OJ大多都是交完整代码, 自定义输入输出. 而leetcode定义了一个Solution类, 我们只需要专注于关键的实现部分, 并将结果作为返回值返回就好.
+这样的方便带来了一个问题, 那就是调试的不方便.
+在网页上, 我们没有本地的debug工具, 只能通过输出变量来进行调试.
+而如果拷贝到本地, 就需要自定义输入输出.
+这篇文章介绍的就是如何快速准备好本地运行环境.
+答案是使用 snippet. 我们只需要将leetcode通用的模板加入到snippet中, 然后命名为leetcode, 那么我们输入leetcode的时候, 就可以直接导入这部分代码片段.
+比如下面的模板, 包含了建立list, 建立tree的代码. 我们只需要很方便的在main函数中写上输入数据就可以了.
+#include &amp;lt;iostream&amp;gt;#include &amp;lt;map&amp;gt;#include &amp;lt;queue&amp;gt;#include &amp;lt;stack&amp;gt;#include &amp;lt;unordered_map&amp;gt;#include &amp;lt;vector&amp;gt;using namespace std; // debug 函数中是否输出的宏定义。 如果定义PRINT，那么在控制台中就会输出 // #define PRINT_DEBUG  // 链表结构 struct ListNode { int val; ListNode *next; ListNode(int v) { val = v; next = NULL; } }; // 树结构 struct TreeNode { int val; TreeNode *left, *right; TreeNode(int v) { val = v; left = right = NULL; } }; // 用来设置调试断点分隔的空函数 void stop() {} // 通过传入一个 vector 来得到一个 list ListNode *getList(vector&amp;lt;int&amp;gt; vec) { ListNode *head = new ListNode(0); ListNode *start = head; for (auto v : vec) { head-&amp;gt;next = new ListNode(v); head	= head-&amp;gt;next; } return start-&amp;gt;next; } // 传递解析了的参数之后真正进行建立树的函数 // leetcode 用的是层次遍历的方法 TreeNode *buildTree(vector&amp;lt;int&amp;gt; nums, unordered_map&amp;lt;int, int&amp;gt; isNULL) { if (nums.">
+    </head>
+    <body class="
+    article-page 
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        on-phone--column extended
+    
+">
+    
+        <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        <h1 class="site-name"><a href="https://example.com">Example Site</a></h1>
+        <h2 class="site-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' target="_blank">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" >
+                开发工具
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/">Vscode中leetcode的debug环境snippet设置</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 03, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <p>这篇博客介绍一个在vscode中调试leetcode代码的方法(技巧).</p>
+<p>众所周知, leetcode中做题和其他OJ有很大区别, 其他OJ大多都是交完整代码, 自定义输入输出. 而leetcode定义了一个Solution类, 我们只需要专注于关键的实现部分, 并将结果作为返回值返回就好.</p>
+<p>这样的方便带来了一个问题, 那就是调试的不方便.</p>
+<p>在网页上, 我们没有本地的debug工具, 只能通过输出变量来进行调试.</p>
+<p>而如果拷贝到本地, 就需要自定义输入输出.</p>
+<p>这篇文章介绍的就是如何快速准备好本地运行环境.</p>
+<p>答案是使用 snippet. 我们只需要将leetcode通用的模板加入到snippet中, 然后命名为leetcode, 那么我们输入leetcode的时候, 就可以直接导入这部分代码片段.</p>
+<p>比如下面的模板, 包含了建立list, 建立tree的代码. 我们只需要很方便的在main函数中写上输入数据就可以了.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stack&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;unordered_map&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="c1">// debug 函数中是否输出的宏定义。 如果定义PRINT，那么在控制台中就会输出
+</span><span class="c1">// #define PRINT_DEBUG
+</span><span class="c1"></span>
+<span class="c1">// 链表结构
+</span><span class="c1"></span><span class="k">struct</span> <span class="nc">ListNode</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+    <span class="n">ListNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+    <span class="n">ListNode</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">val</span>  <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+        <span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 树结构
+</span><span class="c1"></span><span class="k">struct</span> <span class="nc">TreeNode</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+    <span class="n">TreeNode</span> <span class="o">*</span><span class="n">left</span><span class="p">,</span> <span class="o">*</span><span class="n">right</span><span class="p">;</span>
+    <span class="n">TreeNode</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">val</span>  <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">right</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 用来设置调试断点分隔的空函数
+</span><span class="c1"></span><span class="kt">void</span> <span class="nf">stop</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="c1">// 通过传入一个 vector 来得到一个 list
+</span><span class="c1"></span><span class="n">ListNode</span> <span class="o">*</span><span class="nf">getList</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">ListNode</span> <span class="o">*</span><span class="n">start</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="nl">v</span> <span class="p">:</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+        <span class="n">head</span>	   <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">start</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 传递解析了的参数之后真正进行建立树的函数
+</span><span class="c1">// leetcode 用的是层次遍历的方法
+</span><span class="c1"></span><span class="n">TreeNode</span> <span class="o">*</span><span class="nf">buildTree</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nums</span><span class="p">,</span> <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">isNULL</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">isNULL</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+	<span class="n">TreeNode</span> <span class="o">*</span><span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+	<span class="n">queue</span><span class="o">&lt;</span><span class="n">TreeNode</span> <span class="o">*&gt;</span> <span class="n">Q</span><span class="p">;</span>
+	<span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
+	<span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">not</span> <span class="n">Q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+		<span class="n">TreeNode</span> <span class="o">*</span><span class="n">front</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+		<span class="n">Q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">front</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+			<span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="k">break</span><span class="p">;</span>
+			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">front</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+			<span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="k">break</span><span class="p">;</span>
+			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="n">stop</span><span class="p">();</span>
+	<span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 两个参数， 第一个是跟 leetcode 中一样的表示结点值的列表
+</span><span class="c1">// 但是由于 有null表示空结点，所以传递字符串方便解析
+</span><span class="c1"></span><span class="n">TreeNode</span> <span class="o">*</span><span class="nf">getTree</span><span class="p">(</span><span class="n">string</span> <span class="n">nodes</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nums</span><span class="p">;</span>
+	<span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">isNULL</span><span class="p">;</span>
+	<span class="n">nodes</span> <span class="o">+=</span> <span class="s">&#34;,&#34;</span><span class="p">;</span>
+
+	<span class="c1">// 结点的值以及索引
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nodes</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;,&#39;</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">nums</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
+			<span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="n">val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="k">continue</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;n&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nodes</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;u&#39;</span> <span class="o">&amp;&amp;</span>
+			<span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;l&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;l&#39;</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="n">i</span> <span class="o">+=</span> <span class="mi">3</span><span class="p">;</span>
+			<span class="k">continue</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="sc">&#39;0&#39;</span> <span class="o">||</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="n">isNULL</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="n">stop</span><span class="p">();</span>
+	<span class="n">TreeNode</span> <span class="o">*</span><span class="n">tree</span> <span class="o">=</span> <span class="n">buildTree</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">isNULL</span><span class="p">);</span>
+	<span class="k">return</span> <span class="n">tree</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 调试一个 int 类型的链表， 思路是把链表转化成 vector，然后设置断点，就可以方便地显示整个vector也就是list的值。
+</span><span class="c1"></span><span class="kt">void</span> <span class="nf">debug_list</span><span class="p">(</span><span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">head</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">vec</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">);</span>
+<span class="cp">#ifdef PRINT_DEBUG
+</span><span class="cp"></span>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+<span class="cp">#endif
+</span><span class="cp"></span>        <span class="n">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="cp">#ifdef PRINT_DEBUG
+</span><span class="cp"></span>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="cp">#endif
+</span><span class="cp"></span>    <span class="n">stop</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// 待替换的题目
+</span><span class="c1"></span><span class="n">leetcode_problem</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Solution</span> <span class="o">*</span><span class="n">sol</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">Solution</span><span class="p">();</span>
+    
+<span class="p">}</span>
+</code></pre></div><p>vscode的snippet不可以直接将所有的代码直接放上去, 可以一行一行地设置snippet, 但我找到一种方便地添加整个代码的方法.</p>
+<ol>
+<li>
+<p>首先将你想要设置的snippet写在文本里, 在vscode上打开</p>
+</li>
+<li>
+<p>按<code>ctrl+F</code>使用replace功能, 选择正则表达式模式</p>
+</li>
+<li>
+<p>然后待替换字符串输入<code>\t</code>或者是四个空格(具体看自己编辑器), 然后替换字符串设置为<code>\\t</code>. 这里<code>\\</code>是经过了一个转义之后的<code>\</code>, 也就是保留一个<code>\</code>.</p>
+</li>
+<li>
+<p>然后替换字符串输入<code>\n</code>代表换行, 待替换字符串设置为<code>\\n</code>, 原理同上.</p>
+</li>
+</ol>
+<p>之后, 那段代码片段就会将换行和制表符用<code>\t</code>和<code>\n</code>显示了, 就可以在snippet设置中放在一行</p>
+<p>以下是我转化之后的代码片段</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;\n#include &lt;map&gt;\n#include &lt;queue&gt;\n#include &lt;stack&gt;\n#include &lt;unordered_map&gt;\n#include &lt;vector&gt;\nusing namespace std;\n\n// debug 函数中是否输出的宏定义。 如果定义PRINT，那么在控制台中就会输出\n// #define PRINT_DEBUG\n\n// 链表结构\nstruct ListNode {\n\tint val;\n\tListNode *next;\n\tListNode(int v) {\n\t\tval  = v;\n\t\tnext = NULL;\n\t}\n};\n\n// 树结构\nstruct TreeNode {\n\tint val;\n\tTreeNode *left, *right;\n\tTreeNode(int v) {\n\t\tval  = v;\n\t\tleft = right = NULL;\n\t}\n};\n\n// 用来设置调试断点分隔的空函数\nvoid stop() {}\n\n// 通过传入一个 vector 来得到一个 list\nListNode *getList(vector&lt;int&gt; vec) {\n\tListNode *head  = new ListNode(0);\n\tListNode *start = head;\n\tfor (auto v : vec) {\n\t\thead-&gt;next = new ListNode(v);\n\t\thead\t   = head-&gt;next;\n\t}\n\treturn start-&gt;next;\n}\n\n// 传递解析了的参数之后真正进行建立树的函数\n// leetcode 用的是层次遍历的方法\nTreeNode *buildTree(vector&lt;int&gt; nums, unordered_map&lt;int, int&gt; isNULL) {\n\tif (nums.size() == 0 || isNULL[0] == 1) return NULL;\n\tTreeNode *root = new TreeNode(nums[0]);\n\tqueue&lt;TreeNode *&gt; Q;\n\tQ.push(root);\n\tint index = 1;\n\twhile (not Q.empty()) {\n\t\tTreeNode *front = Q.front();\n\t\tQ.pop();\n\t\tif (isNULL[index] == -1) {\n\t\t\tfront-&gt;left = new TreeNode(nums[index]);\n\t\t\tQ.push(front-&gt;left);\n\t\t\tif (index &gt;= nums.size()) break;\n\t\t\tindex++;\n\t\t} else if (isNULL[index] == 1) {\n\t\t\tindex++;\n\t\t}\n\t\tif (isNULL[index] == -1) {\n\t\t\tfront-&gt;right = new TreeNode(nums[index]);\n\t\t\tQ.push(front-&gt;right);\n\t\t\tif (index &gt;= nums.size()) break;\n\t\t\tindex++;\n\t\t} else if (isNULL[index] == 1) {\n\t\t\tindex++;\n\t\t}\n\t}\n\tstop();\n\treturn root;\n}\n \nTreeNode *getTree(string nodes) {\n\tvector&lt;int&gt; nums;\n\tunordered_map&lt;int, int&gt; isNULL;\n\tnodes += \&quot;,\&quot;;\n\n\tint val = 0, index = 0;\n\tfor (int i = 0; i &lt; nodes.size(); i++) {\n\t\tif (nodes[i] == ' ') continue;\n\t\tif (nodes[i] == ',') {\n\t\t\tnums.push_back(val);\n\t\t\tindex += 1;\n\t\t\tval = 0;\n\t\t\tcontinue;\n\t\t}\n\t\tif (nodes[i] == 'n' &amp;&amp; i &lt; nodes.size() - 4 &amp;&amp; nodes[i + 1] == 'u' &amp;&amp;\n\t\t\tnodes[i + 2] == 'l' &amp;&amp; nodes[i + 3] == 'l') {\n\t\t\tisNULL[index] = 1;\n\t\t\ti += 3;\n\t\t\tcontinue;\n\t\t}\n\t\tif (nodes[i] &lt; '0' || nodes[i] &gt; '9') {\n\t\t\texit(1);\n\t\t}\n\t\tval = val * 10 + (nodes[i] - '0');\n\t}\n\tfor (int i = 0; i &lt; nums.size(); i++) {\n\t\tif (isNULL[i] != 1) isNULL[i] = -1;\n\t}\n\tstop();\n\tTreeNode *tree = buildTree(nums, isNULL);\n\treturn tree;\n}\n\n// 调试一个 int 类型的链表， 思路是把链表转化成 vector，然后设置断点，就可以方便地显示整个vector也就是list的值。\nvoid debug_list(ListNode *head) {\n\tvector&lt;int&gt; vec;\n\twhile (head != NULL) {\n\t\tvec.push_back(head-&gt;val);\n#ifdef PRINT_DEBUG\n\t\tcout &lt;&lt; head-&gt;val &lt;&lt; ' ';\n#endif\n\t\thead = head-&gt;next;\n\t}\n#ifdef PRINT_DEBUG\n\tcout &lt;&lt; endl;\n#endif\n\tstop();\n}\n\n// 待替换的题目\n${leetcode_problem}\n\nint main() {\n\tSolution *sol  = new Solution();\n\t${solve}\n}
+</code></pre><p>注意, snippet中可以设置变量, 比如<code>${leetcode_problem}</code>, 输入snippet之后, 光标会按顺序移动到这些变量出, 按TAB切换光标位置.</p>
+<p>有特殊的snippet变量, 比如<code>${1}</code>, 是光标出现的第一个位置, <code>${2}</code>依此类推.</p>
+<p>而<code>${0}</code>是最后一个位置.</p>
+<p>通过设置光标的位置, 我们可以更高效地写代码.</p>
+<p>如图所示, 调用上面实现的<code>debug_list</code>函数, 可以方便地直接看到传入的链表的值.</p>
+<p><figure 
+	>
+	<a href="/assets/image-20200403161441168.png" >
+		<img src="/assets/image-20200403161441168.png"
+			
+			
+			
+			loading="lazy"
+			alt="image-20200403161441168">
+	</a>
+	
+	<figcaption>image-20200403161441168</figcaption>
+	
+</figure></p>
+<p>这个问题是<a class="link" href="https://leetcode-cn.com/problems/add-two-numbers/"  target="_blank" rel="noopener"
+    >leetcode的第二题, 链表的两数求和</a></p>
+<p>输入的数据是这样子的模式, 调用<code>getList</code>函数可以很方便地将vector转化成list.</p>
+<p><figure 
+	>
+	<a href="/assets/image-20200403161703231.png" >
+		<img src="/assets/image-20200403161703231.png"
+			
+			
+			
+			loading="lazy"
+			alt="image-20200403161703231">
+	</a>
+	
+	<figcaption>image-20200403161703231</figcaption>
+	
+</figure></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vscode/">vscode</a>
+        
+            <a href="/tags/leetcode/">leetcode</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/vscode%E9%85%8D%E7%BD%AEc-%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vscode配置C&#43;&#43;单文件和makefile编译debug</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/git%E8%AE%BE%E7%BD%AEhttp%E5%8F%8Assh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Git设置http及ssh代理 Win10与ubuntu18</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/wsl-%E5%AE%89%E8%A3%85mysql5.7%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%86%E7%A0%81/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Wsl 安装mysql5.7初始化密码</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/idea%E5%8F%8A%E5%85%B6%E4%BB%96%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">IDEA及其他开发工具日常使用指南</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/anaconda%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E5%8F%8Apycharm%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Anaconda虚拟环境及PyCharm项目环境设置</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 Example Site
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

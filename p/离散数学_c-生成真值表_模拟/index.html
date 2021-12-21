@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='生成真值表的代码
+输入一个真值表达式, 程序自动生成它的真值表.
+纯模拟思路
+ 合取* 析取| 单条件&amp;gt; 双条件- 非!
+ #include &amp;lt;iostream&amp;gt; #include &amp;lt;string&amp;gt; #include &amp;lt;cmath&amp;gt; using namespace std; int cnt = 0, chval[26] = {}; void getAlpha(string str, char *chs, int &amp;amp;cnt) //获取真值表中的字符 { int ch[26] = {}; for(int i = 0; i &amp;lt; (int)str.length(); &#43;&#43;i) { if(isalpha(str[i])) ch[str[i] - &#39;a&#39;] &#43;&#43;; } for(int i = 0; i &amp;lt; 26; &#43;&#43;i) { if(ch[i]) { chs[cnt&#43;&#43;] = i&#43;97; } } } string shuzhitihuan(string str, int chval[26]) { string st = &amp;quot;&amp;quot;; for(int i = 0; i &amp;lt; str.'><title>离散数学_C&#43;&#43;生成真值表_模拟</title>
+
+<link rel='canonical' href='https://example.com/p/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6_c-%E7%94%9F%E6%88%90%E7%9C%9F%E5%80%BC%E8%A1%A8_%E6%A8%A1%E6%8B%9F/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='离散数学_C&#43;&#43;生成真值表_模拟'>
+<meta property='og:description' content='生成真值表的代码
+输入一个真值表达式, 程序自动生成它的真值表.
+纯模拟思路
+ 合取* 析取| 单条件&amp;gt; 双条件- 非!
+ #include &amp;lt;iostream&amp;gt; #include &amp;lt;string&amp;gt; #include &amp;lt;cmath&amp;gt; using namespace std; int cnt = 0, chval[26] = {}; void getAlpha(string str, char *chs, int &amp;amp;cnt) //获取真值表中的字符 { int ch[26] = {}; for(int i = 0; i &amp;lt; (int)str.length(); &#43;&#43;i) { if(isalpha(str[i])) ch[str[i] - &#39;a&#39;] &#43;&#43;; } for(int i = 0; i &amp;lt; 26; &#43;&#43;i) { if(ch[i]) { chs[cnt&#43;&#43;] = i&#43;97; } } } string shuzhitihuan(string str, int chval[26]) { string st = &amp;quot;&amp;quot;; for(int i = 0; i &amp;lt; str.'>
+<meta property='og:url' content='https://example.com/p/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6_c-%E7%94%9F%E6%88%90%E7%9C%9F%E5%80%BC%E8%A1%A8_%E6%A8%A1%E6%8B%9F/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2018-04-07T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2018-04-07T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="离散数学_C&#43;&#43;生成真值表_模拟">
+<meta name="twitter:description" content="生成真值表的代码
+输入一个真值表达式, 程序自动生成它的真值表.
+纯模拟思路
+ 合取* 析取| 单条件&amp;gt; 双条件- 非!
+ #include &amp;lt;iostream&amp;gt; #include &amp;lt;string&amp;gt; #include &amp;lt;cmath&amp;gt; using namespace std; int cnt = 0, chval[26] = {}; void getAlpha(string str, char *chs, int &amp;amp;cnt) //获取真值表中的字符 { int ch[26] = {}; for(int i = 0; i &amp;lt; (int)str.length(); &#43;&#43;i) { if(isalpha(str[i])) ch[str[i] - &#39;a&#39;] &#43;&#43;; } for(int i = 0; i &amp;lt; 26; &#43;&#43;i) { if(ch[i]) { chs[cnt&#43;&#43;] = i&#43;97; } } } string shuzhitihuan(string str, int chval[26]) { string st = &amp;quot;&amp;quot;; for(int i = 0; i &amp;lt; str.">
+    </head>
+    <body class="
+    article-page 
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        on-phone--column extended
+    
+">
+    
+        <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        <h1 class="site-name"><a href="https://example.com">Example Site</a></h1>
+        <h2 class="site-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' target="_blank">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E7%AE%97%E6%B3%95/" >
+                算法
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6_c-%E7%94%9F%E6%88%90%E7%9C%9F%E5%80%BC%E8%A1%A8_%E6%A8%A1%E6%8B%9F/">离散数学_C&#43;&#43;生成真值表_模拟</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 07, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <p>生成真值表的代码</p>
+<p>输入一个真值表达式, 程序自动生成它的真值表.</p>
+<p>纯模拟思路</p>
+<blockquote>
+<p>合取*
+析取|
+单条件&gt;
+双条件-
+非!</p>
+</blockquote>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cmath&gt;
+using namespace std;
+int cnt = 0, chval[26] = {};
+
+void getAlpha(string str, char *chs, int &amp;cnt)  //获取真值表中的字符 
+{
+	int ch[26] = {};
+	for(int i = 0; i &lt; (int)str.length(); ++i) {
+		if(isalpha(str[i])) ch[str[i] - 'a'] ++;
+	}
+	for(int i = 0; i &lt; 26; ++i) {
+		if(ch[i]) {
+			chs[cnt++] = i+97;
+		}
+	}
+}
+
+string shuzhitihuan(string str, int chval[26])
+{
+	string st = &quot;&quot;;
+	for(int i = 0; i &lt; str.size(); ++i) {
+		if(str[i] &lt;= 'z' &amp;&amp; str[i] &gt;= 'a') {
+			st += chval[str[i] - 'a'] ? &quot;1&quot;:&quot;0&quot;;
+		} else st += str[i];
+	}
+	return st;
+}
+
+void qvkuohao(string &amp; str)  //需要去除两种括号()(1)(0)
+{
+	string st = &quot;&quot;;
+	for(int i = 0; i &lt; str.size(); ++i) {
+		if(str[i] == '(' &amp;&amp; i+2 &lt; str.size() &amp;&amp; str[i+2] == ')') {
+			st += str[i+1];
+			i += 2;
+		} else st += str[i];
+	}
+	str = st;
+}
+
+void qvfei(string &amp;str) 
+{
+	string st = &quot;&quot;;
+	for(int i = 0; i &lt; str.size(); ++i) {
+		if(str[i] == '!' &amp;&amp; i+1 &lt; str.size() &amp;&amp; str[i+1] == '0') {
+			st += '1';
+			i++;
+		} else if(str[i] == '!' &amp;&amp; i + 1 &lt; str.size() &amp;&amp; str[i+1] == '1') {
+			st += '0';
+			i++;
+		} else st += str[i];
+	}
+	str = st;
+} 
+
+void qvheqv(string &amp;str)
+{
+	string st = &quot;&quot;;
+	for(int i = 0; i &lt; str.size(); ++i) {
+		if(str[i] == '1' &amp;&amp; i+2 &lt; str.size() &amp;&amp; str[i+2] == '1' &amp;&amp; str[i+1] == '*') {
+			st += '1';
+			i += 2;
+		} else if(i+2 &lt; str.size() &amp;&amp; str[i+1] == '*' &amp;&amp; ((str[i] == '1' &amp;&amp; str[i+2] == '0')
+		|| (str[i] == '0' &amp;&amp; str[i+2] == '1') || (str[i] == '0' &amp;&amp; str[i+2] == '0'))) {
+			st += '0';
+			i += 2;
+		} else st += str[i];
+	}
+	str = st;
+}
+
+void qvxiqv(string &amp; str)
+{
+	string st = &quot;&quot;;
+	for(int i = 0; i &lt; str.size(); ++i) {
+		if(str[i] == '0' &amp;&amp; i+2 &lt; str.size() &amp;&amp; str[i+2] == '0' &amp;&amp; str[i+1] == '|') {
+			st += '0';
+			i += 2;
+		} else if (i+2 &lt; str.size() &amp;&amp; str[i+1] == '|' &amp;&amp; ((str[i] == '1' &amp;&amp; str[i+2] == '0')
+		|| (str[i] == '0' &amp;&amp; str[i+2] == '1') || (str[i] == '1' &amp;&amp; str[i+2] == '1'))) {
+			st += '1';
+			i += 2;
+		} else st += str[i];
+	}
+	str = st;
+}
+
+void qvdantiaojian(string &amp;str)
+{
+	string st = &quot;&quot;;
+	for(int i = 0; i &lt; str.size(); ++i) {
+		if(str[i + 1] == '&gt;' &amp;&amp; str[i] == '1' &amp;&amp; str[i+2] == '0') {
+			st += '0';
+			i += 2;
+		} else if(str[i+1] == '&gt;' &amp;&amp; ((str[i] == '1' &amp;&amp; str[i+2] == '1')
+		|| str[i] == '0' &amp;&amp;(str[i+2] == '1' || str[i+2] == '0'))) {
+			st += '1';
+			i += 2;
+		} else st += str[i];
+	}
+	str = st;
+}
+
+void qvshuangtiaojian(string &amp;str)
+{
+	string st = &quot;&quot;;
+	for(int i = 0; i &lt; str.size(); ++i) {
+		if(str[i+1] == '-' &amp;&amp; ((str[i] == '1' &amp;&amp; str[i+2] == '1') || (str[i] == '0' &amp;&amp; str[i+2] == '0'))) {
+			st += '1';
+			i += 2;
+		} else if(str[i+1] == '-' &amp;&amp; ((str[i] == '1' &amp;&amp; str[i+2] == '0') || (str[i] == '0' &amp;&amp; str[i+2] == '1'))) {
+			st += '0';
+			i += 2;
+		} else st += str[i]; 
+	}
+	str = st;
+}
+
+int main()
+{
+	string str, tmp;
+	char chs[12];
+	cin &gt;&gt; str;
+	getAlpha(str, chs, cnt);  //只讨论小写字母
+	tmp = str;
+	for(int j = 0; j &lt; cnt; ++j) {
+		cout &lt;&lt; chs[j] &lt;&lt; &quot;  &quot;;
+	} 
+	cout &lt;&lt; tmp;
+	cout &lt;&lt; endl;
+	for(int i = 0; i &lt; pow(2, cnt); ++i) {
+		for(int j = 0; j &lt; cnt; ++j) { //赋值过程 
+			chval[chs[j] - 'a'] = (1 &amp; (i&gt;&gt;(cnt-1-j)));
+		}	cout &lt;&lt; endl;
+		for(int j = 0; j &lt; cnt; ++j) {
+			cout &lt;&lt; chval[chs[j] - 'a'] &lt;&lt; &quot;  &quot;;
+		}
+		str = shuzhitihuan(str, chval);
+		while(str.size() != 1) {
+			qvkuohao(str);
+			qvfei(str);
+			qvheqv(str);
+			qvxiqv(str);
+			qvdantiaojian(str);
+			qvshuangtiaojian(str); 
+		}
+		for(int i = 0; i &lt; tmp.size() / 2; ++i) cout &lt;&lt; ' ';
+		cout &lt;&lt;  str &lt;&lt; endl;
+		str = tmp;
+	}
+}
+
+/*
+((p*q)*r) 
+(p*q)|(!p*!q)
+(!p|q)*(!q|p) 
+(p&gt;q)*(q&gt;p)
+!(p*q)&gt;(!p*!q)
+p-q 
+(!p|r)*(r&gt;q)|p*q
+p*q|r*b
+*/
+</code></pre>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/leetcode%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Leetcode链表专题</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E9%9A%8F%E6%9C%BA%E6%A0%91%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95-%E5%B0%B1%E6%98%AF%E6%A0%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">随机树生成算法 就是树! </h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/ida-star%E7%AE%97%E6%B3%95%E8%A7%A3%E5%8D%81%E5%85%AD%E5%AE%AB%E6%A0%BC%E6%8B%BC%E5%9B%BE%E9%97%AE%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">IDA Star算法解十六宫格拼图问题</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%87%BA%E7%8E%B0%E6%AC%A1%E6%95%B0%E8%B6%85%E8%BF%87%E4%B8%80%E5%8D%8A%E7%9A%84%E6%95%B0%E5%AD%97/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">数组中出现次数超过一半的数字</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/tarjan%E7%AE%97%E6%B3%95%E7%BC%A9%E7%82%B9-dag%E6%9C%80%E9%95%BF%E8%B7%AF-dp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tarjan算法缩点&#43;DAG最长路 DP</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 Example Site
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

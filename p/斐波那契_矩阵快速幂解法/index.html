@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='学过矩阵学了矩阵再看斐波那契数列, 秒懂, 结合矩阵快速幂, 加深了一个概念的理解: 矩阵也就是一个基本的计算单位.
+矩阵快速幂解法其实就是快速幂&#43;矩阵.
+和普通的快速幂有什么不同? 不同的是基数的类型,快速幂的过程还是一样的. 同样的,快速幂结果一般取模, 因为数据实在是太大了. 那么矩阵快速幂是否也应该取模?
+那么推导一下似乎可以发现,矩阵的每个数都取模p,因为结果其实就是矩阵的某个元素
+以[[1, 1], [1, 0]]的幂为n, n = 0时, 结果0, 如果我们取f0 = 0, f1 = 1, 以此类推,那么n次幂的结果就是右下角的那个数.
+同时时间复杂度为O(n log n).
+我们来回顾一下快速幂, 是从一次不断进行倍增, 如果数n 的二进制形式在某一位上为1,那么就乘以这一位,否则不乘
+先写一下快速幂代码.
+#include &amp;lt;iostream&amp;gt;using namespace std; int main() { int n, p, ans = 1, val = 2; cin &amp;gt;&amp;gt; n &amp;gt;&amp;gt; p; while (n) { if (n &amp;amp; 1) ans = ans * val % p; val *= val; n /= 2; } cout &amp;lt;&amp;lt; ans; } // OK, 就是这么简单.'><title>斐波那契_矩阵快速幂解法</title>
+
+<link rel='canonical' href='https://example.com/p/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91_%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82%E8%A7%A3%E6%B3%95/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='斐波那契_矩阵快速幂解法'>
+<meta property='og:description' content='学过矩阵学了矩阵再看斐波那契数列, 秒懂, 结合矩阵快速幂, 加深了一个概念的理解: 矩阵也就是一个基本的计算单位.
+矩阵快速幂解法其实就是快速幂&#43;矩阵.
+和普通的快速幂有什么不同? 不同的是基数的类型,快速幂的过程还是一样的. 同样的,快速幂结果一般取模, 因为数据实在是太大了. 那么矩阵快速幂是否也应该取模?
+那么推导一下似乎可以发现,矩阵的每个数都取模p,因为结果其实就是矩阵的某个元素
+以[[1, 1], [1, 0]]的幂为n, n = 0时, 结果0, 如果我们取f0 = 0, f1 = 1, 以此类推,那么n次幂的结果就是右下角的那个数.
+同时时间复杂度为O(n log n).
+我们来回顾一下快速幂, 是从一次不断进行倍增, 如果数n 的二进制形式在某一位上为1,那么就乘以这一位,否则不乘
+先写一下快速幂代码.
+#include &amp;lt;iostream&amp;gt;using namespace std; int main() { int n, p, ans = 1, val = 2; cin &amp;gt;&amp;gt; n &amp;gt;&amp;gt; p; while (n) { if (n &amp;amp; 1) ans = ans * val % p; val *= val; n /= 2; } cout &amp;lt;&amp;lt; ans; } // OK, 就是这么简单.'>
+<meta property='og:url' content='https://example.com/p/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91_%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82%E8%A7%A3%E6%B3%95/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2018-07-26T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2018-07-26T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="斐波那契_矩阵快速幂解法">
+<meta name="twitter:description" content="学过矩阵学了矩阵再看斐波那契数列, 秒懂, 结合矩阵快速幂, 加深了一个概念的理解: 矩阵也就是一个基本的计算单位.
+矩阵快速幂解法其实就是快速幂&#43;矩阵.
+和普通的快速幂有什么不同? 不同的是基数的类型,快速幂的过程还是一样的. 同样的,快速幂结果一般取模, 因为数据实在是太大了. 那么矩阵快速幂是否也应该取模?
+那么推导一下似乎可以发现,矩阵的每个数都取模p,因为结果其实就是矩阵的某个元素
+以[[1, 1], [1, 0]]的幂为n, n = 0时, 结果0, 如果我们取f0 = 0, f1 = 1, 以此类推,那么n次幂的结果就是右下角的那个数.
+同时时间复杂度为O(n log n).
+我们来回顾一下快速幂, 是从一次不断进行倍增, 如果数n 的二进制形式在某一位上为1,那么就乘以这一位,否则不乘
+先写一下快速幂代码.
+#include &amp;lt;iostream&amp;gt;using namespace std; int main() { int n, p, ans = 1, val = 2; cin &amp;gt;&amp;gt; n &amp;gt;&amp;gt; p; while (n) { if (n &amp;amp; 1) ans = ans * val % p; val *= val; n /= 2; } cout &amp;lt;&amp;lt; ans; } // OK, 就是这么简单.">
+    </head>
+    <body class="
+    article-page 
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        on-phone--column extended
+    
+">
+    
+        <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        <h1 class="site-name"><a href="https://example.com">Example Site</a></h1>
+        <h2 class="site-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/' target="_blank">
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E7%AE%97%E6%B3%95/" >
+                算法
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91_%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82%E8%A7%A3%E6%B3%95/">斐波那契_矩阵快速幂解法</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 26, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <p><strong>学过矩阵学了矩阵再看斐波那契数列, 秒懂, 结合矩阵快速幂, 加深了一个概念的理解: 矩阵也就是一个基本的计算单位.</strong></p>
+<p>矩阵快速幂解法其实就是<strong>快速幂+矩阵.</strong></p>
+<p>和普通的快速幂有什么不同? 不同的是<strong>基数的类型</strong>,快速幂的过程还是一样的. 同样的,快速幂结果一般取模, 因为数据实在是太大了. 那么矩阵快速幂是否也应该取模?</p>
+<p>那么推导一下似乎可以发现,<strong>矩阵的每个数都取模p,因为结果其实就是矩阵的某个元素</strong></p>
+<p>以[[1, 1], [1, 0]]的幂为n, n = 0时, 结果0, 如果我们取f0 = 0, f1 = 1, 以此类推,那么<strong>n次幂的结果就是右下角的那个数.</strong></p>
+<p>同时<strong>时间复杂度为O(n log n).</strong></p>
+<p>我们来回顾一下快速幂, <em><strong>是从一次不断进行倍增, 如果数n 的二进制形式在某一位上为1,那么就乘以这一位,否则不乘</strong></em></p>
+<p>先写一下快速幂代码.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span> <span class="o">&gt;&gt;</span> <span class="n">p</span><span class="p">;</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">ans</span> <span class="o">*</span> <span class="n">val</span> <span class="o">%</span> <span class="n">p</span><span class="p">;</span>
+		<span class="n">val</span> <span class="o">*=</span> <span class="n">val</span><span class="p">;</span>
+		<span class="n">n</span> <span class="o">/=</span> <span class="mi">2</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ans</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// OK, 就是这么简单.
+</span></code></pre></div><hr>
+<p>那么矩阵快速幂也呼之欲出了.</p>
+<p>然而写了代码发现计算过程有误.(划掉, 应该是推导有误,睡个午觉再来看看).
+OK, 找出bug来了, 推导没有错误, <strong>是做矩阵乘法的时候几个下标写错了. 需要特别小心</strong></p>
+<p>但是发现答案稍微有点问题**,看出其实now矩阵不用设置为二维单位矩阵,直接是[1, 0], 他就是答案. **</p>
+<p>但是非常悲剧的是洛谷上没有这么简单的模板题, 都**不给我辛苦学习AC一下的快感. **</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main()
+{
+	int n, p = (1 &lt;&lt; 31);
+	cin &gt;&gt; n;
+	int now[2][1] = {{1}, {0}}, matrix[2][2] = {{1, 1}, {1, 0}};
+	while (n) {
+		int a, b, c, d;
+		if (n &amp; 1) { // 矩阵相乘. 
+			a = matrix[0][0] * now[0][0] + matrix[0][1] * now[1][0];
+			b = matrix[1][0] * now[0][0] + matrix[1][1] * now[1][0];
+			now[0][0] = a % p, now[1][0] = b % p;
+		}
+		// 下面是矩阵平方, 有点麻烦. 
+		a = matrix[0][0] * matrix[0][0] + matrix[0][1] * matrix[1][0];
+		b = matrix[0][0] * matrix[0][1] + matrix[0][1] * matrix[1][1];
+		c = matrix[1][0] * matrix[0][0] + matrix[1][1] * matrix[1][0];
+		d = matrix[1][0] * matrix[0][1] + matrix[1][1] * matrix[1][1];
+		//cout &lt;&lt; &quot;c = &quot; &lt;&lt; c &lt;&lt; endl; 
+		matrix[0][0] = a % p, matrix[0][1] = b % p, matrix[1][0] = c % p, matrix[1][1] = d % p;
+		n /= 2;
+		//cout &lt;&lt; &quot;----------&quot; &lt;&lt; endl;
+		//cout &lt;&lt; matrix[0][0] &lt;&lt; ' ' &lt;&lt; matrix[0][1] &lt;&lt; endl &lt;&lt; matrix[1][0] &lt;&lt; ' ' &lt;&lt; matrix[1][1] &lt;&lt; endl;
+	}
+	cout &lt;&lt; now[1][0];
+}
+</code></pre><p>再来串矩阵快速幂模板(不只是斐波那契矩阵)</p>
+<p>也就是<strong>矩阵计算 + 快速幂</strong>的组合. <strong>O(n</strong>3 + log k)**</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+using namespace std;
+typedef long long LL;
+
+const LL mode = 1000000007;
+
+void calc(LL ans[105][105], LL matrix[105][105], LL n)
+{
+	LL tmp[105][105];
+	memset(tmp, 0, sizeof(tmp));
+	for (int i = 1; i &lt;= n; ++i) {
+		for (int j = 1; j &lt;= n; ++j) {
+			for (int k = 1; k &lt;= n; ++k) {
+				tmp[i][j] += ans[i][k] * matrix[k][j];
+				tmp[i][j] %= mode;
+			}
+		}
+	}
+	for (int i = 1; i &lt;= n; ++i) {
+		for (int j = 1; j &lt;= n; ++j) {
+			ans[i][j] = tmp[i][j];
+		}
+	}
+}
+
+int main()
+{
+	LL n, k, matrix[105][105], ans[105][105];
+	cin &gt;&gt; n &gt;&gt; k;
+	for (int i = 1; i &lt;= n; ++i) {
+		for (int j = 1; j &lt;= n; ++j) {
+			cin &gt;&gt; matrix[i][j];
+		}
+	}
+	// 初始化为单位矩阵. 
+	memset(ans, 0, sizeof(ans));
+	for (int i = 1; i &lt;= n; ++i) {
+		ans[i][i] = 1;
+	}
+	while (k) {
+		if (k &amp; 1) {
+			calc(ans, matrix, n);
+		}
+		calc(matrix, matrix, n);
+		k /= 2;
+	}
+	for (int i = 1; i &lt;= n; ++i) {
+		for (int j = 1; j &lt;= n; ++j) {
+			cout &lt;&lt; ans[i][j] &lt;&lt; ' ';
+		}
+		cout &lt;&lt; endl;
+	}
+}
+/*
+矩阵计算 + 快速幂
+*/ 
+</code></pre>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/leetcode%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Leetcode链表专题</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E9%9A%8F%E6%9C%BA%E6%A0%91%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95-%E5%B0%B1%E6%98%AF%E6%A0%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">随机树生成算法 就是树! </h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/ida-star%E7%AE%97%E6%B3%95%E8%A7%A3%E5%8D%81%E5%85%AD%E5%AE%AB%E6%A0%BC%E6%8B%BC%E5%9B%BE%E9%97%AE%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">IDA Star算法解十六宫格拼图问题</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%87%BA%E7%8E%B0%E6%AC%A1%E6%95%B0%E8%B6%85%E8%BF%87%E4%B8%80%E5%8D%8A%E7%9A%84%E6%95%B0%E5%AD%97/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">数组中出现次数超过一半的数字</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/tarjan%E7%AE%97%E6%B3%95%E7%BC%A9%E7%82%B9-dag%E6%9C%80%E9%95%BF%E8%B7%AF-dp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tarjan算法缩点&#43;DAG最长路 DP</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 Example Site
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

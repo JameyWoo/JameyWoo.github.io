@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='用头脑风暴学算法，对于一个问题，我们不只是要解决它，还要去思考有什么好的方法，差的方法去解决，甚至是一些错误的但可以提供思想借鉴的方法。
+此问题“数组中出现次数超过一半的数字”是一道非常经典的算法题，我把它放在算法风暴系列第一篇来解析，探讨学习一个算法的过程，从慢到快，从最直观的方法到脑洞大开的方法，由表面深入本质。
+ 下一篇：算法风暴之二—最小的k个数
+问题描述 给定一个数组，且已知数组中有一个数出现次数超过一半（严格），请求出这个数。
+问题很简单，方法也多样，但什么方法是最好的呢？为什么它最好？各种方法之间有什么优缺点？下面我们一一展开。
+ 方法一：给数组排序 这大概是最直观的方法了，最容易想到，也是最多人能够想出来的。如果我们使用快排的话，只需要O(nlogn)的时间就可以找到这个数。
+那么思考这样一个问题：给数组排序了，然后怎么找这个数呢？有两种方法
+1、从小到大遍历已排序数组，同时统计每个数出现的次数（某个数和上一个数不同则计数置为1），如果出现某个计数超过一半，那么正在计数的数就是所求数。
+PS：这种方法可行，相比于快排的时间复杂度是可以忽略的，但是我们还有更好的方法，直击本质。
+2、对一个已排好序的序列，出现次数超过一半的数必定是中位数。因此，我们只要输出中位数即可。
+复杂度分析：
+   时间复杂度 O(nlogn)     空间复杂度 O(n)    手写快排代码：
+#include &amp;lt;algorithm&amp;gt;#include &amp;lt;iostream&amp;gt;#include &amp;lt;cstdlib&amp;gt;#include &amp;lt;ctime&amp;gt;#define RAND(start, end) start&#43;(int)(end-start&#43;1)*rand()/(RAND_MAX&#43;1); using namespace std; const int maxn = 10005; int Partition(int *data, int length, int start, int end) { if (start == end) return start; srand((unsigned)time(NULL)); int index = RAND(start, end); swap(data[index], data[end]); int one = start - 1; for (index = start; index &amp;lt; end; &#43;&#43;index) { if (data[index] &amp;lt; data[end]) { &#43;&#43;one; if (one !'><title>数组中出现次数超过一半的数字</title>
+
+<link rel='canonical' href='https://example.com/p/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%87%BA%E7%8E%B0%E6%AC%A1%E6%95%B0%E8%B6%85%E8%BF%87%E4%B8%80%E5%8D%8A%E7%9A%84%E6%95%B0%E5%AD%97/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='数组中出现次数超过一半的数字'>
+<meta property='og:description' content='用头脑风暴学算法，对于一个问题，我们不只是要解决它，还要去思考有什么好的方法，差的方法去解决，甚至是一些错误的但可以提供思想借鉴的方法。
+此问题“数组中出现次数超过一半的数字”是一道非常经典的算法题，我把它放在算法风暴系列第一篇来解析，探讨学习一个算法的过程，从慢到快，从最直观的方法到脑洞大开的方法，由表面深入本质。
+ 下一篇：算法风暴之二—最小的k个数
+问题描述 给定一个数组，且已知数组中有一个数出现次数超过一半（严格），请求出这个数。
+问题很简单，方法也多样，但什么方法是最好的呢？为什么它最好？各种方法之间有什么优缺点？下面我们一一展开。
+ 方法一：给数组排序 这大概是最直观的方法了，最容易想到，也是最多人能够想出来的。如果我们使用快排的话，只需要O(nlogn)的时间就可以找到这个数。
+那么思考这样一个问题：给数组排序了，然后怎么找这个数呢？有两种方法
+1、从小到大遍历已排序数组，同时统计每个数出现的次数（某个数和上一个数不同则计数置为1），如果出现某个计数超过一半，那么正在计数的数就是所求数。
+PS：这种方法可行，相比于快排的时间复杂度是可以忽略的，但是我们还有更好的方法，直击本质。
+2、对一个已排好序的序列，出现次数超过一半的数必定是中位数。因此，我们只要输出中位数即可。
+复杂度分析：
+   时间复杂度 O(nlogn)     空间复杂度 O(n)    手写快排代码：
+#include &amp;lt;algorithm&amp;gt;#include &amp;lt;iostream&amp;gt;#include &amp;lt;cstdlib&amp;gt;#include &amp;lt;ctime&amp;gt;#define RAND(start, end) start&#43;(int)(end-start&#43;1)*rand()/(RAND_MAX&#43;1); using namespace std; const int maxn = 10005; int Partition(int *data, int length, int start, int end) { if (start == end) return start; srand((unsigned)time(NULL)); int index = RAND(start, end); swap(data[index], data[end]); int one = start - 1; for (index = start; index &amp;lt; end; &#43;&#43;index) { if (data[index] &amp;lt; data[end]) { &#43;&#43;one; if (one !'>
+<meta property='og:url' content='https://example.com/p/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%87%BA%E7%8E%B0%E6%AC%A1%E6%95%B0%E8%B6%85%E8%BF%87%E4%B8%80%E5%8D%8A%E7%9A%84%E6%95%B0%E5%AD%97/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2018-09-23T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2018-09-23T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="数组中出现次数超过一半的数字">
+<meta name="twitter:description" content="用头脑风暴学算法，对于一个问题，我们不只是要解决它，还要去思考有什么好的方法，差的方法去解决，甚至是一些错误的但可以提供思想借鉴的方法。
+此问题“数组中出现次数超过一半的数字”是一道非常经典的算法题，我把它放在算法风暴系列第一篇来解析，探讨学习一个算法的过程，从慢到快，从最直观的方法到脑洞大开的方法，由表面深入本质。
+ 下一篇：算法风暴之二—最小的k个数
+问题描述 给定一个数组，且已知数组中有一个数出现次数超过一半（严格），请求出这个数。
+问题很简单，方法也多样，但什么方法是最好的呢？为什么它最好？各种方法之间有什么优缺点？下面我们一一展开。
+ 方法一：给数组排序 这大概是最直观的方法了，最容易想到，也是最多人能够想出来的。如果我们使用快排的话，只需要O(nlogn)的时间就可以找到这个数。
+那么思考这样一个问题：给数组排序了，然后怎么找这个数呢？有两种方法
+1、从小到大遍历已排序数组，同时统计每个数出现的次数（某个数和上一个数不同则计数置为1），如果出现某个计数超过一半，那么正在计数的数就是所求数。
+PS：这种方法可行，相比于快排的时间复杂度是可以忽略的，但是我们还有更好的方法，直击本质。
+2、对一个已排好序的序列，出现次数超过一半的数必定是中位数。因此，我们只要输出中位数即可。
+复杂度分析：
+   时间复杂度 O(nlogn)     空间复杂度 O(n)    手写快排代码：
+#include &amp;lt;algorithm&amp;gt;#include &amp;lt;iostream&amp;gt;#include &amp;lt;cstdlib&amp;gt;#include &amp;lt;ctime&amp;gt;#define RAND(start, end) start&#43;(int)(end-start&#43;1)*rand()/(RAND_MAX&#43;1); using namespace std; const int maxn = 10005; int Partition(int *data, int length, int start, int end) { if (start == end) return start; srand((unsigned)time(NULL)); int index = RAND(start, end); swap(data[index], data[end]); int one = start - 1; for (index = start; index &amp;lt; end; &#43;&#43;index) { if (data[index] &amp;lt; data[end]) { &#43;&#43;one; if (one !">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="https://example.com" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>Back</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E7%AE%97%E6%B3%95/" >
+                算法
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%87%BA%E7%8E%B0%E6%AC%A1%E6%95%B0%E8%B6%85%E8%BF%87%E4%B8%80%E5%8D%8A%E7%9A%84%E6%95%B0%E5%AD%97/">数组中出现次数超过一半的数字</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Sep 23, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <p>用头脑风暴学算法，对于一个问题，我们不只是要解决它，还要去思考有什么好的方法，差的方法去解决，甚至是一些错误的但可以提供思想借鉴的方法。</p>
+<p>此问题“数组中出现次数超过一半的数字”是一道非常经典的算法题，我把它放在算法风暴系列第一篇来解析，探讨学习一个算法的过程，从慢到快，从最直观的方法到脑洞大开的方法，由表面深入本质。</p>
+<hr>
+<p><a class="link" href="https://blog.csdn.net/wjh2622075127/article/details/82830683"  target="_blank" rel="noopener"
+    >下一篇：算法风暴之二—最小的k个数</a></p>
+<h2 id="问题描述">问题描述</h2>
+<p><strong>给定一个数组，且已知数组中有一个数出现次数超过一半（严格），请求出这个数。</strong></p>
+<p>问题很简单，方法也多样，但什么方法是最好的呢？为什么它最好？各种方法之间有什么优缺点？下面我们一一展开。</p>
+<hr>
+<h2 id="方法一给数组排序">方法一：给数组排序</h2>
+<p>这大概是最直观的方法了，最容易想到，也是最多人能够想出来的。如果我们使用快排的话，只需要<code>O(nlogn)</code>的时间就可以找到这个数。</p>
+<p>那么思考这样一个问题：给数组排序了，然后怎么找这个数呢？有两种方法</p>
+<p>1、从小到大遍历已排序数组，同时统计每个数出现的次数（某个数和上一个数不同则计数置为1），如果出现某个计数超过一半，那么正在计数的数就是所求数。</p>
+<p>PS：这种方法可行，相比于快排的时间复杂度是可以忽略的，但是我们还有更好的方法，直击本质。</p>
+<p>2、对一个已排好序的序列，出现次数超过一半的数必定是中位数。因此，我们只要输出中位数即可。</p>
+<p>复杂度分析：</p>
+<table>
+<thead>
+<tr>
+<th><strong>时间复杂度</strong></th>
+<th><strong>O(nlogn)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>空间复杂度</strong></td>
+<td><strong>O(n)</strong></td>
+</tr>
+</tbody>
+</table>
+<p>手写快排代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp">
+</span><span class="cp">#define RAND(start, end) start+(int)(end-start+1)*rand()/(RAND_MAX+1);
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">const</span> <span class="kt">int</span> <span class="n">maxn</span> <span class="o">=</span> <span class="mi">10005</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">Partition</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">,</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">==</span> <span class="n">end</span><span class="p">)</span> <span class="k">return</span> <span class="n">start</span><span class="p">;</span>
+	<span class="n">srand</span><span class="p">((</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+	<span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">RAND</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+	<span class="n">swap</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">end</span><span class="p">]);</span>
+	<span class="kt">int</span> <span class="n">one</span> <span class="o">=</span> <span class="n">start</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">[</span><span class="n">end</span><span class="p">])</span> <span class="p">{</span>
+			<span class="o">++</span><span class="n">one</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">one</span> <span class="o">!=</span> <span class="n">index</span><span class="p">)</span> <span class="n">swap</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">one</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="o">++</span><span class="n">one</span><span class="p">;</span>
+	<span class="n">swap</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">one</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">end</span><span class="p">]);</span>
+	<span class="k">return</span> <span class="n">one</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">QuickSort</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">,</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">length</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">Partition</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">mid</span> <span class="o">&gt;</span> <span class="n">start</span><span class="p">)</span>
+		<span class="n">QuickSort</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">mid</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">)</span>
+		<span class="n">QuickSort</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">maxn</span><span class="p">];</span>
+	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+	<span class="p">}</span>
+	<span class="n">QuickSort</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">data</span><span class="p">[</span><span class="n">n</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="方法二桶排序计数">方法二：桶排序计数</h2>
+<p>如果我们需要统计的数组元素都是正整数呢？那么我们就可以使用桶排序，给他们计数，然后超过数组大小一半的就是结果了。</p>
+<p>然而桶排序看上去很简单，“复杂度也不高”，却有很多的限制。</p>
+<p>1、首先，数组统计的数需得是可hash的，不然无法将他们在hash数组上计数。但是某些情况，如元素有负值，可进行灵活转化，使其可hash。
+2、其次，桶排序方法空间换时间，需要消耗额外的空间，取决于数据的范围。
+3、桶排序并非真的那么快。桶排序的时间复杂度并非是普通的<code>O(n)</code>, 它的n指的是最大数据范围，如果有这样一组数据<code>1 100 10000 1000000</code>，那么桶排序将会有至少1000000次循环，且开出1e6的空间，大大浪费资源。</p>
+<p>桶排序方法适合数据范围不大，且数据密度较大的数据。非也，则在此问题上算不上好方法。</p>
+<p>代码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">max_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+		<span class="n">max_size</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">max_size</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+	<span class="p">}</span>
+	<span class="kt">int</span> <span class="o">*</span><span class="n">hash</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">max_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">max_size</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+		<span class="n">hash</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+		<span class="n">hash</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">++</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">max_size</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">hash</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">n</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ans</span><span class="p">;</span>
+	<span class="k">delete</span> <span class="p">[]</span> <span class="n">data</span><span class="p">;</span>
+	<span class="k">delete</span> <span class="p">[]</span> <span class="n">hash</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="方法三巧用栈">方法三：巧用栈</h2>
+<p>其实我们可以发现，上面的方法一和方法二，固然是这道题的解法之一，但<strong>不是非常具有针对性</strong>。也就是说，那两种方法是<strong>功能过剩的</strong>，而这所谓功能过剩，也正是导致它性能不是最佳的原因。</p>
+<p><strong>那么，我们就应该思考某种算法，只针对这个问题，完全的利用好效率。那么就要从题目出发，找蕴含在问题中的本质规律了。</strong></p>
+<p>其实这个问题的核心就是：<strong>出现次数超过一半</strong>。</p>
+<p>我们做这样的思考：</p>
+<p>假设k就是我们要求的那个数，那么对这个数组，删掉其中任意两个数所剩下的数组，其对应的k值会改变吗？答案是会的。<strong>但是，如果删掉任意两个不相同的数呢？答案是不会！</strong> 为什么不会？相信聪明的读者瞬间就明白原因，只需进行简单的推导就可以了。</p>
+<p>具体的实现过程就是：<strong>每遍历一个数，就将其入栈，同时查询它和栈内前一个元素的大小，如果不同，就同时出栈，否则不变。</strong></p>
+<p>以上，就是用栈的方法解决这个问题的核心。</p>
+<table>
+<thead>
+<tr>
+<th>时间复杂度</th>
+<th>O(n)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>空间复杂度</strong></td>
+<td><strong>O(n)</strong></td>
+</tr>
+</tbody>
+</table>
+<p>栈实现代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+	<span class="kt">int</span> <span class="o">*</span><span class="n">stack</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+	<span class="kt">int</span> <span class="n">top</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+	<span class="n">stack</span><span class="p">[</span><span class="o">++</span><span class="n">top</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+		<span class="n">stack</span><span class="p">[</span><span class="o">++</span><span class="n">top</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">top</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">stack</span><span class="p">[</span><span class="n">top</span><span class="p">]</span> <span class="o">!=</span> <span class="n">stack</span><span class="p">[</span><span class="n">top</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="n">top</span> <span class="o">-=</span> <span class="mi">2</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">stack</span><span class="p">[</span><span class="n">top</span><span class="p">];</span>
+	<span class="k">delete</span> <span class="p">[]</span> <span class="n">data</span><span class="p">;</span>
+	<span class="k">delete</span> <span class="p">[]</span> <span class="n">stack</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="方法四找中位数第n2大数">方法四：找中位数（第n/2大数）</h2>
+<p>从方法一的分析中我们知道，这个数组的中位数就是答案。方法一是通过给所有的数进行排序找出这个中位数，而我们思考，排序是否有些大材小用？找这个中位数的方法是否可以更简单些？</p>
+<p>答案是有的，而且这类问题被称为<strong>找第k个数</strong>。</p>
+<p><strong>思想是快排的思想。时间复杂度为<code>O(n)</code></strong></p>
+<p>利用快排思想，我们可以找出第n/2大的数，同时在第n/2th数左边的数都小于它，右边的数都大于它。这个数就是数组的中位数。</p>
+<p>快速排序简称快排，利用分治的思想，在数组中随机选择一个数，然后以这个数为基准，把大于它的数划分到它的右侧，小于它的数划分到它的左侧，并且递归的分别对左右两侧数据进行处理，直到所有的区间都按照这样的规律划分好。</p>
+<p>那么在这个问题中，如何利用快排的方法呢？<strong>快排是对每一个区间进行分治处理，而此问题不必，我们只要找到第n/2小的数。每次随机划分得的第m个数，如果m &lt; n/2, 那么对[m + 1, n - 1]这个区间继续递归；如果m &gt; n/2，那么对[0, m - 1]这个区间进行递归；如果刚好有m = n/2，那么函数结束，区间[0, n/2 - 1]的数就是最小的n/2个数。</strong></p>
+<p>此算法的平均时间复杂度为O(n), 快速排序的详细证明可参考“算法导论”。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp">
+</span><span class="cp">#define RAND(start, end) start + (int)(end - start + 1)*(rand()/(RAND_MAX + 1))
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">Partition</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">,</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">==</span> <span class="n">end</span><span class="p">)</span> <span class="k">return</span> <span class="n">start</span><span class="p">;</span>
+	<span class="n">srand</span><span class="p">((</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+	<span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">RAND</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+	<span class="n">swap</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">end</span><span class="p">]);</span>
+	<span class="kt">int</span> <span class="n">one</span> <span class="o">=</span> <span class="n">start</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">[</span><span class="n">end</span><span class="p">])</span> <span class="p">{</span>
+			<span class="o">++</span><span class="n">one</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">one</span> <span class="o">!=</span> <span class="n">index</span><span class="p">)</span> <span class="n">swap</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">one</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="o">++</span><span class="n">one</span><span class="p">;</span>
+	<span class="n">swap</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">one</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">end</span><span class="p">]);</span>
+	<span class="k">return</span> <span class="n">one</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">FindIt</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">,</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">Partition</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">mid</span> <span class="o">==</span> <span class="n">length</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">mid</span> <span class="o">&gt;</span> <span class="n">length</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="n">FindIt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="k">else</span> <span class="n">FindIt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+		<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+	<span class="p">}</span>
+	<span class="n">FindIt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">data</span><span class="p">[</span><span class="n">n</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div><p><a class="link" href="https://blog.csdn.net/wjh2622075127/article/details/82830683"  target="_blank" rel="noopener"
+    >下一篇：算法风暴之二—最小的k个数</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/leetcode%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Leetcode链表专题</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E9%9A%8F%E6%9C%BA%E6%A0%91%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95-%E5%B0%B1%E6%98%AF%E6%A0%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">随机树生成算法 就是树! </h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/ida-star%E7%AE%97%E6%B3%95%E8%A7%A3%E5%8D%81%E5%85%AD%E5%AE%AB%E6%A0%BC%E6%8B%BC%E5%9B%BE%E9%97%AE%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">IDA Star算法解十六宫格拼图问题</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/tarjan%E7%AE%97%E6%B3%95%E7%BC%A9%E7%82%B9-dag%E6%9C%80%E9%95%BF%E8%B7%AF-dp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tarjan算法缩点&#43;DAG最长路 DP</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91_%E7%9F%A9%E9%98%B5%E5%BF%AB%E9%80%9F%E5%B9%82%E8%A7%A3%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">斐波那契_矩阵快速幂解法</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 Example Site
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">Table of contents</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#问题描述">问题描述</a></li>
+    <li><a href="#方法一给数组排序">方法一：给数组排序</a></li>
+    <li><a href="#方法二桶排序计数">方法二：桶排序计数</a></li>
+    <li><a href="#方法三巧用栈">方法三：巧用栈</a></li>
+    <li><a href="#方法四找中位数第n2大数">方法四：找中位数（第n/2大数）</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

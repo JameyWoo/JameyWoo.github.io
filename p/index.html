@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='project 1如何通过呢? 很奇怪, 提交了然后编译通过了但是就是测试不了, 每个测试都显示test not run
+zip project0-submission.zip src/include/primer/p0_starter.h 这次终于顺利将代码提交到了Gradescop, 但是测试没有通过, 好消息是有一部分通过了, 说明是代码实现出了一点问题, 想来改改还是可以过的.
+执行命令将响应代码压缩为zip文件然后上传提交
+zip project1-submission.zip src/include/buffer/lru_replacer.h src/buffer/lru_replacer.cpp src/include/buffer/buffer_pool_manager_instance.h src/buffer/buffer_pool_manager_instance.cpp src/include/buffer/parallel_buffer_pool_manager.h src/buffer/parallel_buffer_pool_manager.cpp 不管是standalone还是parallel, 测试都止步于 FetchPage, 之前的测试都通过了, 而之后的都没有通过, 没有通过的如下
+ Concurrency FetchPage DeletePage IsDirty   image-20211027083141852 
+即使是最简单的LRUReplacer, 也有并发测试没有通过, 这个integrated叫做综合的, 应该通过了currency之后, 这个也能通过了
+LRUReplacer类有三个临界区, 分别是: size_, frame_list_, frame_map_, 他们可能伴随着并发的读写, 但是注意不要形成死锁.
+然后真的形成死锁了, 原因是实现size()时unlock写到return之后了, 四不四傻.
+size_t LRUReplacer::Size() { latch_.lock(); return size_; latch_.unlock(); } 然而这个测试还是没有通过, 并发那里是time out, 和没加锁前一样, 而且总分还从30变成20分了&amp;hellip; 尴尬
+将锁换成 scoped_lock 并且调整了锁的范围之后终于过了LRU的并发测试.'><title></title>
+
+<link rel='canonical' href='https://example.com/p/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content=''>
+<meta property='og:description' content='project 1如何通过呢? 很奇怪, 提交了然后编译通过了但是就是测试不了, 每个测试都显示test not run
+zip project0-submission.zip src/include/primer/p0_starter.h 这次终于顺利将代码提交到了Gradescop, 但是测试没有通过, 好消息是有一部分通过了, 说明是代码实现出了一点问题, 想来改改还是可以过的.
+执行命令将响应代码压缩为zip文件然后上传提交
+zip project1-submission.zip src/include/buffer/lru_replacer.h src/buffer/lru_replacer.cpp src/include/buffer/buffer_pool_manager_instance.h src/buffer/buffer_pool_manager_instance.cpp src/include/buffer/parallel_buffer_pool_manager.h src/buffer/parallel_buffer_pool_manager.cpp 不管是standalone还是parallel, 测试都止步于 FetchPage, 之前的测试都通过了, 而之后的都没有通过, 没有通过的如下
+ Concurrency FetchPage DeletePage IsDirty   image-20211027083141852 
+即使是最简单的LRUReplacer, 也有并发测试没有通过, 这个integrated叫做综合的, 应该通过了currency之后, 这个也能通过了
+LRUReplacer类有三个临界区, 分别是: size_, frame_list_, frame_map_, 他们可能伴随着并发的读写, 但是注意不要形成死锁.
+然后真的形成死锁了, 原因是实现size()时unlock写到return之后了, 四不四傻.
+size_t LRUReplacer::Size() { latch_.lock(); return size_; latch_.unlock(); } 然而这个测试还是没有通过, 并发那里是time out, 和没加锁前一样, 而且总分还从30变成20分了&amp;hellip; 尴尬
+将锁换成 scoped_lock 并且调整了锁的范围之后终于过了LRU的并发测试.'>
+<meta property='og:url' content='https://example.com/p/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="project 1如何通过呢? 很奇怪, 提交了然后编译通过了但是就是测试不了, 每个测试都显示test not run
+zip project0-submission.zip src/include/primer/p0_starter.h 这次终于顺利将代码提交到了Gradescop, 但是测试没有通过, 好消息是有一部分通过了, 说明是代码实现出了一点问题, 想来改改还是可以过的.
+执行命令将响应代码压缩为zip文件然后上传提交
+zip project1-submission.zip src/include/buffer/lru_replacer.h src/buffer/lru_replacer.cpp src/include/buffer/buffer_pool_manager_instance.h src/buffer/buffer_pool_manager_instance.cpp src/include/buffer/parallel_buffer_pool_manager.h src/buffer/parallel_buffer_pool_manager.cpp 不管是standalone还是parallel, 测试都止步于 FetchPage, 之前的测试都通过了, 而之后的都没有通过, 没有通过的如下
+ Concurrency FetchPage DeletePage IsDirty   image-20211027083141852 
+即使是最简单的LRUReplacer, 也有并发测试没有通过, 这个integrated叫做综合的, 应该通过了currency之后, 这个也能通过了
+LRUReplacer类有三个临界区, 分别是: size_, frame_list_, frame_map_, 他们可能伴随着并发的读写, 但是注意不要形成死锁.
+然后真的形成死锁了, 原因是实现size()时unlock写到return之后了, 四不四傻.
+size_t LRUReplacer::Size() { latch_.lock(); return size_; latch_.unlock(); } 然而这个测试还是没有通过, 并发那里是time out, 和没加锁前一样, 而且总分还从30变成20分了&amp;hellip; 尴尬
+将锁换成 scoped_lock 并且调整了锁的范围之后终于过了LRU的并发测试.">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="https://example.com" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>Back</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/"></a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <p>要介绍的内容</p>
+<ul>
+<li>
+<p><input checked="" disabled="" type="checkbox"> 顺序访问、随机访问</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox"> mmap以及其为什么不行</p>
+<p>因为他的页面会收到操作系统的缓存管理，内和缓冲区高速缓存</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox"> 直接IO和裸IO的区别，裸IO绕过文件系统</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox"> 一个数据库表在磁盘的文件布局或模式，《mysql45》中介绍了mysql的方式，以及数据回收的方式</p>
+</li>
+</ul>
+<h2 id="计算机存储体系">计算机存储体系</h2>
+<blockquote>
+<p>介绍计算机存储的分层体系，以及各体系速度的比较。</p>
+</blockquote>
+<p>一般我们谈到数据库的存储首先会想到磁盘，但是数据库涉及到的存储结构远远不止磁盘，还有内存，磁盘分为HDD，SSD，CPU Caches，非易失性内存，甚至网络存储。</p>
+<p><figure 
+	>
+	<a href="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211011232616499.png" >
+		<img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211011232616499.png"
+			
+			
+			
+			loading="lazy"
+			alt="image-20211011232616499">
+	</a>
+	
+	<figcaption>image-20211011232616499</figcaption>
+	
+</figure></p>
+<p>以sec时间来对比他们访问时间的差别</p>
+<p><figure 
+	>
+	<a href="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211011232707018.png" >
+		<img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211011232707018.png"
+			
+			
+			
+			loading="lazy"
+			alt="image-20211011232707018">
+	</a>
+	
+	<figcaption>image-20211011232707018</figcaption>
+	
+</figure></p>
+<p>并且，对于HDD磁盘而言，顺序写和随机写的性能差距可能有百倍的差距。因此，除了有B+Tree这种随机读写的存储引擎外，还出现了另一种LSM-Tree结构的存储引擎，它的主打优势就是将随机写合并成顺序写，从而最大化写性能，牺牲了一定的读性能。</p>
+<h2 id="mmap与直接io">mmap与直接IO</h2>
+<blockquote>
+<p>介绍数据库如何将磁盘上的数据映射到内存。</p>
+<p>O_DIRECT是open的一个参数，表示使用直接IO的方式打开文件。</p>
+</blockquote>
+<p>mmap是操作系统提供的内存映射技术，他有多种模式，其中一种就是将磁盘文件以页的方式映射到虚拟内存空间，在修改内存上该页的同时，也能修改磁盘（操作系统管理写回）。然而，它的页面受到操作系统维护的内核缓冲区高速缓存的管理。而在DBMS中，为了最大化性能，往往需要DBMS维护自己的一套缓存，因为DBMS才能真正了解自己的负载从而缓存合适的页面。</p>
+<p>这样就导致mmap和DBMS缓存同时缓存一个页面，浪费了内存（冗余）且增加了CPU负载（内存拷贝）。</p>
+<p>在课程中，Andy多次表示对mmap方式的数据存储的hate，他说rocksDB fork自leveldb，然后第一件事就是替换了mmap。PS. 所以为什么LevelDB选择使用mmap呢？为了方便吗？</p>
+<p>使用直接IO是一个更好的方式，因为直接IO不会使用到OS提供的缓存，DBMS可以自己维护一套缓存。</p>
+<p>事实上还有另一种形式，那就是直接原始磁盘访问，即绕过OS的文件系统转而实现自己的文件系统。这种方式有一定的性能提升（幅度不大），不过很麻烦而且可移植性差，因此大多数DBMS都不使用这种方式。</p>
+<h2 id="数据库在磁盘的组织方式">数据库在磁盘的组织方式</h2>
+<p>Andy从以下几个角度介绍了数据库在磁盘文件中的组织方式：</p>
+<ol>
+<li>File Storage</li>
+<li>Page Layout</li>
+<li>Tuple Layout</li>
+<li>Data Representation</li>
+<li>System Catalogs</li>
+<li>Storage Models</li>
+</ol>
+<p>分别进行介绍</p>
+<h3 id="file-storage">File Storage</h3>
+<p>主要是指数据库在磁盘中的文件组织方式，例如是整个数据库只有一个文件，统一管理，还是每个table都有一个文件。在MySQL 5.6.6版本之后，默认是为每个表数据分配一个独立地文件，当drop这个表时，这个文件就会被删除。而在更早的版本，则是放在共享表空间里，当drop表时，并不会删除（回收）这段空间，而是会将这段空间标记为可复用，从而让其他的表使用。</p>
+<p>DBMS存储在磁盘中的page除了有普通page外，还有一种特殊page，那就是directory pages。这些目录pages记录其他page的使用情况，可以当作是其他page的元数据。DBMS需要保证directory pages和data pages的同步。</p>
+<h3 id="page-layout">Page Layout</h3>
+<blockquote>
+<p>这一节介绍的是在一个Page中，数据的布局。</p>
+</blockquote>
+<p>数据并不是简单地存储在page上的，除了tuples数据本身，一个page还包括header，即一些元数据：</p>
+<ol>
+<li>Page Size</li>
+<li>Checksum</li>
+<li>DBMS Version</li>
+<li>Transaction Visibility</li>
+<li>Compression Information</li>
+</ol>
+<p>例如，Checksum可以用来判断数据是否损失，DBMS Version用来标识当前DBMS的版本。</p>
+<h3 id="data-layout">Data Layout</h3>
+<blockquote>
+<p>介绍Page中header以外的数据是如何组织的</p>
+</blockquote>
+<p>LSM-Tree是一种记录操作日志的存储引擎，而B+Tree则是一种记录数据本身的存储引擎。</p>
+<p>对于这两种引擎，他们的page的layout是不一样的。如何管理这些tuple，使得他们在Insert，Delete的时候有更好的性能？</p>
+<p>LSM-Tree的page就不要考虑Insert, Delete等情况，因为它的page是只读的，任何更新都是以追加日志的模式添加的，因此在page内不会出现新的tuple添加或旧的tuple被删除。</p>
+<p>对于B+Tree的page，就需要考虑这种情况。例如，可以让所有的key-value tuples连续地存储，但是这样如何找到某一个key-value呢？可以在page的前面添加slot array，每一个tuple对应一个slot，slot存储了某个tuple在page中的偏移。因此，定位一个tuple可以通过 pageid + slot的方式进行定位。</p>
+<p><figure 
+	>
+	<a href="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211012120849275.png" >
+		<img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211012120849275.png"
+			
+			
+			
+			loading="lazy"
+			alt="image-20211012120849275">
+	</a>
+	
+	<figcaption>image-20211012120849275</figcaption>
+	
+</figure></p>
+<p>从图中可以看到，slot是从header后开始增长，而tuple则是从page的尾端增长的，他们同时向page中间增长，这样就避免了不知道预分配多大的slot array的情况。</p>
+<p>slot是定长的因此可以很方便地进行索引。而slot是保存一个tuple保存在page中的偏移，所以即使tuple不是定长的也可以工作。</p>
+<p>LSM-Tree结构的page是如何组织的呢？<a class="link" href="https://leveldb-handbook.readthedocs.io/zh/latest/index.html"  target="_blank" rel="noopener"
+    >可以看LSM-Tree的经典实现leveldb的原理介绍</a>。</p>
+<h3 id="tuple-layout">Tuple Layout</h3>
+<blockquote>
+<p>tuple也并不是简单的数据，他也包括它的元数据。例如，tuple粒度的权限和并发控制，tuple是定长还是可变长度等等。</p>
+</blockquote>
+<p><figure 
+	>
+	<a href="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211012121924848.png" >
+		<img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211012121924848.png"
+			
+			
+			
+			loading="lazy"
+			alt="image-20211012121924848">
+	</a>
+	
+	<figcaption>image-20211012121924848</figcaption>
+	
+</figure></p>
+<p><figure 
+	>
+	<a href="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211012121941318.png" >
+		<img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211012121941318.png"
+			
+			
+			
+			loading="lazy"
+			alt="image-20211012121941318">
+	</a>
+	
+	<figcaption>image-20211012121941318</figcaption>
+	
+</figure></p>
+<p>如何唯一标识一个tuple？很多数据库使用record id来标识一个tuple，这个record id可以由page id + slot/offset来表示。</p>
+<p>tuple即是一行数据，一行数据会有多列属性，并且属性的类型是有很多的。有的属性如int，是定长的，而有的属性如varchar是不定长的，那么如何存储定长与不定长的属性呢？</p>
+<h3 id="system-catalogs">System Catalogs</h3>
+<h3 id="storage-models">Storage Models</h3>
+<h2 id="mysql数据存储">MySQL数据存储</h2>
+<p>mysql实战45讲中第13讲的内容可以介绍一下</p>
+<p>表与文件的关系</p>
+<p>mmap或是直接IO</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 Example Site
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">Table of contents</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#计算机存储体系">计算机存储体系</a></li>
+    <li><a href="#mmap与直接io">mmap与直接IO</a></li>
+    <li><a href="#数据库在磁盘的组织方式">数据库在磁盘的组织方式</a>
+      <ol>
+        <li><a href="#file-storage">File Storage</a></li>
+        <li><a href="#page-layout">Page Layout</a></li>
+        <li><a href="#data-layout">Data Layout</a></li>
+        <li><a href="#tuple-layout">Tuple Layout</a></li>
+        <li><a href="#system-catalogs">System Catalogs</a></li>
+        <li><a href="#storage-models">Storage Models</a></li>
+      </ol>
+    </li>
+    <li><a href="#mysql数据存储">MySQL数据存储</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

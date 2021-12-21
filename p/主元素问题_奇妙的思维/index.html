@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='主元素问题 什么是主元素问题?  已知一个数组的大小，并且其中存在一个数，出现的频率大于50%，则称其为该数组的主元素。用一个算法找出这个数，要求其时间复杂度尽可能低。
+ 这是一个很简单的问题, 解决的方法有很多, 思考这样一道问题的意义不在于只是把它解决, 而是找出多种解决它的方法, 感受算法的神奇.
+衡量一个算法优劣的一个非常重要的尺度是时间复杂度, 我们如何让计算机用最短的时间, 解决这个问题呢?
+先排序(比较排序)后计数的方法 先排序后后比较, 这种方法是比较常规的思维. 排序之后将每个相同的元素计数, 再根据数量判断是哪一个元素
+比较排序最快的平均时间复杂度是O(nlogn), 所以这个方法最快的时间按复杂度是O(nlogn)
+ **这种排序方式在所有方式中效率较低, 但它适合各种数据类型(如浮点型), 且在某些情况下空间复杂度比计数排序的方法小很多. **
+ 还可以判断是否存在这样一个主元素.
+代码比较简单且常规, 不写出(实际上用STL的sort()很简单, 但手写快排, 还是算了吧&amp;hellip;&amp;hellip;)
+一个简单优化 对于一个已经排序好了的序列, 其实不需要给每个元素计数.
+ 因为它是主元素(&amp;gt;50%), 所以只要取中值就可以知道它是哪个(它的值).
+ 计数排序的方法 计数排序也叫桶排序, 是一种非比较型排序.
+时间复杂度位O(N) (N取决于数据范围)
+鉴于计数排序对数据类型的限制很大, 所以比较各种排序方法的优劣时通常不把计数排序和快排这种比较排序相比较(事实上没有意义)
+如果数据稀松或者范围很大, 计数排序将会非常浪费空间(空间复杂度非常大)
+但在某些特定的条件下, 计数排序确实是一种时间复杂度位O(n)的排序算法 如: 数据是1-1e6之间的整数
+同样可以判断是否存在这样一个主元素
+而使用计数排序的方法觉得这道题, 不需要排序, 事实上它可以看作计数排序的一个子过程
+用STL中的nth_element()函数 刚认识nth_element()函数没几天, 写这个问题的时候突然觉得可以用这个函数解决主元素问题.
+思路是:
+ 对N个数的序列用nth_element()找到第N/2&#43;1个元素的值. 这个值就是主元素的值
+ 缺陷是:
+ 无法判断是否存在主元素
+ 这是奇数的情况:
+#include &amp;lt;iostream&amp;gt; #include &amp;lt;algorithm&amp;gt; #define N 7 using namespace std; int main() { int a[] = {1, 4, 3, 1, 1, 2, 1}; //N为奇数, 从0开始 nth_element(a, a &#43; N/2, a &#43; N); cout &amp;lt;&amp;lt; a[N/2]; } 这是偶数的情况:'><title>主元素问题_奇妙的思维</title>
+
+<link rel='canonical' href='https://example.com/p/%E4%B8%BB%E5%85%83%E7%B4%A0%E9%97%AE%E9%A2%98_%E5%A5%87%E5%A6%99%E7%9A%84%E6%80%9D%E7%BB%B4/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='主元素问题_奇妙的思维'>
+<meta property='og:description' content='主元素问题 什么是主元素问题?  已知一个数组的大小，并且其中存在一个数，出现的频率大于50%，则称其为该数组的主元素。用一个算法找出这个数，要求其时间复杂度尽可能低。
+ 这是一个很简单的问题, 解决的方法有很多, 思考这样一道问题的意义不在于只是把它解决, 而是找出多种解决它的方法, 感受算法的神奇.
+衡量一个算法优劣的一个非常重要的尺度是时间复杂度, 我们如何让计算机用最短的时间, 解决这个问题呢?
+先排序(比较排序)后计数的方法 先排序后后比较, 这种方法是比较常规的思维. 排序之后将每个相同的元素计数, 再根据数量判断是哪一个元素
+比较排序最快的平均时间复杂度是O(nlogn), 所以这个方法最快的时间按复杂度是O(nlogn)
+ **这种排序方式在所有方式中效率较低, 但它适合各种数据类型(如浮点型), 且在某些情况下空间复杂度比计数排序的方法小很多. **
+ 还可以判断是否存在这样一个主元素.
+代码比较简单且常规, 不写出(实际上用STL的sort()很简单, 但手写快排, 还是算了吧&amp;hellip;&amp;hellip;)
+一个简单优化 对于一个已经排序好了的序列, 其实不需要给每个元素计数.
+ 因为它是主元素(&amp;gt;50%), 所以只要取中值就可以知道它是哪个(它的值).
+ 计数排序的方法 计数排序也叫桶排序, 是一种非比较型排序.
+时间复杂度位O(N) (N取决于数据范围)
+鉴于计数排序对数据类型的限制很大, 所以比较各种排序方法的优劣时通常不把计数排序和快排这种比较排序相比较(事实上没有意义)
+如果数据稀松或者范围很大, 计数排序将会非常浪费空间(空间复杂度非常大)
+但在某些特定的条件下, 计数排序确实是一种时间复杂度位O(n)的排序算法 如: 数据是1-1e6之间的整数
+同样可以判断是否存在这样一个主元素
+而使用计数排序的方法觉得这道题, 不需要排序, 事实上它可以看作计数排序的一个子过程
+用STL中的nth_element()函数 刚认识nth_element()函数没几天, 写这个问题的时候突然觉得可以用这个函数解决主元素问题.
+思路是:
+ 对N个数的序列用nth_element()找到第N/2&#43;1个元素的值. 这个值就是主元素的值
+ 缺陷是:
+ 无法判断是否存在主元素
+ 这是奇数的情况:
+#include &amp;lt;iostream&amp;gt; #include &amp;lt;algorithm&amp;gt; #define N 7 using namespace std; int main() { int a[] = {1, 4, 3, 1, 1, 2, 1}; //N为奇数, 从0开始 nth_element(a, a &#43; N/2, a &#43; N); cout &amp;lt;&amp;lt; a[N/2]; } 这是偶数的情况:'>
+<meta property='og:url' content='https://example.com/p/%E4%B8%BB%E5%85%83%E7%B4%A0%E9%97%AE%E9%A2%98_%E5%A5%87%E5%A6%99%E7%9A%84%E6%80%9D%E7%BB%B4/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2018-02-13T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2018-02-13T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="主元素问题_奇妙的思维">
+<meta name="twitter:description" content="主元素问题 什么是主元素问题?  已知一个数组的大小，并且其中存在一个数，出现的频率大于50%，则称其为该数组的主元素。用一个算法找出这个数，要求其时间复杂度尽可能低。
+ 这是一个很简单的问题, 解决的方法有很多, 思考这样一道问题的意义不在于只是把它解决, 而是找出多种解决它的方法, 感受算法的神奇.
+衡量一个算法优劣的一个非常重要的尺度是时间复杂度, 我们如何让计算机用最短的时间, 解决这个问题呢?
+先排序(比较排序)后计数的方法 先排序后后比较, 这种方法是比较常规的思维. 排序之后将每个相同的元素计数, 再根据数量判断是哪一个元素
+比较排序最快的平均时间复杂度是O(nlogn), 所以这个方法最快的时间按复杂度是O(nlogn)
+ **这种排序方式在所有方式中效率较低, 但它适合各种数据类型(如浮点型), 且在某些情况下空间复杂度比计数排序的方法小很多. **
+ 还可以判断是否存在这样一个主元素.
+代码比较简单且常规, 不写出(实际上用STL的sort()很简单, 但手写快排, 还是算了吧&amp;hellip;&amp;hellip;)
+一个简单优化 对于一个已经排序好了的序列, 其实不需要给每个元素计数.
+ 因为它是主元素(&amp;gt;50%), 所以只要取中值就可以知道它是哪个(它的值).
+ 计数排序的方法 计数排序也叫桶排序, 是一种非比较型排序.
+时间复杂度位O(N) (N取决于数据范围)
+鉴于计数排序对数据类型的限制很大, 所以比较各种排序方法的优劣时通常不把计数排序和快排这种比较排序相比较(事实上没有意义)
+如果数据稀松或者范围很大, 计数排序将会非常浪费空间(空间复杂度非常大)
+但在某些特定的条件下, 计数排序确实是一种时间复杂度位O(n)的排序算法 如: 数据是1-1e6之间的整数
+同样可以判断是否存在这样一个主元素
+而使用计数排序的方法觉得这道题, 不需要排序, 事实上它可以看作计数排序的一个子过程
+用STL中的nth_element()函数 刚认识nth_element()函数没几天, 写这个问题的时候突然觉得可以用这个函数解决主元素问题.
+思路是:
+ 对N个数的序列用nth_element()找到第N/2&#43;1个元素的值. 这个值就是主元素的值
+ 缺陷是:
+ 无法判断是否存在主元素
+ 这是奇数的情况:
+#include &amp;lt;iostream&amp;gt; #include &amp;lt;algorithm&amp;gt; #define N 7 using namespace std; int main() { int a[] = {1, 4, 3, 1, 1, 2, 1}; //N为奇数, 从0开始 nth_element(a, a &#43; N/2, a &#43; N); cout &amp;lt;&amp;lt; a[N/2]; } 这是偶数的情况:">
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="https://example.com" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>Back</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E7%AE%97%E6%B3%95/" >
+                算法
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/%E4%B8%BB%E5%85%83%E7%B4%A0%E9%97%AE%E9%A2%98_%E5%A5%87%E5%A6%99%E7%9A%84%E6%80%9D%E7%BB%B4/">主元素问题_奇妙的思维</a>
+    </h2>
+
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 13, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    2 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h1 id="主元素问题">主元素问题</h1>
+<h2 id="什么是主元素问题">什么是主元素问题?</h2>
+<blockquote>
+<p>已知一个数组的大小，并且其中存在一个数，出现的频率大于50%，则称其为该数组的主元素。用一个算法找出这个数，要求其时间复杂度尽可能低。</p>
+</blockquote>
+<p>这是一个很简单的问题, 解决的方法有很多, 思考这样一道问题的意义不在于只是把它解决, 而是找出多种解决它的方法, 感受算法的神奇.</p>
+<p>衡量一个算法优劣的一个非常重要的尺度是<strong>时间复杂度</strong>, 我们如何让计算机用最短的时间, 解决这个问题呢?</p>
+<h2 id="先排序比较排序后计数的方法">先排序(比较排序)后计数的方法</h2>
+<p>先排序后后比较, 这种方法是比较常规的思维.
+排序之后将每个相同的元素计数, 再根据数量判断是哪一个元素</p>
+<p>比较排序最快的平均时间复杂度是O(nlogn), 所以这个方法最快的时间按复杂度是O(nlogn)</p>
+<blockquote>
+<p>**这种排序方式在所有方式中效率较低, 但它适合各种数据类型(如浮点型), 且在某些情况下空间复杂度比计数排序的方法小很多. **</p>
+</blockquote>
+<p><strong>还可以判断是否存在这样一个主元素.</strong></p>
+<p>代码比较简单且常规, 不写出(实际上用STL的sort()很简单, 但手写快排, 还是算了吧&hellip;&hellip;)</p>
+<h3 id="一个简单优化">一个简单优化</h3>
+<p>对于一个已经排序好了的序列, 其实不需要给每个元素计数.</p>
+<blockquote>
+<p><strong>因为它是主元素(&gt;50%), 所以只要取中值就可以知道它是哪个(它的值).</strong></p>
+</blockquote>
+<h2 id="计数排序的方法">计数排序的方法</h2>
+<p>计数排序也叫桶排序, 是一种非比较型排序.</p>
+<p>时间复杂度位O(N) (N取决于数据范围)</p>
+<p>鉴于计数排序对数据类型的限制很大, 所以比较各种排序方法的优劣时通常不把计数排序和快排这种比较排序相比较(事实上没有意义)</p>
+<p><strong>如果数据稀松或者范围很大, 计数排序将会非常浪费空间(空间复杂度非常大)</strong></p>
+<p>但在某些特定的条件下, 计数排序确实是一种时间复杂度位O(n)的排序算法
+如: 数据是1-1e6之间的整数</p>
+<p><strong>同样可以判断是否存在这样一个主元素</strong></p>
+<p>而使用计数排序的方法觉得这道题, 不需要排序, 事实上它可以看作计数排序的一个子过程</p>
+<h2 id="用stl中的nth_element函数">用STL中的nth_element()函数</h2>
+<p>刚认识nth_element()函数没几天, 写这个问题的时候突然觉得可以用这个函数解决主元素问题.</p>
+<p>思路是:</p>
+<blockquote>
+<p>对N个数的序列用nth_element()找到第<strong>N/2+1</strong>个元素的值.
+这个值就是<strong>主元素的值</strong></p>
+</blockquote>
+<p>缺陷是:</p>
+<blockquote>
+<p>无法判断是否存在主元素</p>
+</blockquote>
+<p>这是奇数的情况:</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#define N 7
+
+using namespace std;
+
+int main()
+{
+	int a[] = {1, 4, 3, 1, 1, 2, 1}; //N为奇数, 从0开始 
+	nth_element(a, a + N/2, a + N);
+	cout &lt;&lt; a[N/2];
+}
+</code></pre><p>这是偶数的情况:</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#define N 6 
+
+using namespace std;
+
+int main()
+{
+	int a[] = {1, 3, 1, 1, 2, 1}; //N为偶数, 从0开始 
+	nth_element(a, a + N/2, a + N);
+	cout &lt;&lt; a[N/3];
+}
+</code></pre><p><strong>时间复杂度为O(N)</strong>
+<strong>nth_element()是STL算法库中一种O(N)的单元素排序算法函数</strong></p>
+<h2 id="豆瓣里一种巧妙地方法httpswwwdoubancomnote505717075"><a class="link" href="https://www.douban.com/note/505717075/"  target="_blank" rel="noopener"
+    >豆瓣里一种巧妙地方法</a></h2>
+<p>最后介绍的是一种豆瓣网友分享的巧妙算法</p>
+<blockquote>
+<p>其核心思想在于：<strong>对于这样一个数组，去除掉任意两个不相等的数，剩下的数中，主元素的出现频率仍然大于50%。</strong></p>
+</blockquote>
+<p>但又缺陷:</p>
+<blockquote>
+<p><strong>只能在确定存在主元素的序列中找到这个主元素.</strong>
+即无法判断是否存在主元素</p>
+</blockquote>
+<blockquote>
+<p>引自豆瓣:
+解法：
+声明一个变量count = 0，声明一个常量size等于数组大小。
+假设该数组的第一个元素a(1)为主元素，让其与a(2)进行比较，若相同，则使变量count+1，若不同，则count-1。然后继续比较a(3)。以此类推。</p>
+<p>当与a(n)比较后，count = -1时，将count重新归为0，并重新假设a(n+1)为主元素，并继续与a(n+2)作比较。</p>
+<p>当count&gt;=(size-m)/2时，此时假设的主元素a(m)即为实际的主元素。 或遍历完整个数组后，当前假设的主元素为实际主元素。</p>
+<p>这个算法的时间复杂度最大才O(N)，看书看到这一段时令我顿时拍案叫绝啊。其核心思想在于：对于这样一个数组，去除掉任意两个不相等的数，剩下的数中，主元素的出现频率仍然大于50%。而使用count来进行加减计数，当count=0时，必然是偶数个数与假设的主元素进行了比较，且其中有一半与假设数相同一半与假设数不同（当count=-1时，加上假设数的集合，也满足该条件）。</p>
+</blockquote>
+<p>下面是我写的简单代码(<strong>可能又bug</strong>)</p>
+<pre tabindex="0"><code>#include &lt;iostream&gt;
+#define N 7
+
+using namespace std;
+
+int main()
+{
+//	int a[] = {1, 4, 3, 1, 1, 2, 1};
+	int a[] = {1, 3, 4, 4, 5, 4, 4};
+//	int a[] = {1 ,5 ,6 ,8 ,7 ,9 ,4 ,2 ,7 ,5 ,2 ,2 ,2 ,2};
+	int cnt = 0, tmp = a[0];
+	for(int i = 1; i &lt; N; ++i) {
+		if(tmp == a[i]) cnt++;
+		else cnt--;
+		if(cnt &lt; 0) {
+			tmp = a[i];
+			cnt = 0;
+		}
+	}
+	cout &lt;&lt; &quot;cnt == &quot; &lt;&lt; cnt &lt;&lt; endl;
+	if (cnt &gt; 0) cout &lt;&lt; tmp &lt;&lt; endl; 
+	else cout &lt;&lt; &quot;There is no such a number !\n&quot;;
+}
+</code></pre><p>###总而言之, 主元素问题是一种很简单的思维启发问题, 方法有很多, 可是你想到了最简单的方法吗?</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">Related contents</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/leetcode%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Leetcode链表专题</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E9%9A%8F%E6%9C%BA%E6%A0%91%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95-%E5%B0%B1%E6%98%AF%E6%A0%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">随机树生成算法 就是树! </h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/ida-star%E7%AE%97%E6%B3%95%E8%A7%A3%E5%8D%81%E5%85%AD%E5%AE%AB%E6%A0%BC%E6%8B%BC%E5%9B%BE%E9%97%AE%E9%A2%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">IDA Star算法解十六宫格拼图问题</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%87%BA%E7%8E%B0%E6%AC%A1%E6%95%B0%E8%B6%85%E8%BF%87%E4%B8%80%E5%8D%8A%E7%9A%84%E6%95%B0%E5%AD%97/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">数组中出现次数超过一半的数字</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/tarjan%E7%AE%97%E6%B3%95%E7%BC%A9%E7%82%B9-dag%E6%9C%80%E9%95%BF%E8%B7%AF-dp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Tarjan算法缩点&#43;DAG最长路 DP</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 Example Site
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">Table of contents</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#什么是主元素问题">什么是主元素问题?</a></li>
+    <li><a href="#先排序比较排序后计数的方法">先排序(比较排序)后计数的方法</a>
+      <ol>
+        <li><a href="#一个简单优化">一个简单优化</a></li>
+      </ol>
+    </li>
+    <li><a href="#计数排序的方法">计数排序的方法</a></li>
+    <li><a href="#用stl中的nth_element函数">用STL中的nth_element()函数</a></li>
+    <li><a href="#豆瓣里一种巧妙地方法httpswwwdoubancomnote505717075"><a href="https://www.douban.com/note/505717075/">豆瓣里一种巧妙地方法</a></a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
