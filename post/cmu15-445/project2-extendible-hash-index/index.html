@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CMU 15-445: project2 - Extendible Hash Index - 姬小野的部落</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="姬小野" /><meta name="description" content="概述 第二个project是为BusTub实现一个基于磁盘的hash table index。 你需要使用可扩展(磁盘)散列方案实现一个散列表。该索引包含一" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.88.1 with theme even" />
+
+
+<link rel="canonical" href="https://fiveplus.top/post/cmu15-445/project2-extendible-hash-index/" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../favicon-16x16.png">
+<link rel="manifest" href="../../../manifest.json">
+<link rel="mask-icon" href="../../../safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="../../../sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CMU 15-445: project2 - Extendible Hash Index" />
+<meta property="og:description" content="概述 第二个project是为BusTub实现一个基于磁盘的hash table index。 你需要使用可扩展(磁盘)散列方案实现一个散列表。该索引包含一" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveplus.top/post/cmu15-445/project2-extendible-hash-index/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-02T21:21:10+08:00" />
+<meta property="article:modified_time" content="2021-11-02T21:21:10+08:00" />
+
+<meta itemprop="name" content="CMU 15-445: project2 - Extendible Hash Index">
+<meta itemprop="description" content="概述 第二个project是为BusTub实现一个基于磁盘的hash table index。 你需要使用可扩展(磁盘)散列方案实现一个散列表。该索引包含一"><meta itemprop="datePublished" content="2021-11-02T21:21:10+08:00" />
+<meta itemprop="dateModified" content="2021-11-02T21:21:10+08:00" />
+<meta itemprop="wordCount" content="4658">
+<meta itemprop="keywords" content="数据库,CMU 15-445," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CMU 15-445: project2 - Extendible Hash Index"/>
+<meta name="twitter:description" content="概述 第二个project是为BusTub实现一个基于磁盘的hash table index。 你需要使用可扩展(磁盘)散列方案实现一个散列表。该索引包含一"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="../../../" class="logo">姬小野</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="../../../">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="../../../post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="../../../tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="../../../categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="../../../about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="../../../" class="logo">姬小野</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="../../../">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CMU 15-445: project2 - Extendible Hash Index</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-02 </span>
+        <div class="post-category">
+            <a href="../../../categories/cmu-15-445%E7%B3%BB%E5%88%97/"> CMU 15-445系列 </a>
+            </div>
+          <span class="more-meta"> 4658 words </span>
+          <span class="more-meta"> 10 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#task--1---page-layouts">Task # 1 - PAGE LAYOUTS</a>
+      <ul>
+        <li><a href="#hash-table-directory-page">HASH TABLE DIRECTORY PAGE</a></li>
+        <li><a href="#hash-table-bucket-page">HASH TABLE BUCKET PAGE</a></li>
+        <li><a href="#思路">思路</a></li>
+      </ul>
+    </li>
+    <li><a href="#task-2---hash-table-implementation">TASK #2 - HASH TABLE IMPLEMENTATION</a>
+      <ul>
+        <li><a href="#概述-1">概述</a></li>
+        <li><a href="#文档要求">文档要求</a></li>
+        <li><a href="#思路与实现">思路与实现</a></li>
+      </ul>
+    </li>
+    <li><a href="#task-3---concurrency-control">TASK #3 - CONCURRENCY CONTROL</a></li>
+    <li><a href="#其他">其他</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="概述">概述</h2>
+<p>第二个project是为BusTub实现一个基于磁盘的hash table index。</p>
+<p>你需要使用可扩展(磁盘)散列方案实现一个散列表。该索引包含一个目录页，该目录页包含指向桶页的指针。这个table会通过你在project 1中实现的buffer pool来获取数据。</p>
+<p>测试方式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">zip project2-submission.zip src/include/buffer/lru_replacer.h \
+src/buffer/lru_replacer.cpp \
+src/include/buffer/buffer_pool_manager_instance.h \
+src/buffer/buffer_pool_manager_instance.cpp \
+src/include/buffer/parallel_buffer_pool_manager.h \
+src/buffer/parallel_buffer_pool_manager.cpp \
+src/include/storage/page/hash_table_directory_page.h \
+src/storage/page/hash_table_directory_page.cpp \
+src/include/storage/page/hash_table_bucket_page.h \
+src/storage/page/hash_table_bucket_page.cpp \
+src/include/container/hash/extendible_hash_table.h \
+src/container/hash/extendible_hash_table.cpp
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="task--1---page-layouts">Task # 1 - PAGE LAYOUTS</h2>
+<p>需要实现两类Page的布局, 一个是作为目录, 一个则是bucket本身</p>
+<ul>
+<li><a href="https://15445.courses.cs.cmu.edu/fall2021/project2/#hash-table-directory-page"><strong>Hash Table Directory Page</strong></a></li>
+<li><a href="https://15445.courses.cs.cmu.edu/fall2021/project2/#hash-table-bucket-page"><strong>Hash Table Bucket Page</strong></a></li>
+</ul>
+<h3 id="hash-table-directory-page">HASH TABLE DIRECTORY PAGE</h3>
+<p>这个page包括整个hashtable的元数据, 他被分成以下几个field</p>
+<table>
+<thead>
+<tr>
+<th><strong>Variable Name</strong></th>
+<th><strong>Size</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page_id_</code></td>
+<td>4 bytes</td>
+<td>Self Page Id</td>
+</tr>
+<tr>
+<td><code>lsn_</code></td>
+<td>4 bytes</td>
+<td>Log sequence number (Used in Project 4)</td>
+</tr>
+<tr>
+<td><code>global_depth_</code></td>
+<td>4 bytes</td>
+<td>Global depth of the directory</td>
+</tr>
+<tr>
+<td><code>local_depths_</code></td>
+<td>512 bytes</td>
+<td>Array of local depths for each bucket (uint8)</td>
+</tr>
+<tr>
+<td><code>bucket_page_ids_</code></td>
+<td>2048 bytes</td>
+<td>Array of bucket <code>page_id_t</code></td>
+</tr>
+</tbody>
+</table>
+<p>实现这个只能修改 <code>src/include/storage/page/hash_table_directory_page.h</code> 和 <code>src/storage/page/hash_table_directory_page.cpp</code>.</p>
+<h3 id="hash-table-bucket-page">HASH TABLE BUCKET PAGE</h3>
+<ul>
+<li><code>occupied_</code> :  如果<code>occupied_</code> 的第i位为1代表array_的第i个索引已经被占用</li>
+<li><code>readable_</code> : <code>readable_</code>的第i位为1代表<code>array_</code>的第i个索引保存了可读的value</li>
+<li><code>array_</code> : 保存key-value对的数组</li>
+</ul>
+<p>单个哈希表实例中key/value的大小将是相同的，但不能假设它们对所有实例相同.</p>
+<p>只能修改<code>src/include/storage/page/hash_table_bucket_page.h</code>和<code>src/storage/page/hash_table_bucket_page.cpp</code>文件. 每次尝试读取或写入页面时，您需要首先使用其唯一的page_id从buffer pool中获取页面, 然后强制转换为一个目录或者bucket page.</p>
+<p>要实现以下函数</p>
+<p>Bucket Page: - Insert - Remove - IsOccupied - IsReadable - KeyAt - ValueAt</p>
+<p>Directory Page: - GetGlobalDepth - IncrGlobalDepth - SetLocalDepth - SetBucketPageId - GetBucketPageId</p>
+<h3 id="思路">思路</h3>
+<p>Bucket Page操作的逻辑?</p>
+<p>看get函数的参数, 结果是一个 vector; 所以get的实现应该是遍历这个bucket, 然后找到所有匹配的value</p>
+<p>这个occupied状态有点让人迷惑. 在测试中, 当insert之后, 该key-value对应的occupied和isReadable都被设置为1, 但是当remove之后, 这个occupied保持原样, 而isReadable为0, 这是为什么. 被占用之后岂不是没办法再使用吗如果不释放的话?</p>
+<p>发现了一个新奇的东西: atomic_char. 在实验中, 为了并发安全需要使用他的方法去更新</p>
+<p>实现这两个page的时候需要仔细地看单元测试程序, 因为它的occupied和readabled的含义有点混淆, 所以不能直接靠表面意思去猜测. 实际上, 在Insert和GetValue等函数中, 判断一个key是否存在都是使用的IsReadable, 而不是IsOccuped, 而在测试中, 当Remove一个已存在的key-value之后, 它的IsOccupied状态还是true, 而它的IsReadable状态则为false了. 这个IsOccupied状态还是让人困惑.</p>
+<p>这个part的主要内容就是实现文档中描述的几个方法, 但实际上在实现part2的时候, 剩下的一些方法也需要去实现. 这里有很多位操作, 例如对判断一个bucket page是否Full的时候, 需要根据它的readable数组, 判断每一位是不是都为1, 例如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">KeyType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">ValueType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">KeyComparator</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">HASH_TABLE_BUCKET_TYPE</span><span class="o">::</span><span class="n">IsFull</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">OCCUPIED_BYTE_SIZE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 不能写成 *(readable_ + i) != 0xff, 会被直接优化成 return false; 打不了断点
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">readable_</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>看起来有点麻烦, 因为每次判断一个page是否是full都需要遍历这个数组. 如果能维护一个size变量从而比较快的判断出是否是full就更好了. 但是这个bucket page似乎是要直接从buffer pool上的一个page强制类型转化的, 所以似乎不能随便添加成员变量.</p>
+<p>而directory_page那部分就更简单了, 每个方法都只有少数的几行.</p>
+<h2 id="task-2---hash-table-implementation">TASK #2 - HASH TABLE IMPLEMENTATION</h2>
+<h3 id="概述-1">概述</h3>
+<p>要实现这个project, 需要先了解Extendible Hash这种数据结构. 他是一种dynamic hashtable, 可以动态扩展的. hashtable扩展一直是个问题. 在redis中, 它的hash使用率达到一定阈值的时候, 他就会进行扩展, 方法是开启一个二倍容量的hashtable, 然后一遍接收外部的操作, 一边将原先hashtable的key/value数据增量地转移到新的hashtable, 从而避免一次性扩展时导致的CPU密集问题.</p>
+<p>而这个Extendible Hash, 分为两大部分, 一个部分是目录, 一个部分是真正存储key/value数据的page集合.</p>
+<h3 id="文档要求">文档要求</h3>
+<p>需要同时支持相同和不相同的key, 例如可以存在(key0, value0), (key0, value1), 但不可以存在两个(key0, value0).</p>
+<p>KeyType只会是GenericKey类型, ValueType只会是64位的RID; KeyComparator是用来比较两个key的(不可以比较value); 它提示说可以简单地用 <code>==</code> 来比较两个ValueType.</p>
+<p>以下是需要实现的功能:</p>
+<ul>
+<li>
+<p><input checked="" disabled="" type="checkbox"> 目录索引</p>
+</li>
+<li>
+<p><input checked="" disabled="" type="checkbox"> 分裂buckets</p>
+<p>当一个bucket满了无法进行插入的时候, 就需要将他split</p>
+</li>
+<li>
+<p><input checked="" disabled="" type="checkbox"> 当一个bucket是empty的时候, 就需要将其合并</p>
+<p>bucket只能和他们的split image合并, 如果这个split image的local depth是和他一样.</p>
+<p>并且只有当他们的local depth大于0的时候才可以merge(当local depth为0时, 只有一个bucket page吧, 那也无法merge啊, 这是初始page).</p>
+<p>这个split image的概念他说可以看算法和代码的文档, 说明有啥我之前不知道的资料&hellip;找找看</p>
+<p>然后发现了这个资料, 一个<a href="https://15445.courses.cs.cmu.edu/fall2021/notes/06-hashtables.pdf">HashTable相关的文档</a>, 不过它讲的太简略了, 需要搜索这个算法的原理: Extendible Hashing.</p>
+<p>这里有<a href="https://blog.csdn.net/qq_37904988/article/details/105102620">一篇文章</a>对这个介绍的不错, 15445课中也对这个算法进行了介绍, 当时我当时应该是开小差了, 没啥印象.</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox"> DIRECTORY GROWING</p>
+<p>目录是可以增长的</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox"> Directory shrinking</p>
+</li>
+</ul>
+<p>只有当需要的时候才使用write lock或write latch, 否则可能会出现超时.</p>
+<p>测试时发现一个bucket page的最大key-value数量为 496 (在当前key-value size的场景下)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">2021-11-04 21:54:01 [../src/storage/page/hash_table_bucket_page.cpp:36:Insert] DEBUG - 一个bucket page中的key-value数量, BUCKET_ARRAY_SIZE: 496
+</code></pre></td></tr></table>
+</div>
+</div><p>实现相关的问题:</p>
+<ol>
+<li>
+<p>如果一个key-value的重复key太多, 例如513个, 超过了一个bucket的容量, 在split的时候应该如何划分? 因为同一个key他们的hash是一样的, split之后还是无法解决问题啊</p>
+<p>恐怕需要扩展这个hashtable才能解决这个问题吧.</p>
+</li>
+</ol>
+<h3 id="思路与实现">思路与实现</h3>
+<p>实现中最复杂的一部分就是SplitInsert和Merge, 因为他们涉及bucket page的分裂和合并, 不仅需要修改bucket page, 还需要修改directory page信息, 而如何找到对应的directory page的信息, 需要比较精细的位操作. 在fix了几个bug之后终于实现了SplitInsert, 并且增加了一个单元测试. 原先的单元测试较为简单, 只有十几个key-value的写入和查找以及remove, 并不会涉及到bucket page的split, 因此我把key-value数扩展到了60000个, 并成功通过了测试.</p>
+<p>SplitInsert的思路如下:</p>
+<p>首先, 在Insert执行时发现想要进行插入的Bucekt Page是Full的, 那么不能直接插入, 而是调用SplitInsert, 它实现了将这个key/value对应的Bucket page split成两个bucket page, 并重新分配这些key-value的逻辑.</p>
+<p>在SplitInsert中, 首先按流程获取dir_page, bucket_page等信息, 然后需要遍历dir_page的所有bucket_index从而找到这个bucket page对应的所有bucket_index, 而这个过程是通过比较复杂的, 因为需要通过local depth 掩码的比较来判断.</p>
+<p>例如, 当前的dir_page总共指向4个bucket_page, 在bucket_index中他们的后缀分别为<code>00, 01, 10, 11</code>, global depth mask位11, 每个bucket_page的local depth也为0, mask也为11. 当我们需要对10所对应的bucket_page执行split操作时, 标识这两个page的后缀应该变为<code>010, 110</code>, 那么在操作的时候, 先遍历找到所有后缀为<code>10</code>的索引, 然后再将其中后缀为<code>110</code>的一半的索引对应的bucket_page设置为新分配的索引, 从而实现了一个bucket page的分裂.</p>
+<p>在这之后需要将LocalDepth+1, 如果其大小超过了GlobalDepth, 那么需要更新GlobalDepth. 之后, 需要将旧的bucket_page中的所有key-value进行重分配, 可以在遍历的时候进行判断它是否需要更新bucket_page, 如果是则将其插入到新的bucket_page, 并在旧的bucket_page中remove掉, 否则就不需要处理.</p>
+<p>实现代码如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">KeyType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">ValueType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">KeyComparator</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">HASH_TABLE_TYPE</span><span class="o">::</span><span class="n">SplitInsert</span><span class="p">(</span><span class="n">Transaction</span> <span class="o">*</span><span class="n">transaction</span><span class="p">,</span> <span class="k">const</span> <span class="n">KeyType</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">,</span> <span class="k">const</span> <span class="n">ValueType</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">nullptr</span> <span class="o">==</span> <span class="n">transaction</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 更新 对应bucket 的 LocalDepth
+</span><span class="c1"></span>    <span class="n">HashTableDirectoryPage</span> <span class="o">*</span><span class="n">dir_page</span> <span class="o">=</span> <span class="n">FetchDirectoryPage</span><span class="p">();</span>
+    <span class="c1">// 通过hash函数找到对应的bucket page对应的 pageid
+</span><span class="c1"></span>    <span class="n">page_id_t</span> <span class="n">bucket_page_id</span> <span class="o">=</span> <span class="n">KeyToPageId</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dir_page</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">bucket_page</span> <span class="o">=</span> <span class="n">FetchBucketPage</span><span class="p">(</span><span class="n">bucket_page_id</span><span class="p">);</span>
+    <span class="n">page_id_t</span> <span class="n">new_bucket_page_id</span><span class="p">;</span>
+    <span class="n">Page</span> <span class="o">*</span><span class="n">new_bucket_page</span> <span class="o">=</span> <span class="n">buffer_pool_manager_</span><span class="o">-&gt;</span><span class="n">NewPage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">new_bucket_page_id</span><span class="p">);</span> <span class="c1">// 内存泄漏
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="k">nullptr</span> <span class="o">==</span> <span class="n">new_bucket_page</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">LOG_ERROR</span><span class="p">(</span><span class="s">&#34;Split时分配新的bucket page失败&#34;</span><span class="p">);</span> <span class="c1">// 泄露
+</span><span class="c1"></span>      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">uint32_t</span> <span class="n">bucket_index</span> <span class="o">=</span> <span class="n">KeyToDirectoryIndex</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dir_page</span><span class="p">);</span>
+    <span class="kt">uint32_t</span> <span class="n">local_depth</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">bucket_index</span> <span class="o">&amp;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepthMask</span><span class="p">(</span><span class="n">bucket_index</span><span class="p">);</span>
+    <span class="c1">// 转移, 将 directory page 上的bucket_id进行重分配
+</span><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">DIRECTORY_ARRAY_SIZE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// 找到需要指向新的 bucket_page 的 indexes
+</span><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="n">mask</span> <span class="o">==</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepthMask</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span> <span class="p">{</span> <span class="c1">// ! 这里应该用 LocalDepthMask吧(是的!!!nice!!!)
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span> <span class="p">{</span> 
+          <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">SetBucketPageId</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">new_bucket_page_id</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">IncrLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// local depth + 1
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">local_depth</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">local_depth</span> <span class="o">=</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">// 更新GlobalDepth, 如果需要的话
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">local_depth</span> <span class="o">&gt;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetGlobalDepth</span><span class="p">())</span> <span class="p">{</span>
+      <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">IncrGlobalDepth</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="c1">// 将旧的key-value全部取出来, 然后重新执行插入
+</span><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">MappingType</span><span class="o">&gt;</span> <span class="n">all_key_values</span><span class="p">;</span>
+    <span class="n">all_key_values</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">));</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">BUCKET_ARRAY_SIZE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">all_key_values</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">bucket_page</span><span class="o">-&gt;</span><span class="n">KeyAt</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">bucket_page</span><span class="o">-&gt;</span><span class="n">ValueAt</span><span class="p">(</span><span class="n">i</span><span class="p">)));</span>
+      <span class="n">bucket_page</span><span class="o">-&gt;</span><span class="n">RemoveAt</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// remove干净
+</span><span class="c1"></span>    <span class="p">}</span>
+    <span class="kt">bool</span> <span class="n">insert_success</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">all_key_values</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// ! 靠, 之前这里 key 传递成了上面的key, 导致 hash值一直是一样的我日
+</span><span class="c1"></span>      <span class="n">page_id_t</span> <span class="n">page_id</span> <span class="o">=</span> <span class="n">KeyToPageId</span><span class="p">(</span><span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">,</span> <span class="n">dir_page</span><span class="p">);</span>
+      <span class="k">auto</span> <span class="n">page</span> <span class="o">=</span> <span class="n">FetchBucketPage</span><span class="p">(</span><span class="n">page_id</span><span class="p">);</span>
+      <span class="n">insert_success</span> <span class="o">=</span> <span class="n">page</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">,</span> <span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span><span class="p">,</span> <span class="n">comparator_</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">insert_success</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;SplitInsert 失败: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">page</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">,</span> <span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span><span class="p">,</span> <span class="n">comparator_</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Merge部分的逻辑相对SplitInsert比较简单, 只需要找到对应key的bucekt index, 然后根据这个bucket index找到对应的split image的索引, 然后将选择这两个中较小的一个作为合并索引(他们共同的前缀). 之后在dir_page上遍历以更新信息, 维护local depth, 最后判断global depth是否也需要更新.</p>
+<h2 id="task-3---concurrency-control">TASK #3 - CONCURRENCY CONTROL</h2>
+<p>在前面的测试中可以假定hashtable是单线程, 但是从这里开始需要支持多线程并发.</p>
+<p>需要为每一个bucket添加一个latch, 以便在一个线程访问某bucket的时候, 其他的线程不能对他进行读写. 但是, 当一个线程在读的时候, 其他线程也可以读. 即需要实现对每一个bucket的读写锁, 支持并发读.</p>
+<p>当进行split, merge以及global depth等信息变更的时候, 需要使用latch将整个结构保护起来.</p>
+<p>在project中, 可以使用两种锁, 一种是在头文件中定义的table_latch_, 他是一种读写锁(用于全局); 第二种则是在page.h中定义的latch, 用于每一个bucket page, 在使用之前需要用reinterpret_cast进行转化.</p>
+<h2 id="其他">其他</h2>
+<p>又出现了这种情况, 到底是为什么啊&hellip; 难搞啊</p>
+<p><img src="assets/image-20211104231644601.png" alt="image-20211104231644601"></p>
+<h2 id="参考">参考</h2>
+<p><a href="https://zhuanlan.zhihu.com/p/121118364">https://zhuanlan.zhihu.com/p/121118364</a></p>
+<p>这个资料很好: <a href="https://blog.csdn.net/qq_37904988/article/details/105102620">https://blog.csdn.net/qq_37904988/article/details/105102620</a></p>
+<p>18年的实验, 跟21年比较像, 反而是19年和20年跟21年的不太像: <a href="https://cakebytheoceanluo.github.io/2020/04/17/CMU-15445-17-18-Project1-1/">https://cakebytheoceanluo.github.io/2020/04/17/CMU-15445-17-18-Project1-1/</a> , 不过它似乎是内存上的? 不像是使用了buffer pool</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">姬小野</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-11-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="../../../tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <a href="../../../tags/cmu-15-445/">CMU 15-445</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="../../../post/cmu15-445/project3-query-execution/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CMU 15-445: project3 - Query Execution</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="../../../post/cmu15-445/project1-buffer-pool/">
+            <span class="next-text nav-default">CMU 15-445: project1 - buffer pool</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://blog.csdn.net/wjh2622075127" class="iconfont icon-csdn" title="csdn"></a>
+      <a href="https://github.com/JameyWoo" class="iconfont icon-github" title="github"></a>
+  <a href="https://fiveplus.top/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

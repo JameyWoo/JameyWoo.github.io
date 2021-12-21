@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title> - 姬小野的部落</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="姬小野" /><meta name="description" content="project 1如何通过呢? 很奇怪, 提交了然后编译通过了但是就是测试不了, 每个测试都显示test not run 1 zip project0-submission.zip src/include/primer/p0_starter.h 这次终于顺利将代码提交到了Gradescop" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.88.1 with theme even" />
+
+
+<link rel="canonical" href="https://fiveplus.top/post/cmu15-445/buffer_pool/" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../favicon-16x16.png">
+<link rel="manifest" href="../../../manifest.json">
+<link rel="mask-icon" href="../../../safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="../../../sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="" />
+<meta property="og:description" content="project 1如何通过呢? 很奇怪, 提交了然后编译通过了但是就是测试不了, 每个测试都显示test not run 1 zip project0-submission.zip src/include/primer/p0_starter.h 这次终于顺利将代码提交到了Gradescop" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveplus.top/post/cmu15-445/buffer_pool/" /><meta property="article:section" content="post" />
+
+
+
+<meta itemprop="name" content="">
+<meta itemprop="description" content="project 1如何通过呢? 很奇怪, 提交了然后编译通过了但是就是测试不了, 每个测试都显示test not run 1 zip project0-submission.zip src/include/primer/p0_starter.h 这次终于顺利将代码提交到了Gradescop">
+
+<meta itemprop="wordCount" content="688">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="project 1如何通过呢? 很奇怪, 提交了然后编译通过了但是就是测试不了, 每个测试都显示test not run 1 zip project0-submission.zip src/include/primer/p0_starter.h 这次终于顺利将代码提交到了Gradescop"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="../../../" class="logo">姬小野</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="../../../">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="../../../post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="../../../tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="../../../categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="../../../about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="../../../" class="logo">姬小野</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="../../../">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title"></h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 0001-01-01 </span>
+        
+          <span class="more-meta"> 688 words </span>
+          <span class="more-meta"> 2 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>project 1如何通过呢? 很奇怪, 提交了然后编译通过了但是就是测试不了, 每个测试都显示test not run</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">zip project0-submission.zip src/include/primer/p0_starter.h
+</code></pre></td></tr></table>
+</div>
+</div><p>这次终于顺利将代码提交到了Gradescop, 但是测试没有通过, 好消息是有一部分通过了, 说明是代码实现出了一点问题, 想来改改还是可以过的.</p>
+<p>执行命令将响应代码压缩为zip文件然后上传提交</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">zip project1-submission.zip src/include/buffer/lru_replacer.h src/buffer/lru_replacer.cpp src/include/buffer/buffer_pool_manager_instance.h src/buffer/buffer_pool_manager_instance.cpp src/include/buffer/parallel_buffer_pool_manager.h src/buffer/parallel_buffer_pool_manager.cpp
+</code></pre></td></tr></table>
+</div>
+</div><p>不管是standalone还是parallel, 测试都止步于 FetchPage, 之前的测试都通过了, 而之后的都没有通过, 没有通过的如下</p>
+<ul>
+<li><input disabled="" type="checkbox"> Concurrency</li>
+<li><input disabled="" type="checkbox"> FetchPage</li>
+<li><input disabled="" type="checkbox"> DeletePage</li>
+<li><input disabled="" type="checkbox"> IsDirty</li>
+</ul>
+<p><img src="assets/image-20211027083141852.png" alt="image-20211027083141852"></p>
+<p>即使是最简单的LRUReplacer, 也有并发测试没有通过, 这个integrated叫做综合的, 应该通过了currency之后, 这个也能通过了</p>
+<p>LRUReplacer类有三个临界区, 分别是: <code>size_, frame_list_, frame_map_</code>, 他们可能伴随着并发的读写, 但是注意不要形成死锁.</p>
+<p>然后真的形成死锁了, 原因是实现size()时unlock写到return之后了, 四不四傻.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">size_t LRUReplacer::Size() {
+    latch_.lock();
+    return size_;
+    latch_.unlock();
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>然而这个测试还是没有通过, 并发那里是time out, 和没加锁前一样, 而且总分还从30变成20分了&hellip; 尴尬</p>
+<p>将锁换成 scoped_lock 并且调整了锁的范围之后终于过了LRU的并发测试. scoped_lock 是我新学到的东西, 以前没学过, 发现知识还比较欠缺.</p>
+<p>终于全部改好了!!!</p>
+<p><img src="assets/image-20211027194617772.png" alt="image-20211027194617772"></p>
+<p>一下几点是我之前失误的</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 没有加锁(预料之中过不了一些样例)</li>
+<li><input checked="" disabled="" type="checkbox"> 在UnpinPgImp中, 理解错了它 is_dirty 的意思, 以为是要flush脏页, 但其实是让我设置标志位</li>
+<li><input checked="" disabled="" type="checkbox"> 同样是在 UnpinPgImp中, 只对page-&gt;GetPinCount() == 0返回了true, 但其实count&gt;0也需要返回true.</li>
+<li><input checked="" disabled="" type="checkbox"> FlushPgImp中执行正常情况时漏掉了 return true(太粗心)</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">姬小野</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        0001-01-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="../../../post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/%E5%88%9D%E6%AD%A5%E6%95%B0%E8%AE%BA-%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97-%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E6%96%B9%E7%A8%8B/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">初步数论 扩展欧几里得 线性同余方程</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="../../../post/cmu15-445/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/">
+            <span class="next-text nav-default">CMU 15-445笔记: 数据存储</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://blog.csdn.net/wjh2622075127" class="iconfont icon-csdn" title="csdn"></a>
+      <a href="https://github.com/JameyWoo" class="iconfont icon-github" title="github"></a>
+  <a href="https://fiveplus.top/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

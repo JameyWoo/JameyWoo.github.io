@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CMU 15-445笔记: 数据存储 - 姬小野的部落</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="姬小野" /><meta name="description" content="要介绍的内容 顺序访问、随机访问 mmap以及其为什么不行 因为他的页面会收到操作系统的缓存管理，内和缓冲区高速缓存 直接IO和裸IO的区别，裸IO" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.88.1 with theme even" />
+
+
+<link rel="canonical" href="https://fiveplus.top/post/cmu15-445/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../favicon-16x16.png">
+<link rel="manifest" href="../../../manifest.json">
+<link rel="mask-icon" href="../../../safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="../../../sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CMU 15-445笔记: 数据存储" />
+<meta property="og:description" content="要介绍的内容 顺序访问、随机访问 mmap以及其为什么不行 因为他的页面会收到操作系统的缓存管理，内和缓冲区高速缓存 直接IO和裸IO的区别，裸IO" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveplus.top/post/cmu15-445/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/" /><meta property="article:section" content="post" />
+
+
+
+<meta itemprop="name" content="CMU 15-445笔记: 数据存储">
+<meta itemprop="description" content="要介绍的内容 顺序访问、随机访问 mmap以及其为什么不行 因为他的页面会收到操作系统的缓存管理，内和缓冲区高速缓存 直接IO和裸IO的区别，裸IO">
+
+<meta itemprop="wordCount" content="2299">
+<meta itemprop="keywords" content="数据库,CMU 15-445," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CMU 15-445笔记: 数据存储"/>
+<meta name="twitter:description" content="要介绍的内容 顺序访问、随机访问 mmap以及其为什么不行 因为他的页面会收到操作系统的缓存管理，内和缓冲区高速缓存 直接IO和裸IO的区别，裸IO"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="../../../" class="logo">姬小野</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="../../../">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="../../../post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="../../../tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="../../../categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="../../../about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="../../../" class="logo">姬小野</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="../../../">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CMU 15-445笔记: 数据存储</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 0001-01-01 </span>
+        <div class="post-category">
+            <a href="../../../categories/cmu-15-445%E7%B3%BB%E5%88%97/"> CMU 15-445系列 </a>
+            </div>
+          <span class="more-meta"> 2299 words </span>
+          <span class="more-meta"> 5 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#计算机存储体系">计算机存储体系</a></li>
+    <li><a href="#mmap与直接io">mmap与直接IO</a></li>
+    <li><a href="#数据库在磁盘的组织方式">数据库在磁盘的组织方式</a>
+      <ul>
+        <li><a href="#file-storage">File Storage</a></li>
+        <li><a href="#page-layout">Page Layout</a></li>
+        <li><a href="#data-layout">Data Layout</a></li>
+        <li><a href="#tuple-layout">Tuple Layout</a></li>
+        <li><a href="#system-catalogs">System Catalogs</a></li>
+        <li><a href="#storage-models">Storage Models</a></li>
+      </ul>
+    </li>
+    <li><a href="#mysql数据存储">MySQL数据存储</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>要介绍的内容</p>
+<ul>
+<li>
+<p><input checked="" disabled="" type="checkbox"> 顺序访问、随机访问</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox"> mmap以及其为什么不行</p>
+<p>因为他的页面会收到操作系统的缓存管理，内和缓冲区高速缓存</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox"> 直接IO和裸IO的区别，裸IO绕过文件系统</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox"> 一个数据库表在磁盘的文件布局或模式，《mysql45》中介绍了mysql的方式，以及数据回收的方式</p>
+</li>
+</ul>
+<h2 id="计算机存储体系">计算机存储体系</h2>
+<blockquote>
+<p>介绍计算机存储的分层体系，以及各体系速度的比较。</p>
+</blockquote>
+<p>一般我们谈到数据库的存储首先会想到磁盘，但是数据库涉及到的存储结构远远不止磁盘，还有内存，磁盘分为HDD，SSD，CPU Caches，非易失性内存，甚至网络存储。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211011232616499.png" alt="image-20211011232616499"></p>
+<p>以sec时间来对比他们访问时间的差别</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211011232707018.png" alt="image-20211011232707018"></p>
+<p>并且，对于HDD磁盘而言，顺序写和随机写的性能差距可能有百倍的差距。因此，除了有B+Tree这种随机读写的存储引擎外，还出现了另一种LSM-Tree结构的存储引擎，它的主打优势就是将随机写合并成顺序写，从而最大化写性能，牺牲了一定的读性能。</p>
+<h2 id="mmap与直接io">mmap与直接IO</h2>
+<blockquote>
+<p>介绍数据库如何将磁盘上的数据映射到内存。</p>
+<p>O_DIRECT是open的一个参数，表示使用直接IO的方式打开文件。</p>
+</blockquote>
+<p>mmap是操作系统提供的内存映射技术，他有多种模式，其中一种就是将磁盘文件以页的方式映射到虚拟内存空间，在修改内存上该页的同时，也能修改磁盘（操作系统管理写回）。然而，它的页面受到操作系统维护的内核缓冲区高速缓存的管理。而在DBMS中，为了最大化性能，往往需要DBMS维护自己的一套缓存，因为DBMS才能真正了解自己的负载从而缓存合适的页面。</p>
+<p>这样就导致mmap和DBMS缓存同时缓存一个页面，浪费了内存（冗余）且增加了CPU负载（内存拷贝）。</p>
+<p>在课程中，Andy多次表示对mmap方式的数据存储的hate，他说rocksDB fork自leveldb，然后第一件事就是替换了mmap。PS. 所以为什么LevelDB选择使用mmap呢？为了方便吗？</p>
+<p>使用直接IO是一个更好的方式，因为直接IO不会使用到OS提供的缓存，DBMS可以自己维护一套缓存。</p>
+<p>事实上还有另一种形式，那就是直接原始磁盘访问，即绕过OS的文件系统转而实现自己的文件系统。这种方式有一定的性能提升（幅度不大），不过很麻烦而且可移植性差，因此大多数DBMS都不使用这种方式。</p>
+<h2 id="数据库在磁盘的组织方式">数据库在磁盘的组织方式</h2>
+<p>Andy从以下几个角度介绍了数据库在磁盘文件中的组织方式：</p>
+<ol>
+<li>File Storage</li>
+<li>Page Layout</li>
+<li>Tuple Layout</li>
+<li>Data Representation</li>
+<li>System Catalogs</li>
+<li>Storage Models</li>
+</ol>
+<p>分别进行介绍</p>
+<h3 id="file-storage">File Storage</h3>
+<p>主要是指数据库在磁盘中的文件组织方式，例如是整个数据库只有一个文件，统一管理，还是每个table都有一个文件。在MySQL 5.6.6版本之后，默认是为每个表数据分配一个独立地文件，当drop这个表时，这个文件就会被删除。而在更早的版本，则是放在共享表空间里，当drop表时，并不会删除（回收）这段空间，而是会将这段空间标记为可复用，从而让其他的表使用。</p>
+<p>DBMS存储在磁盘中的page除了有普通page外，还有一种特殊page，那就是directory pages。这些目录pages记录其他page的使用情况，可以当作是其他page的元数据。DBMS需要保证directory pages和data pages的同步。</p>
+<h3 id="page-layout">Page Layout</h3>
+<blockquote>
+<p>这一节介绍的是在一个Page中，数据的布局。</p>
+</blockquote>
+<p>数据并不是简单地存储在page上的，除了tuples数据本身，一个page还包括header，即一些元数据：</p>
+<ol>
+<li>Page Size</li>
+<li>Checksum</li>
+<li>DBMS Version</li>
+<li>Transaction Visibility</li>
+<li>Compression Information</li>
+</ol>
+<p>例如，Checksum可以用来判断数据是否损失，DBMS Version用来标识当前DBMS的版本。</p>
+<h3 id="data-layout">Data Layout</h3>
+<blockquote>
+<p>介绍Page中header以外的数据是如何组织的</p>
+</blockquote>
+<p>LSM-Tree是一种记录操作日志的存储引擎，而B+Tree则是一种记录数据本身的存储引擎。</p>
+<p>对于这两种引擎，他们的page的layout是不一样的。如何管理这些tuple，使得他们在Insert，Delete的时候有更好的性能？</p>
+<p>LSM-Tree的page就不要考虑Insert, Delete等情况，因为它的page是只读的，任何更新都是以追加日志的模式添加的，因此在page内不会出现新的tuple添加或旧的tuple被删除。</p>
+<p>对于B+Tree的page，就需要考虑这种情况。例如，可以让所有的key-value tuples连续地存储，但是这样如何找到某一个key-value呢？可以在page的前面添加slot array，每一个tuple对应一个slot，slot存储了某个tuple在page中的偏移。因此，定位一个tuple可以通过 pageid + slot的方式进行定位。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211012120849275.png" alt="image-20211012120849275"></p>
+<p>从图中可以看到，slot是从header后开始增长，而tuple则是从page的尾端增长的，他们同时向page中间增长，这样就避免了不知道预分配多大的slot array的情况。</p>
+<p>slot是定长的因此可以很方便地进行索引。而slot是保存一个tuple保存在page中的偏移，所以即使tuple不是定长的也可以工作。</p>
+<p>LSM-Tree结构的page是如何组织的呢？<a href="https://leveldb-handbook.readthedocs.io/zh/latest/index.html">可以看LSM-Tree的经典实现leveldb的原理介绍</a>。</p>
+<h3 id="tuple-layout">Tuple Layout</h3>
+<blockquote>
+<p>tuple也并不是简单的数据，他也包括它的元数据。例如，tuple粒度的权限和并发控制，tuple是定长还是可变长度等等。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211012121924848.png" alt="image-20211012121924848"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211012121941318.png" alt="image-20211012121941318"></p>
+<p>如何唯一标识一个tuple？很多数据库使用record id来标识一个tuple，这个record id可以由page id + slot/offset来表示。</p>
+<p>tuple即是一行数据，一行数据会有多列属性，并且属性的类型是有很多的。有的属性如int，是定长的，而有的属性如varchar是不定长的，那么如何存储定长与不定长的属性呢？</p>
+<h3 id="system-catalogs">System Catalogs</h3>
+<h3 id="storage-models">Storage Models</h3>
+<h2 id="mysql数据存储">MySQL数据存储</h2>
+<p>mysql实战45讲中第13讲的内容可以介绍一下</p>
+<p>表与文件的关系</p>
+<p>mmap或是直接IO</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">姬小野</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        0001-01-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="../../../tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <a href="../../../tags/cmu-15-445/">CMU 15-445</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="../../../post/cmu15-445/buffer_pool/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default"></span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://blog.csdn.net/wjh2622075127" class="iconfont icon-csdn" title="csdn"></a>
+      <a href="https://github.com/JameyWoo" class="iconfont icon-github" title="github"></a>
+  <a href="https://fiveplus.top/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

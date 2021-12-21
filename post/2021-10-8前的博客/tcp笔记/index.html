@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Tcp笔记 - 姬小野的部落</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="姬小野" /><meta name="description" content="以前使用telnet的时候, 经常是输入字符但是它不显示, 感觉输入无效. 今天看自顶向下, 才知道原来在telnet(基于TCP)客户端上, 用户输" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.88.1 with theme even" />
+
+
+<link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/tcp%E7%AC%94%E8%AE%B0/" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../favicon-16x16.png">
+<link rel="manifest" href="../../../manifest.json">
+<link rel="mask-icon" href="../../../safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="../../../sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Tcp笔记" />
+<meta property="og:description" content="以前使用telnet的时候, 经常是输入字符但是它不显示, 感觉输入无效. 今天看自顶向下, 才知道原来在telnet(基于TCP)客户端上, 用户输" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/tcp%E7%AC%94%E8%AE%B0/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-04-01T10:10:22+08:00" />
+<meta property="article:modified_time" content="2020-04-01T10:10:22+08:00" />
+
+<meta itemprop="name" content="Tcp笔记">
+<meta itemprop="description" content="以前使用telnet的时候, 经常是输入字符但是它不显示, 感觉输入无效. 今天看自顶向下, 才知道原来在telnet(基于TCP)客户端上, 用户输"><meta itemprop="datePublished" content="2020-04-01T10:10:22+08:00" />
+<meta itemprop="dateModified" content="2020-04-01T10:10:22+08:00" />
+<meta itemprop="wordCount" content="2205">
+<meta itemprop="keywords" content="tcp," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Tcp笔记"/>
+<meta name="twitter:description" content="以前使用telnet的时候, 经常是输入字符但是它不显示, 感觉输入无效. 今天看自顶向下, 才知道原来在telnet(基于TCP)客户端上, 用户输"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="../../../" class="logo">姬小野</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="../../../">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="../../../post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="../../../tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="../../../categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="../../../about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="../../../" class="logo">姬小野</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="../../../">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Tcp笔记</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-01 </span>
+        <div class="post-category">
+            <a href="../../../categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"> 计算机网络 </a>
+            </div>
+          <span class="more-meta"> 2205 words </span>
+          <span class="more-meta"> 5 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <ol>
+<li>
+<p>以前使用telnet的时候, 经常是输入字符但是它不显示, 感觉输入无效. 今天看自顶向下, 才知道原来在telnet(基于TCP)客户端上, 用户输入了一个字符, 将会被传输到服务端, 然后服务端返回这个字符它才会回显. 而不是像ssh那样都会显示. 在linux下开一个<code>nc -l 6666</code>就可以测试.</p>
+</li>
+<li>
+<p><em>RTT</em>(Round-Trip Time)，往返时延: 报文发出到收到确认之间的时间.</p>
+</li>
+<li>
+<p>超时重传会一直重传吗?</p>
+<p>不会. 一定的次数尝试之后就会停止.</p>
+<p>快重传: 指的是如果接收到了1 + 3次同一个ACK, 那么会触发快重传.</p>
+<p>这里的快重传是相对超时重传的, 普通的超时重传为通过指数增长的超时时间计时来决定是否重传.</p>
+</li>
+<li>
+<p>定时器的作用?</p>
+<p>有很多种定时器</p>
+<ol>
+<li>连接建立定时器: 建立连接时如果长时间没有响应, 将会以指数增长的时间重传尝试重连.</li>
+<li>超时重传的定时器</li>
+<li>延迟确认定时器: 延迟ACK的发送</li>
+<li>坚持定时器(persist timer): 接收窗口为0时, 会定时地发送0字节探测包</li>
+<li>keepaliver timer: 当tcp两端长时间不发送数据时, 如何判断连接是否失效呢? 使用该定时器</li>
+<li>FIN_WAIT_2定时器: 防止对方一直不发送FIN包</li>
+<li>TIME_WAIT定时器</li>
+</ol>
+</li>
+<li>
+<p>防止SYN洪泛攻击(SYN flood attack)(SYN半连接): SYN cookie.</p>
+</li>
+<li>
+<p>流量控制: 如果主机B的接收缓存满了, 接收窗口为0, 那么主机A将会继续发送一个字节数据的报文段(使用定时器, 发送心跳包). 因为如果不发送, 那么如果B的程序清空缓存, 它不会发送ack, A不会直到有接收空间了.</p>
+</li>
+<li>
+<p>nagle算法与延时确认的冲突: nagle算法只允许同时存在一个已发送但未确认的小包(小于MSS), 之后的小包会试图合并. 而延迟确认指的是当接收方接收到数据想要发送ACK的时候, 会延迟一段时间(比如40ms), 如果这段时间内有数据需要发送, 那么会一起发送. nagle和延时确认在这种特殊情况下, 会导致网络的延迟过高.</p>
+<p>nagle算法是时代的产物, 它是为了避免网络上有过多的小包而降低吞吐量. 现在很多程序都没有开启nagle算法, 因为现在的设施已经比以前好多了, 而无法接收过高的延迟.</p>
+<p>nagle算法的描述如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">	if there is new data to send #有数据要发送
+        # 发送窗口缓冲区和队列数据 &gt;=mss，队列数据（available data）为原有的队列数据加上新到来的数据
+        # 也就是说缓冲区数据超过mss大小，nagle算法尽可能发送足够大的数据包
+        if the window size &gt;= MSS and available data is &gt;= MSS 
+            send complete MSS segment now # 立即发送
+        else
+            if there is unconfirmed data still in the pipe # 前一次发送的包没有收到ack
+                # 将该包数据放入队列中，直到收到一个ack再发送缓冲区数据
+                enqueue data in the buffer until an acknowledge is received 
+            else
+                send data immediately # 立即发送
+            end if
+        end if
+    end if　
+</code></pre></td></tr></table>
+</div>
+</div><p>即</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Nagle算法的实现规则：
+如果包长度达到MSS，则允许发送；
+如果该包含有FIN，则允许发送；
+设置了TCP_NODELAY选项，则允许发送；
+未设置TCP_CORK选项时，若所有发出去的小数据包（包长度小于MSS）均被确认，则允许发送；
+上述条件都未满足，但发生了超时（一般为200ms），则立即发送。
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>TIME_WAIT状态</p>
+<p>为什么TIME_WAIT状态要等待两个MSL(max segment lifetime)?</p>
+<p>有两个原因:</p>
+<ol>
+<li>防止发送的ACK没有到达服务端, 因此需要等待两个MSL</li>
+<li>如果立刻断开连接, 接下来又马上使用这个端口, 可能会出现上一个连接遗留下来的数据包. (不是有序列号来区分吗? 还是说怕存在序列号刚好相同的情况?)</li>
+</ol>
+<p>TIME_WAIT会带来什么问题?</p>
+<p>如果客户端频繁地使用短连接, 比如redis短连接, 那么客户端会有大量的连接处于TIME_WAIT状态. 这也是为什么要有连接池的一个原因: 连接池避免了大量短连接的存在.</p>
+<p>但是如果在一个处于TIME_WAIT状态的端口上建立连接, 会发生什么? 那就相当于没有TIME_WAIT了,</p>
+<p>一个TCP选项: 当开启 <strong>net.ipv4.tcp_tw_reuse</strong> 选项时，处于 TIME_WAIT 状态的连接可以被重用. 原理是比较数据包时间戳.</p>
+<p>还有个更激进的选项: tcp_tw_recyle , 系统会缓存每台主机（即 IP）连接过来的最新的时间戳。这样在NAT的情况下会出现问题. 因为NAT的出口IP是公共的, 造成其他主机的时间戳影响当前连接.</p>
+</li>
+<li>
+<p>NAT（Network Address Translator）的出现是为了缓解 IP 地址耗尽的临时方案. NAT 设备负责维护局域网私有 IP 地址和端口到外网 IP 和端口的映射规则。</p>
+<p>优点:</p>
+<ul>
+<li>出口 IP 共享：通过一个公网地址可以让许多机器连上网络，解决 IP 地址不够用的问题</li>
+<li>安全隐私防护：实际的机器可以隐藏自己真实的 IP 地址 当然也有明显的弊端：NAT 会对包进行修改，有些协议无法通过 NAT。</li>
+</ul>
+</li>
+<li>
+<p>为什么要有3次握手呢? 2次或4次可以嘛?</p>
+</li>
+<li>
+<p>为什么要有4次挥手呢? 3次可以嘛?</p>
+</li>
+<li>
+<p>接收窗口是什么? 代表字节的大小嘛? 接收窗口的字节数包括tcp首部嘛?</p>
+<p>代表字节数.</p>
+</li>
+<li>
+<p>重传的机制是什么? 超时重传, 快重传, 冗余ACK</p>
+</li>
+<li>
+<p>停等协议是什么</p>
+<p>停等协议的接收、发送双方仅需设置一个帧的缓冲存储空间和帧序号只取0或1的两个状态标志位，便可有效地实现数据重发并确保接收方接受的数据不会重复。</p>
+<p>信道利用率低</p>
+</li>
+<li>
+<p>tcp首部各部分含义</p>
+<p><img src="assets/image-20200409234210565.png" alt="image-20200409234210565"></p>
+<p><img src="assets/image-20200409234222738.png" alt="image-20200409234222738"></p>
+<p><img src="assets/image-20200409234247223.png" alt="image-20200409234247223"></p>
+</li>
+<li>
+<p>为什么ACK(第三次握手)不消耗序列号? 为什么SYN消耗序列号?</p>
+<p>FIN之所以消耗序列号, 是因为他需要ACK. 如果不消耗序列号, 那么ACK的确认值不变, 就意味着和上一个数据包的值一样, 会混淆</p>
+<p>需要确认的包就需要消耗序列号, 不需要确认的就不需要</p>
+<blockquote>
+<p>SYNs and FINs require acknowledgement, thus they increment the stream&rsquo;s sequence number by one when used.</p>
+<p>For example, if the connection is closed without sending any more data, then if the
+FIN did <em>not</em> consume a sequence
+number the closing end couldn&rsquo;t tell the difference between an ACK for the FIN,
+and an ACK for the data that was sent prior to the FIN.</p>
+</blockquote>
+</li>
+<li>
+<p>阻塞IO和非阻塞IO</p>
+</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">姬小野</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-04-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="../../../tags/tcp/">tcp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="../../../post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/vscode%E9%85%8D%E7%BD%AEc&#43;&#43;%E5%8D%95%E6%96%87%E4%BB%B6%E5%92%8Cmakefile%E7%BC%96%E8%AF%91debug/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Vscode配置C&#43;&#43;单文件和makefile编译debug</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="../../../post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/">
+            <span class="next-text nav-default">Git设置http及ssh代理 Win10与ubuntu18</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://blog.csdn.net/wjh2622075127" class="iconfont icon-csdn" title="csdn"></a>
+      <a href="https://github.com/JameyWoo" class="iconfont icon-github" title="github"></a>
+  <a href="https://fiveplus.top/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
