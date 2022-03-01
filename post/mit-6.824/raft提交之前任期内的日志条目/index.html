@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Ubuntu常见命令及使用技巧 - 姬小野的部落</title>
+  <title>Raft提交之前任期内的日志条目 - 姬小野的部落</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="姬小野" /><meta name="description" content="一个查询Linux命令比较方便的网址http://man.linuxde.net/ 1、在ubuntu 12.04系统中，使用Ctrl&#43;Alt&#43;" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="姬小野" /><meta name="description" content="今天面试被问到一个问题: raft在当前任期内能够commit之前任期中已经复制给大多数节点但没有commit的日志条目吗? 我当时没答上来, 之" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.88.1 with theme even" />
 
 
-<link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/ubuntu%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" />
+<link rel="canonical" href="https://fiveplus.top/post/mit-6.824/raft%E6%8F%90%E4%BA%A4%E4%B9%8B%E5%89%8D%E4%BB%BB%E6%9C%9F%E5%86%85%E7%9A%84%E6%97%A5%E5%BF%97%E6%9D%A1%E7%9B%AE/" />
 <link rel="apple-touch-icon" sizes="180x180" href="../../../apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../../../favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../../favicon-16x16.png">
@@ -39,20 +39,20 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="Ubuntu常见命令及使用技巧" />
-<meta property="og:description" content="一个查询Linux命令比较方便的网址http://man.linuxde.net/ 1、在ubuntu 12.04系统中，使用Ctrl&#43;Alt&#43;" />
+<meta property="og:title" content="Raft提交之前任期内的日志条目" />
+<meta property="og:description" content="今天面试被问到一个问题: raft在当前任期内能够commit之前任期中已经复制给大多数节点但没有commit的日志条目吗? 我当时没答上来, 之" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/ubuntu%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4%E5%8F%8A%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2019-03-02T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-03-02T00:00:00+00:00" />
+<meta property="og:url" content="https://fiveplus.top/post/mit-6.824/raft%E6%8F%90%E4%BA%A4%E4%B9%8B%E5%89%8D%E4%BB%BB%E6%9C%9F%E5%86%85%E7%9A%84%E6%97%A5%E5%BF%97%E6%9D%A1%E7%9B%AE/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-03-01T20:55:09+08:00" />
+<meta property="article:modified_time" content="2022-03-01T20:55:09+08:00" />
 
-<meta itemprop="name" content="Ubuntu常见命令及使用技巧">
-<meta itemprop="description" content="一个查询Linux命令比较方便的网址http://man.linuxde.net/ 1、在ubuntu 12.04系统中，使用Ctrl&#43;Alt&#43;"><meta itemprop="datePublished" content="2019-03-02T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2019-03-02T00:00:00+00:00" />
-<meta itemprop="wordCount" content="588">
+<meta itemprop="name" content="Raft提交之前任期内的日志条目">
+<meta itemprop="description" content="今天面试被问到一个问题: raft在当前任期内能够commit之前任期中已经复制给大多数节点但没有commit的日志条目吗? 我当时没答上来, 之"><meta itemprop="datePublished" content="2022-03-01T20:55:09+08:00" />
+<meta itemprop="dateModified" content="2022-03-01T20:55:09+08:00" />
+<meta itemprop="wordCount" content="1215">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Ubuntu常见命令及使用技巧"/>
-<meta name="twitter:description" content="一个查询Linux命令比较方便的网址http://man.linuxde.net/ 1、在ubuntu 12.04系统中，使用Ctrl&#43;Alt&#43;"/>
+<meta name="twitter:title" content="Raft提交之前任期内的日志条目"/>
+<meta name="twitter:description" content="今天面试被问到一个问题: raft在当前任期内能够commit之前任期中已经复制给大多数节点但没有commit的日志条目吗? 我当时没答上来, 之"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -129,15 +129,13 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">Ubuntu常见命令及使用技巧</h1>
+      <h1 class="post-title">Raft提交之前任期内的日志条目</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2019-03-02 </span>
-        <div class="post-category">
-            <a href="../../../categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"> 操作系统 </a>
-            </div>
-          <span class="more-meta"> 588 words </span>
-          <span class="more-meta"> 2 mins read </span>
+        <span class="post-time"> 2022-03-01 </span>
+        
+          <span class="more-meta"> 1215 words </span>
+          <span class="more-meta"> 3 mins read </span>
         
       </div>
     </header>
@@ -149,34 +147,37 @@
   </div>
 </div>
     <div class="post-content">
-      <p><a href="http://man.linuxde.net/">一个查询Linux命令比较方便的网址http://man.linuxde.net/</a></p>
-<hr>
-<p>1、在ubuntu 12.04系统中，使用Ctrl+Alt+F1~6切换到shell，使用Ctrl+Alt+F7切换到图形界面</p>
-<p>2、使用touch新建一个文件</p>
-<p>3、在命令前使用sudo获取root权限</p>
-<p>4、使用nano进入nano编辑器，比用vi进入的vim编辑器使用更简便</p>
-<p>5、安装g++使用 sudo apt-get install g++</p>
-<p>6、查看gcc位置使用 which gcc</p>
-<p>7、使用rm删除文件</p>
-<p>8、使用mv移动文件，也可以移动目录</p>
-<p>9、g++编译文件时，-o参数给文件命名， g++ test.cpp -o program_name</p>
-<p>10、ls列出当前目录下的文件列表</p>
-<p>11、pwd输出当前工作区目录</p>
-<p>12、cd转到某一指定目录</p>
-<p>13、mkdir新建目录（文件夹）</p>
-<p>14、rmdir删除目录</p>
-<p>15、cp复制文件</p>
-<p>16、cat在终端上显示文本信息</p>
-<p>17、grep文本搜索工具</p>
-<p>18、tar文件压缩命令</p>
-<p>19、在终端，可以使用shift + PgUp/PgDn 进行翻页</p>
-<p>20、在终端，可以将输出的文本重定向到某一文件如see.txt，然后使用cat（或其他）查看，然后使用cat see.txt | more，或者cat see.txt | less. 一页一页查看</p>
-<p>21、exit，终止当前的终端会话</p>
-<p>22、who显示目前登录系统的用户信息</p>
-<p>23、ping测试网络</p>
-<p>24、ctrl + q 退出程序</p>
-<p>25、axel与aria2c据说比wget更快的多线程下载。</p>
-<p>26、<code>sudo dpkg -i 软件包名.deb</code> 安装deb文件</p>
+      <p>今天面试被问到一个问题: raft在当前任期内能够commit之前任期中已经复制给大多数节点但没有commit的日志条目吗?</p>
+<p>我当时没答上来, 之后查看了下raft作者的博士论文, 发现3.6.2节就是讨论了这个问题. 之前学raft的时候, 都是看的另一篇ATC2014的论文, 没有看博士论文, 所以没看到这个点. 所以学习时偷的懒, 在面试的时候就暴露出来了.</p>
+<p>结论是: <strong>当前term的leader是可以提交之前term的日志的</strong>.</p>
+<blockquote>
+<p>PS. 有的文章把这个叫做 “当前term的leader不能提交之前term的日志, 只能提交本term的日志”, 但是我觉得间接提交也算是提交吧, 只不过提交方式和当前term的日志不同, 但也算是提交了.</p>
+<p><strong>当时面试官的说法也是这种.</strong></p>
+<p>不过说法不一样, 但实际代表的含义是一样的, 我觉得这两种表述都有道理吧.</p>
+</blockquote>
+<p>毕竟这一节就叫做 “3.6.2 Committing entries from previous terms”.</p>
+<p>不过和当前任期的节点是通过判断日志被复制到大多数节点后就可以进行commit的方式不同, 对于之前term的日志, <strong>只能通过在提交当前term的日志的同时, 间接地使用日志匹配特性将之前term中未提交的日志进行提交</strong>, 而不能通过计算之前term的日志已经被复制到大多数节点上从而进行commit. 当然, 前提是这个日志已经复制在当前leader中, 否则leader不会承认这个日志(且会覆盖掉).</p>
+<p>论文中通过下图表示的例子来解释为什么</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20220301211326350.png" alt="image-20220301211326350"></p>
+<blockquote>
+<p>图 3.7：如图的时间序列展示了为什么领导者无法决定对老任期号的日志条目进行提交。</p>
+<p>在 (a) 中，S1 是领导者，部分的复制了索引位置 2 的日志条目。</p>
+<p>在 (b) 中，S1 崩溃了，然后 S5 在任期 3 里通过 S3、S4 和自己的选票赢得选举，然后从客户端接收了一条不一样的日志条目放在了索引 2 处。</p>
+<p>然后到 (c)，S5 又崩溃了；S1 重新启动，选举成功，开始复制日志。在这时，来自任期 2 的那条日志已经被复制到了集群中的大多数机器上，但是还没有被提交。</p>
+<p>如果 S1 在 (d1) 中又崩溃了，S5 可以重新被选举成功（通过来自 S2，S3 和 S4 的选票），<strong>然后覆盖了他们在索引 2 处的日志</strong>。</p>
+<p>反之，如果在崩溃之前，S1 把自己主导的新任期里产生的日志条目复制到了大多数机器上, 就如 (d2) 中那样，那么在后面任期里面这些新的日志条目就会被提交（因为 S5 就不可能选举成功)。 这样在同一时刻就同时保证了，之前的所有老的日志条目就会被提交。</p>
+</blockquote>
+<p>这种情况说明, 即使之前某任期的日志被复制到大多数节点, 也可能被覆盖掉;</p>
+<p><strong>为了消除图 3.7 里描述的情况，Raft 永远不会通过计算副本数目的方式去提交一个之前任期内的日志条目</strong>。只有领导者当前任期里的日志条目通过计算副本数目可以被提交；**一旦当前任期的日志条目以这种方式被提交，那么由于日志匹配特性，之前的日志条目也都会被间接的提交。**在某些情况下，领导者可以安全的知道一个老的日志条目是否已经被提交（例如，该条目是否存储到所有服务器上），但是 Raft 为了简化问题使用一种更加保守的方法。</p>
+<p>参考资料:</p>
+<ol>
+<li>
+<p>raft作者博士论文</p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/weixin_44969471/article/details/106607359">https://blog.csdn.net/weixin_44969471/article/details/106607359</a></p>
+</li>
+</ol>
 
     </div>
 
@@ -188,7 +189,7 @@
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-        2019-03-02
+        2022-03-01
         
     </span>
   </p>
@@ -198,13 +199,9 @@
 <footer class="post-footer">
       
       <nav class="post-nav">
-        <a class="prev" href="../../../post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/%E6%B1%87%E7%BC%96%E4%B8%8Egdb%E8%B0%83%E8%AF%95%E5%AD%A6%E4%B9%A0/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">汇编与gdb调试学习</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
-        <a class="next" href="../../../post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/%E9%AB%98%E6%96%AF%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%96%B9%E6%B3%95%E8%BF%9B%E8%A1%8C%E9%B8%A2%E5%B0%BE%E8%8A%B1%E5%88%86%E7%B1%BB/">
-            <span class="next-text nav-default">高斯朴素贝叶斯方法进行鸢尾花分类</span>
+        
+        <a class="next" href="../../../post/cmu15-445/project4-concurrency-control/">
+            <span class="next-text nav-default">CMU 15-445: project4 - Concurrency Control</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
           </a>

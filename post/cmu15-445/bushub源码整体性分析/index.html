@@ -165,26 +165,26 @@
       <p>bushub是一个非常好的单机数据库存储引擎部分的学习仓库, 阅读他的源码很有价值, 所以这篇文章用来记录对他的整体性的分析.</p>
 <h2 id="整体文件结构分析">整体文件结构分析</h2>
 <p>首先它并不是一个完整的数据库, 它并不包含sql部分. src下主要是以下部分</p>
-<p><img src="assets/image-20211219110506815.png" alt="image-20211219110506815"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219110506815.png" alt="image-20211219110506815"></p>
 <p>buffer是buffer pool的实现, 包括lru替换算法.</p>
-<p><img src="assets/image-20211219110718300.png" alt="image-20211219110718300"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219110718300.png" alt="image-20211219110718300"></p>
 <p>catalog相当于数据库的目录, 它包含数据库内表的元数据, 因此这个文件夹内的几个文件就是元数据相关的</p>
-<p><img src="assets/image-20211219110709436.png" alt="image-20211219110709436"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219110709436.png" alt="image-20211219110709436"></p>
 <p>common的话非常简单, 表示一些通用结构</p>
-<p><img src="assets/image-20211219110746785.png" alt="image-20211219110746785"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219110746785.png" alt="image-20211219110746785"></p>
 <p>concurrency表示并发, 主要包含锁管理器和事务管理器; 这部分看起来很重要但是代码很少, 估计是要在project3自己实现</p>
-<p><img src="assets/image-20211219110825575.png" alt="image-20211219110825575"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219110825575.png" alt="image-20211219110825575"></p>
 <p>container中只有一个hash文件夹, 里面实现了两种hash表数据结构, 例如扩展hashtable, 这是用于磁盘存储的, 也是2021版本project2中实现索引的数据结构. 这里没有B+树的实现. 该结构在storage/index中会被使用.</p>
-<p><img src="assets/image-20211219110930690.png" alt="image-20211219110930690"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219110930690.png" alt="image-20211219110930690"></p>
 <p>execution则是具体的算子, 如scan, insert, 聚合等等. bushub使用的是火山模型, 每个算子都进行了统一的抽象, 这部分可以深入学习一下结构的设计.</p>
-<p><img src="assets/image-20211219111148688.png" alt="image-20211219111148688"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219111148688.png" alt="image-20211219111148688"></p>
 <p>include包含了其他每个文件夹内的头文件. 头文件统一放在这个文件夹内</p>
-<p><img src="assets/image-20211219111438946.png" alt="image-20211219111438946"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219111438946.png" alt="image-20211219111438946"></p>
 <p>include中内容最多的是这个executoin, 在非include的execuation文件夹内主要包含的是算子的实现, 然而这个include内除了executors还有其他几个如expressions和plans, 以及最重要的表示执行引擎的<code>execution_engine.h</code>和表示执行上下文的<code>executor_context.h</code>. plans文件夹内是对执行计划的抽象, 而expressions文件夹内则是对表达式的抽象. 这部分需要进一步分析.</p>
 <p>recovery是负责容错和恢复的, 包含日志管理, 日志恢复, checkpoint管理等内容.</p>
-<p><img src="assets/image-20211219111516069.png" alt="image-20211219111516069"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219111516069.png" alt="image-20211219111516069"></p>
 <p>storage则看起来比较复杂</p>
-<p><img src="assets/image-20211219111627174.png" alt="image-20211219111627174"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219111627174.png" alt="image-20211219111627174"></p>
 <p>它包含了存储引擎的存储模块, 主要有:</p>
 <ol>
 <li>disk管理器. 一个全局的disk管理</li>
@@ -193,12 +193,12 @@
 <li>table内是和表相关的结构. 有个table_heap文件, 应该表示数据的存储是表堆的方式, 也就是说和mysql不同, mysql是聚簇索引的方式, 所有数据存储在B+树叶子节点上. 而在这里, b+树以及hash_table都是只作为索引来使用</li>
 </ol>
 <p>type是最后一个, 实现了各种数据的类型.</p>
-<p><img src="assets/image-20211219113005676.png" alt="image-20211219113005676"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219113005676.png" alt="image-20211219113005676"></p>
 <p>这个对类型系统的抽象值得去学习了解一下, 看type.h, 它提供了丰富的接口.</p>
 <h2 id="executor执行器">executor执行器</h2>
 <p>正如前面介绍的, 它包括了两大部分: include内以及算子的具体实现</p>
-<p><img src="assets/image-20211219114404437.png" alt="image-20211219114404437"></p>
-<p><img src="assets/image-20211219114413994.png" alt="image-20211219114413994"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219114404437.png" alt="image-20211219114404437"></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211219114413994.png" alt="image-20211219114413994"></p>
 <p><code>executor_engine.h</code>是执行器引擎, 他的Execute方法是启动执行一个执行计划的入口; 传递一个抽象plan节点, 将结果返回到result_set.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -394,7 +394,7 @@
   <span class="copyright-year">
     &copy; 
     2018 - 
-    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
   </span>
 </div>
 

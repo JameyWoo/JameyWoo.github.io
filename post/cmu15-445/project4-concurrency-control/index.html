@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CMU 15-445: project4 - Concurrency Control - 姬小野的部落</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="姬小野" /><meta name="description" content="概述 第四个project是实现一个 lock manager, 然后用它来支持并发查询执行. lock manager是用来追踪向事务发出的tuple级的锁, 并支持基于隔离级别" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.88.1 with theme even" />
+
+
+<link rel="canonical" href="https://fiveplus.top/post/cmu15-445/project4-concurrency-control/" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../favicon-16x16.png">
+<link rel="manifest" href="../../../manifest.json">
+<link rel="mask-icon" href="../../../safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="../../../sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CMU 15-445: project4 - Concurrency Control" />
+<meta property="og:description" content="概述 第四个project是实现一个 lock manager, 然后用它来支持并发查询执行. lock manager是用来追踪向事务发出的tuple级的锁, 并支持基于隔离级别" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveplus.top/post/cmu15-445/project4-concurrency-control/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-21T16:12:46+08:00" />
+<meta property="article:modified_time" content="2021-12-21T16:12:46+08:00" />
+
+<meta itemprop="name" content="CMU 15-445: project4 - Concurrency Control">
+<meta itemprop="description" content="概述 第四个project是实现一个 lock manager, 然后用它来支持并发查询执行. lock manager是用来追踪向事务发出的tuple级的锁, 并支持基于隔离级别"><meta itemprop="datePublished" content="2021-12-21T16:12:46+08:00" />
+<meta itemprop="dateModified" content="2021-12-21T16:12:46+08:00" />
+<meta itemprop="wordCount" content="2930">
+<meta itemprop="keywords" content="数据库,CMU 15-445," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CMU 15-445: project4 - Concurrency Control"/>
+<meta name="twitter:description" content="概述 第四个project是实现一个 lock manager, 然后用它来支持并发查询执行. lock manager是用来追踪向事务发出的tuple级的锁, 并支持基于隔离级别"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="../../../" class="logo">姬小野</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="../../../">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="../../../post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="../../../tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="../../../categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="../../../about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="../../../" class="logo">姬小野</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="../../../">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CMU 15-445: project4 - Concurrency Control</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-12-21 </span>
+        <div class="post-category">
+            <a href="../../../categories/cmu-15-445%E7%B3%BB%E5%88%97/"> CMU 15-445系列 </a>
+            </div>
+          <span class="more-meta"> 2930 words </span>
+          <span class="more-meta"> 6 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#task-1---lock-manager">TASK #1 - LOCK MANAGER</a>
+      <ul>
+        <li><a href="#要求和提示">要求和提示</a></li>
+        <li><a href="#助教们的建议">助教们的建议</a></li>
+        <li><a href="#实现">实现</a></li>
+      </ul>
+    </li>
+    <li><a href="#task-2---deadlock-prevention">TASK #2 - DEADLOCK PREVENTION</a>
+      <ul>
+        <li><a href="#助教的建议">助教的建议</a></li>
+      </ul>
+    </li>
+    <li><a href="#task-3---concurrent-query-execution">TASK #3 - CONCURRENT QUERY EXECUTION</a></li>
+    <li><a href="#资料">资料</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="概述">概述</h2>
+<p>第四个project是实现一个 lock manager, 然后用它来支持并发查询执行.</p>
+<p>lock manager是用来追踪向事务发出的tuple级的锁, 并支持基于隔离级别适当地授予和释放共享和排他锁.</p>
+<p>主要有以下三个Task</p>
+<ul>
+<li><a href="https://15445.courses.cs.cmu.edu/fall2021/project4/#lock_manager"><strong>Task #1 - Lock Manager</strong></a></li>
+<li><a href="https://15445.courses.cs.cmu.edu/fall2021/project4/#deadlock_prevention"><strong>Task #2 - Deadlock Prevention</strong></a></li>
+<li><a href="https://15445.courses.cs.cmu.edu/fall2021/project4/#execution_engine"><strong>Task #3 - Concurrent Query Execution</strong></a></li>
+</ul>
+<p>需要通过两个测试文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd build
+make lock_manager_test
+make transaction_test
+./test/lock_manager_test
+./test/transaction_test
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="task-1---lock-manager">TASK #1 - LOCK MANAGER</h2>
+<p>为确保事务操作交叉执行的正确性，DBMS将使用lock manager（LM）来控制事务何时被允许访问数据项。LM的基本思想是它维护有关活动事务当前锁的锁的内部数据结构。事务在允许访问数据项之前向LM发出锁定请求。LM将授予锁定到调用事务，阻塞(block)将该事务块，或中止事务。</p>
+<p>在你的实现中，整个系统中将有一个全局LM（类似于缓冲池管理器）。表堆(table heap)和executor类将使用您的LM在事务需要访问/修改元组时获取元组记录上的锁（通过record ID RID）。</p>
+<p>这个task要求你实现一个tuple-level的LM, 以支持三种通用的隔离级别: READ_UNCOMMITED, READ_COMMITTED, and REPEATABLE_READ. LM需要根据事务的隔离级别来授予和释放锁.</p>
+<p>在仓库中, 提供了事务的context handle(在include/concurrency/transaction.h)中, 它带有隔离级别属性, 以及它已获得的锁的信息. LM将会检查事务的隔离级别, 并且做出正确的操作. 任何失败的lock操作都将导致事务ABORTED状态并且抛出异常. 事务管理器应该捕捉这个异常并且将事务中执行的写操作回滚.</p>
+<p>作者建议阅读<a href="https://www.justsoftwaresolutions.co.uk/threading/locks-mutexes-semaphores.html">这篇文章</a>来回顾C++并发知识</p>
+<h3 id="要求和提示">要求和提示</h3>
+<p>只需要修改一个类: <code>concurrency/lock_manager.cpp</code>和<code>concurrency/lock_manager.h</code> , 需要实现以下方法:</p>
+<ul>
+<li>
+<p>LockShared(Transaction, RID): txn尝试在rid上获取一个共享锁. 在等待锁的时候应该blocked, 在被授予锁的时候应该返回true. 如果事务rolled back的话返回false.</p>
+</li>
+<li>
+<p>LockExclusive(Transaction, RID): txn获取一个排他锁.</p>
+</li>
+<li>
+<p>LockUpgrade(Transaction, RID): txn尝试将一个共享锁升级为排他锁.</p>
+</li>
+<li>
+<p>Unlock(Transaction, RID): 解锁</p>
+<p>锁管理器采用的特定锁机制取决于事务的隔离级别, 你应该先看一下<code>transaction.h</code>和<code>lock_manager.h</code>来熟悉API以及我们提供的成员变量. 我们还建议你复习隔离级别概念，因为这些函数的实现应与正在进行lock/unlock请求的事务的隔离级别兼容。你有在<code>lock_manager.h</code>中添加任何需要的数据结构的自由.</p>
+</li>
+</ul>
+<h3 id="助教们的建议">助教们的建议</h3>
+<ul>
+<li>虽然你的锁管理器需要使用死锁预防，但我们建议您先实现锁管理器，而不进行任何死锁处理，然后在验证它在没有死锁发生时能正确地进行lock/unlock后，再添加预防机制。(由简到繁)</li>
+<li>你将需要一些方法来追踪哪些事务正在一个lock上waiting. 看看<code>lock_manager.h</code>中的<code>LockRequestQueue</code>类</li>
+<li><code>LockUpgrade</code>在<code>LockRequestQueue</code>上的操作转换为什么?</li>
+<li>您需要某种方法来通知可能能够获取锁的正在waiting的事务。我们建议使用<code>std::condition_variable</code>条件变量 (实现的原理和普通的锁的原理很像, 都是锁, 嘿嘿)</li>
+<li>尽管某些隔离级别是通过确保严格的两阶段锁定的属性来实现的，但锁管理器的实现只需要确保两阶段锁定的属性。严格2PL的概念将通过执行程序和事务管理器中的逻辑实现。看看Commit和Abort方法。</li>
+<li>你还应该维护事务的状态. 例如, 因为unlock操作, 事务的状态可能从<code>GROWING</code>阶段变成<code>SHRINKING</code>阶段. (提示: 看<code>transaction.h</code>中的方法)</li>
+<li>你还应该使用 shared_lock_set_ 和 exclusive_lock_set_ 来跟踪事务获取的共享/排他锁，以便当 TransactionManager 想要提交/中止事务时，LM 可以正确释放它们(目的)。</li>
+<li>将一个事务的状态设置为ABORTED将会隐式地中止它，但知道调用TransactionManager::abort，它才会明确中止。您应该阅读此功能以了解它的作用，以及如何在中止过程中使用锁定管理器。</li>
+</ul>
+<h3 id="实现">实现</h3>
+<p>需要梳理清楚几种操作对LM的结构的影响（或者说LM如何实现这几种操作的语义）</p>
+<p><strong>LockShared</strong></p>
+<p>这是获取共享锁, 那么如果当前RID上有排他锁, 则只能等待并且知道没有排他锁.</p>
+<p>如果当前RID上有其他共享锁, 则可以一起共享, 并且授予共享锁.</p>
+<p>如果当前RID上没有其他锁, 则可以授予共享锁.</p>
+<p>BasicTest里只有这个LockShared的测试, 所以先只考虑这个. 测试是check状态的变化, 这个操作会导致状态发生什么变化呢?</p>
+<p>一个事务执行LockShared之后, 应当变为Growing状态; Unlock之后变为Shrinking状态; 事务管理器执行Commit之后变为Committed状态.</p>
+<p>状态的变化看<code>transaction.h</code>的注释, shringking的意思是收缩, growing是增长</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">/**
+ * Transaction states for 2PL:
+ *
+ *     _________________________
+ *    |                         v
+ * GROWING -&gt; SHRINKING -&gt; COMMITTED   ABORTED
+ *    |__________|________________________^
+ *
+ * Transaction states for Non-2PL:
+ *     __________
+ *    |          v
+ * GROWING  -&gt; COMMITTED     ABORTED
+ *    |_________________________^
+ *
+ **/
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="task-2---deadlock-prevention">TASK #2 - DEADLOCK PREVENTION</h2>
+<p>如果您的锁管理器被告知使用预防死锁，那么您的锁管理器应该使用<strong>WOUND-WAIT算法</strong>来决定中止哪些事务。</p>
+<p>获取锁时，您需要查看相应的LockRequestQueue，以查看它将等待的事务。</p>
+<h3 id="助教的建议">助教的建议</h3>
+<ul>
+<li>
+<p>仔细阅读幻灯片了解Wound-Wait算法如何实现。</p>
+</li>
+<li>
+<p>中止事务时，请务必使用SetState方法正确设置状态</p>
+</li>
+<li>
+<p>如果事务正在upgrading (等待获取X-Lock），则仍然可以中止。您必须正确处理此操作。</p>
+</li>
+<li>
+<p>等待图表在交易等待另一个事务时绘制边缘。请记住，如果多个事务使用一个共享锁，则单个事务可能等待在多个事务中。(意思是不要一个事务OK了就release)</p>
+</li>
+<li>
+<p>事务终止时，请务必将事务的状态设置为ABORTED并在锁管理器LM中抛出异常。事务管理器将处理显式中止和回滚更改。</p>
+</li>
+<li>
+<p>根据wound-wait的预防策略，一个正在等待锁的事务可能被另一个线程终止。你必须有办法通知他们已中止的等待事务。</p>
+</li>
+</ul>
+<h2 id="task-3---concurrent-query-execution">TASK #3 - CONCURRENT QUERY EXECUTION</h2>
+<p>在并发查询执行期间，executors需要适当地lock/unlock tuples，以实现相应事务中指定的隔离级别。为简化此任务，您可以忽略并发索引执行，并专注于table tuples。</p>
+<p>你需要更新一些在project3中实现的执行算子的<code>Next()</code>方法(如sequential scans, inserts, updates, deletes, nested loop joins, and aggregations). 请注意，锁定/解锁失败时事务将中止。虽然没有并发索引执行要求，但我们仍然需要在交易中止时适当地撤消两表元组和索引上的所有先前写入操作。为此，你需要在事务管理器的Abort()据了解方法中需要维护写入中的写入集。</p>
+<p>您不应假设事务仅包含一个查询。具体来说，这意味着一个元组可能在一个事务中被不同的查询多次访问。想想你应该如何在不同的隔离级别下处理这个问题。</p>
+<p>更具体地说，您需要在以下执行程序中添加对并发查询执行的支持：</p>
+<ul>
+<li><code>src/execution/seq_scan_executor.cpp</code></li>
+<li><code>src/execution/insert_executor.cpp</code></li>
+<li><code>src/execution/update_executor.cpp</code></li>
+<li><code>src/execution/delete_executor.cpp</code></li>
+</ul>
+<h2 id="资料">资料</h2>
+<p><a href="https://draveness.me/database-concurrency-control/">浅谈数据库并发控制 - 锁和 MVCC</a></p>
+<blockquote>
+<p>这篇文章很好，里面介绍了wait-die协议和wound-wait协议。</p>
+<p>另一种机制叫做 wound-wait，这是一种抢占的解决方案，它和 wait-die 机制的结果完全相反，当前事务如果先于另一事务执行并请求了另一事务的资源，那么另一事务会立刻回滚，将资源让给先执行的事务，否则就会等待其他事务释放资源。</p>
+</blockquote>
+<p><a href="https://blog.csdn.net/eydwyz/article/details/108623423">分布式系统中的死锁处理 (Wound/Wait Mutexes reservation.c )</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">姬小野</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-12-21
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="../../../tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <a href="../../../tags/cmu-15-445/">CMU 15-445</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="../../../post/mit-6.824/raft%E6%8F%90%E4%BA%A4%E4%B9%8B%E5%89%8D%E4%BB%BB%E6%9C%9F%E5%86%85%E7%9A%84%E6%97%A5%E5%BF%97%E6%9D%A1%E7%9B%AE/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Raft提交之前任期内的日志条目</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="../../../post/cmu15-445/project3-query-execution/">
+            <span class="next-text nav-default">CMU 15-445: project3 - Query Execution</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://blog.csdn.net/wjh2622075127" class="iconfont icon-csdn" title="csdn"></a>
+      <a href="https://github.com/JameyWoo" class="iconfont icon-github" title="github"></a>
+  <a href="https://fiveplus.top/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
