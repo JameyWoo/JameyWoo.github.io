@@ -43,12 +43,12 @@
 <meta property="og:description" content="目录 raft完全总结 raft核心基础 复制状态机 拜占庭将军问题 高可用而不是完全可用 CAP理论：CP 强一致性 持久化保存的状态 hardstate 在日志提交前持久化" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://fiveplus.top/post/raft%E5%8D%9A%E5%A3%AB%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/" /><meta property="article:section" content="post" />
-
-
+<meta property="article:published_time" content="2022-11-04T19:00:25+08:00" />
+<meta property="article:modified_time" content="2022-11-04T19:00:25+08:00" />
 
 <meta itemprop="name" content="Raft博士论文总结">
-<meta itemprop="description" content="目录 raft完全总结 raft核心基础 复制状态机 拜占庭将军问题 高可用而不是完全可用 CAP理论：CP 强一致性 持久化保存的状态 hardstate 在日志提交前持久化">
-
+<meta itemprop="description" content="目录 raft完全总结 raft核心基础 复制状态机 拜占庭将军问题 高可用而不是完全可用 CAP理论：CP 强一致性 持久化保存的状态 hardstate 在日志提交前持久化"><meta itemprop="datePublished" content="2022-11-04T19:00:25+08:00" />
+<meta itemprop="dateModified" content="2022-11-04T19:00:25+08:00" />
 <meta itemprop="wordCount" content="12055">
 <meta itemprop="keywords" content="数据库,Raft," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Raft博士论文总结"/>
@@ -132,7 +132,7 @@
       <h1 class="post-title">Raft博士论文总结</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 0001-01-01 </span>
+        <span class="post-time"> 2022-11-04 </span>
         <div class="post-category">
             <a href="../../categories/%E5%88%86%E5%B8%83%E5%BC%8F/"> 分布式 </a>
             </div>
@@ -428,7 +428,7 @@
 <p>目的是为了让服务器形成一个单独的，高度可靠的状态机。</p>
 <h3 id="拜占庭将军问题">拜占庭将军问题</h3>
 <p>它们可确保在所有⾮拜占庭条件下的安全性（绝不会返回错误的结果），包括⽹络延迟，分区，数据包丢 失，重复和重新排序。</p>
-<p><img src="image/image_cSKsIOxXFJ.png" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_cSKsIOxXFJ.png" alt=""></p>
 <p>raft绝不会返回错误的结果。</p>
 <p>拜占庭将军问题：<strong>在存在消息丢失的不可靠信道上试图通过消息传递的方式达到一致性是不可能的</strong>。<strong>拜占庭将军中可能存在叛徒，发送虚假的消息；即节点故意试图破坏系统，故意发送错误的或破坏性的响应</strong>。例如节点明明没有收到某条消息，但却对外声称收到了。这种行为称为拜占庭故障。在这样不信任的环境中需要达成共识的问题也被称为拜占庭将军问题。</p>
 <h3 id="高可用而不是完全可用">高可用而不是完全可用</h3>
@@ -523,7 +523,7 @@
 <p>更像网络中的阻止DDos攻击的那种机制，第一次握手不把socket放到半连接队列，也不保存到服务器上，而是返回一个类似cookie的东西，第三次握手的时候确认连接。</p>
 <h3 id="对称网络分区和非对称网络分区">对称网络分区和非对称网络分区</h3>
 <p>关于 DDIA 上对 Raft 协议的这种极端场景的描述，要如何理解？ - 多颗糖的回答 - 知乎 <a href="https://www.zhihu.com/question/483967518/answer/2097076504" title="https://www.zhihu.com/question/483967518/answer/2097076504">https://www.zhihu.com/question/483967518/answer/2097076504</a></p>
-<p><img src="image/image_a6lKj20WzT.png" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_a6lKj20WzT.png" alt=""></p>
 <p>如图所示，按照默认的prevote，1，3无法成为leader，因为2会拒绝它的请求。而2不会发起投票，因为它有leader4一直在给他发心跳。这种鸟情况是非对称网络分区。</p>
 <p>通过增加一个机制来解决：<strong>Leader 没有收到来自多数派节点的 AppendEntries 响应时就主动下台</strong>。</p>
 <p>etcd 把这叫做 CheckQuorum，PreVote + CheckQuorum 可以解决该活性问题。</p>
@@ -613,7 +613,7 @@
 <h3 id="单节点变更的bug">单节点变更的bug</h3>
 <p>TiDB 在 Raft 成员变更上踩的坑 - drdr xp的文章 - 知乎 <a href="https://zhuanlan.zhihu.com/p/342319702" title="https://zhuanlan.zhihu.com/p/342319702">https://zhuanlan.zhihu.com/p/342319702</a></p>
 <p>参考：<a href="https://www.inlighting.org/archives/raft-membership-change" title="https://www.inlighting.org/archives/raft-membership-change">https://www.inlighting.org/archives/raft-membership-change</a></p>
-<p><img src="image/image_PkkbobNsJb.png" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_PkkbobNsJb.png" alt=""></p>
 <ul>
 <li>
 <p>t₁: <code>abcd</code> 4节点在 term 0 选出leader=<code>a</code>, 和2个follower <code>b</code>, <code>c</code>;</p>
@@ -741,7 +741,7 @@
 <h3 id="没有split-votes的情况最快多久能选出leader">没有split votes的情况最快多久能选出leader</h3>
 <p>很复杂，说一下流程：</p>
 <p>old leader发送最后一个心跳后，发生了crash。其它follower在接收到这个心跳后重置election timeout，第一个follower超时后，发起选举。选举的广播的延迟受到集群网络性能的限制，在收到大多数节点的同意后成为leader，然后发起新的心跳。</p>
-<p><img src="image/image_THO4-rqi2-.png" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_THO4-rqi2-.png" alt=""></p>
 <h3 id="split-votes有多普遍">split votes有多普遍？</h3>
 <p>它的数学模型和计算非常复杂，不看呜呜</p>
 <h3 id="当发生split-votes时raft多快能选出leader">当发生split votes时，raft多快能选出leader</h3>
@@ -768,7 +768,7 @@
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-        0001-01-01
+        2022-11-04
         
     </span>
   </p>
@@ -781,12 +781,12 @@
           <a href="../../tags/raft/">Raft</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="../../post/cmu15-445/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">CMU 15-445笔记: 数据存储</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
         
+        <a class="next" href="../../post/mit-6.824/raft%E6%8F%90%E4%BA%A4%E4%B9%8B%E5%89%8D%E4%BB%BB%E6%9C%9F%E5%86%85%E7%9A%84%E6%97%A5%E5%BF%97%E6%9D%A1%E7%9B%AE/">
+            <span class="next-text nav-default">Raft提交之前任期内的日志条目</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
       </nav>
     </footer>
   </article>
