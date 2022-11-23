@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/wsl-%E5%AE%89%E8%A3%85mysql5.7%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%86%E7%A0%81/" />
@@ -164,8 +164,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mysql -u root -p
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mysql -u root -p
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>进入数据库, 无密码, 无法进入</p>
 <p>于是设置无密码进入数据库方式, 执行</p>
@@ -174,8 +174,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo vim /etc/mysql/mysql.conf.d/mysqld.conf
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sudo vim /etc/mysql/mysql.conf.d/mysqld.conf
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>在 <code>[mysqld]</code> 一栏下方添加</p>
 <div class="highlight"><div class="chroma">
@@ -183,8 +183,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">skip-grant-tables
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">skip-grant-tables
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>然后执行</p>
 <div class="highlight"><div class="chroma">
@@ -192,8 +192,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo service mysql restart
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sudo service mysql restart
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>重启数据库</p>
 <p>即可无密码进入数据库</p>
@@ -204,8 +204,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mysql -u root -p
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mysql -u root -p
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>需要输入密码时直接回车</p>
 <p>然后执行</p>
@@ -224,17 +224,17 @@
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">use mysql;
-
-update mysql.user set authentication_string=password(&#39;your_password&#39;) where user=&#39;root&#39; and Host =&#39;localhost&#39;;
-
-update mysql.user set plugin=&#34;mysql_native_password&#34;;
-
-
-flush privileges;
-
-quit;
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">use mysql;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">update mysql.user set authentication_string=password(&#39;your_password&#39;) where user=&#39;root&#39; and Host =&#39;localhost&#39;;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">update mysql.user set plugin=&#34;mysql_native_password&#34;;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">flush privileges;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">quit;
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>我看的很多其他博客很类似, 但时没有 <code>update mysql.user set plugin=&quot;mysql_native_password&quot;;</code> 这一句. 个人觉得这一句非常关键.</p>
 <p>然后回到</p>
@@ -243,8 +243,8 @@ quit;
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo vim /etc/mysql/mysql.conf.d/mysqld.conf
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sudo vim /etc/mysql/mysql.conf.d/mysqld.conf
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>将之前设置的 <code>skip-grant-tables</code> 取消.</p>
 <p>再</p>
@@ -253,8 +253,8 @@ quit;
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mysql -u root -p
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mysql -u root -p
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>输入密码, 即可进入数据库.</p>
 
@@ -340,7 +340,7 @@ quit;
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

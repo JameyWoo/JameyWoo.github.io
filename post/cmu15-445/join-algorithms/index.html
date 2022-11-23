@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/cmu15-445/join-algorithms/" />
@@ -187,10 +187,10 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">foreach tuple r ∈ R:
-	foreach tuple s ∈ S:
-		emit, if r and s match
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">foreach tuple r ∈ R:
+</span></span><span class="line"><span class="cl">	foreach tuple s ∈ S:
+</span></span><span class="line"><span class="cl">		emit, if r and s match
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这样的成本是</p>
 <p>Cost: M + (m ∙ N)</p>
@@ -210,12 +210,12 @@ Table S: N = 500, n = 40,000</p>
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">foreach block BR∈ R:
-    foreach block BS∈ S:
-        foreach tuple r ∈ BR: 
-            foreach tuple s ∈ Bs:
-            	emit, if r and s match
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">foreach block BR∈ R:
+</span></span><span class="line"><span class="cl">    foreach block BS∈ S:
+</span></span><span class="line"><span class="cl">        foreach tuple r ∈ BR: 
+</span></span><span class="line"><span class="cl">            foreach tuple s ∈ Bs:
+</span></span><span class="line"><span class="cl">            	emit, if r and s match
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这种方式的成本是:</p>
 <p>Cost: M + (M ∙ N )</p>
@@ -232,12 +232,12 @@ Table S: N = 500, n = 40,000</p>
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">foreach B - 2 blocks bR∈ R:
-    foreach block bS∈ S:
-        foreach tuple r ∈ B - 2 blocks:
-            foreach tuple s ∈ bs:
-            	emit, if r and s match
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">foreach B - 2 blocks bR∈ R:
+</span></span><span class="line"><span class="cl">    foreach block bS∈ S:
+</span></span><span class="line"><span class="cl">        foreach tuple r ∈ B - 2 blocks:
+</span></span><span class="line"><span class="cl">            foreach tuple s ∈ bs:
+</span></span><span class="line"><span class="cl">            	emit, if r and s match
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>第三种方式是，使用index来加快join key的匹配</strong>。循环扫描成本太高了，所以有的系统会生成临时索引，Join结束之后就会删除，在Join期间使用这个索引在S中找到对应的join key，速度要快很多。</p>
 <h3 id="sort-merge-join">Sort-Merge Join</h3>
@@ -418,7 +418,7 @@ Table S: N = 500, n = 40,000</p>
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

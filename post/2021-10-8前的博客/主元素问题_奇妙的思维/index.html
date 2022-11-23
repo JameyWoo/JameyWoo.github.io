@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/%E4%B8%BB%E5%85%83%E7%B4%A0%E9%97%AE%E9%A2%98_%E5%A5%87%E5%A6%99%E7%9A%84%E6%80%9D%E7%BB%B4/" />
@@ -219,19 +219,19 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;algorithm&gt;
-#define N 7
-
-using namespace std;
-
-int main()
-{
-	int a[] = {1, 4, 3, 1, 1, 2, 1}; //N为奇数, 从0开始 
-	nth_element(a, a + N/2, a + N);
-	cout &lt;&lt; a[N/2];
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;algorithm&gt;
+</span></span><span class="line"><span class="cl">#define N 7
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int a[] = {1, 4, 3, 1, 1, 2, 1}; //N为奇数, 从0开始 
+</span></span><span class="line"><span class="cl">	nth_element(a, a + N/2, a + N);
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; a[N/2];
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这是偶数的情况:</p>
 <div class="highlight"><div class="chroma">
@@ -250,19 +250,19 @@ int main()
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;algorithm&gt;
-#define N 6 
-
-using namespace std;
-
-int main()
-{
-	int a[] = {1, 3, 1, 1, 2, 1}; //N为偶数, 从0开始 
-	nth_element(a, a + N/2, a + N);
-	cout &lt;&lt; a[N/3];
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;algorithm&gt;
+</span></span><span class="line"><span class="cl">#define N 6 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int a[] = {1, 3, 1, 1, 2, 1}; //N为偶数, 从0开始 
+</span></span><span class="line"><span class="cl">	nth_element(a, a + N/2, a + N);
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; a[N/3];
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>时间复杂度为O(N)</strong>
 <strong>nth_element()是STL算法库中一种O(N)的单元素排序算法函数</strong></p>
@@ -313,30 +313,30 @@ int main()
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#define N 7
-
-using namespace std;
-
-int main()
-{
-//	int a[] = {1, 4, 3, 1, 1, 2, 1};
-	int a[] = {1, 3, 4, 4, 5, 4, 4};
-//	int a[] = {1 ,5 ,6 ,8 ,7 ,9 ,4 ,2 ,7 ,5 ,2 ,2 ,2 ,2};
-	int cnt = 0, tmp = a[0];
-	for(int i = 1; i &lt; N; ++i) {
-		if(tmp == a[i]) cnt++;
-		else cnt--;
-		if(cnt &lt; 0) {
-			tmp = a[i];
-			cnt = 0;
-		}
-	}
-	cout &lt;&lt; &#34;cnt == &#34; &lt;&lt; cnt &lt;&lt; endl;
-	if (cnt &gt; 0) cout &lt;&lt; tmp &lt;&lt; endl; 
-	else cout &lt;&lt; &#34;There is no such a number !\n&#34;;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#define N 7
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">//	int a[] = {1, 4, 3, 1, 1, 2, 1};
+</span></span><span class="line"><span class="cl">	int a[] = {1, 3, 4, 4, 5, 4, 4};
+</span></span><span class="line"><span class="cl">//	int a[] = {1 ,5 ,6 ,8 ,7 ,9 ,4 ,2 ,7 ,5 ,2 ,2 ,2 ,2};
+</span></span><span class="line"><span class="cl">	int cnt = 0, tmp = a[0];
+</span></span><span class="line"><span class="cl">	for(int i = 1; i &lt; N; ++i) {
+</span></span><span class="line"><span class="cl">		if(tmp == a[i]) cnt++;
+</span></span><span class="line"><span class="cl">		else cnt--;
+</span></span><span class="line"><span class="cl">		if(cnt &lt; 0) {
+</span></span><span class="line"><span class="cl">			tmp = a[i];
+</span></span><span class="line"><span class="cl">			cnt = 0;
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; &#34;cnt == &#34; &lt;&lt; cnt &lt;&lt; endl;
+</span></span><span class="line"><span class="cl">	if (cnt &gt; 0) cout &lt;&lt; tmp &lt;&lt; endl; 
+</span></span><span class="line"><span class="cl">	else cout &lt;&lt; &#34;There is no such a number !\n&#34;;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>###总而言之, 主元素问题是一种很简单的思维启发问题, 方法有很多, 可是你想到了最简单的方法吗?</p>
 
@@ -422,7 +422,7 @@ int main()
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

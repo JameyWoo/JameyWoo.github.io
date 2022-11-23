@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/%E6%9C%80%E5%A4%A7%E5%AD%90%E6%AE%B5%E5%92%8C_%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95/" />
@@ -186,33 +186,33 @@
 </span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;algorithm&gt; 
-
-using namespace std;
-
-int main()
-{
-	//std::ios::sync_with_stdio(false);
-	long long int n, num[22000], Max = -1e8, sum;
-	cin &gt;&gt; n;
-	for( int i = 1; i &lt;= n; ++i ) {
-		scanf(&#34;%lld&#34;, &amp;num[i]);
-	}
-	for( int i = 1; i &lt;= n; ++ i ) {
-		for( int j = 1; j &lt;= n - i + 1; ++j ) {
-			sum = 0;
-			for(int k = j; k &lt; j + i; ++k) {
-				sum += num[k];
-			}
-			//cout &lt;&lt; &#34;sum = &#34; &lt;&lt; sum &lt;&lt; endl;
-			Max = max(Max, sum);
-			//cout &lt;&lt; Max &lt;&lt; endl;
-		}
-	}
-	cout &lt;&lt; Max;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;algorithm&gt; 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	//std::ios::sync_with_stdio(false);
+</span></span><span class="line"><span class="cl">	long long int n, num[22000], Max = -1e8, sum;
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; n;
+</span></span><span class="line"><span class="cl">	for( int i = 1; i &lt;= n; ++i ) {
+</span></span><span class="line"><span class="cl">		scanf(&#34;%lld&#34;, &amp;num[i]);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	for( int i = 1; i &lt;= n; ++ i ) {
+</span></span><span class="line"><span class="cl">		for( int j = 1; j &lt;= n - i + 1; ++j ) {
+</span></span><span class="line"><span class="cl">			sum = 0;
+</span></span><span class="line"><span class="cl">			for(int k = j; k &lt; j + i; ++k) {
+</span></span><span class="line"><span class="cl">				sum += num[k];
+</span></span><span class="line"><span class="cl">			}
+</span></span><span class="line"><span class="cl">			//cout &lt;&lt; &#34;sum = &#34; &lt;&lt; sum &lt;&lt; endl;
+</span></span><span class="line"><span class="cl">			Max = max(Max, sum);
+</span></span><span class="line"><span class="cl">			//cout &lt;&lt; Max &lt;&lt; endl;
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; Max;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>稍微优化一下, 使用<strong>前缀和以及差分</strong>, 可以有效地将复杂度降为O(n^2), 可是, 对于这道题来说, 这个时间还是太多了. 只能通过40%的样例</p>
 <div class="highlight"><div class="chroma">
@@ -245,33 +245,33 @@ int main()
 </span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;cstdio&gt;
-#include &lt;algorithm&gt;
-
-long long int n, num[220000], qz[220000] = {}, ans = -1e9;
-
-using namespace std;
-
-int main()
-{
-	//std::ios::sync_with_stdio(false);
-	cin &gt;&gt; n;
-	for( int i = 1; i &lt;= n; ++ i ) {
-		//cin &gt;&gt; num[i];
-		scanf(&#34;%lld&#34;, &amp;num[i]);
-	}
-	for( int i = 1; i &lt;= n; ++i ) {
-		qz[i] = qz[i-1] + num[i];
-	}
-	for( int i = 1; i &lt;= n; ++i ) {
-		for( int j = 1; j &lt;= n-i+1; ++j ) {
-			ans = max(ans, qz[j+i-1] - qz[j-1]);
-		}
-	}
-	cout &lt;&lt; ans &lt;&lt; endl;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;cstdio&gt;
+</span></span><span class="line"><span class="cl">#include &lt;algorithm&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">long long int n, num[220000], qz[220000] = {}, ans = -1e9;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	//std::ios::sync_with_stdio(false);
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; n;
+</span></span><span class="line"><span class="cl">	for( int i = 1; i &lt;= n; ++ i ) {
+</span></span><span class="line"><span class="cl">		//cin &gt;&gt; num[i];
+</span></span><span class="line"><span class="cl">		scanf(&#34;%lld&#34;, &amp;num[i]);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	for( int i = 1; i &lt;= n; ++i ) {
+</span></span><span class="line"><span class="cl">		qz[i] = qz[i-1] + num[i];
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	for( int i = 1; i &lt;= n; ++i ) {
+</span></span><span class="line"><span class="cl">		for( int j = 1; j &lt;= n-i+1; ++j ) {
+</span></span><span class="line"><span class="cl">			ans = max(ans, qz[j+i-1] - qz[j-1]);
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; ans &lt;&lt; endl;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>还有一种<strong>分治</strong>的方法做这道题, 时间复杂度为O(nlogn), 有点复杂,我还不会.</p>
 <p>最简单的呢, <strong>使用DP的方法, 时间复杂度为O(n)</strong></p>
@@ -306,27 +306,27 @@ int main()
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;cstdio&gt;
-#include &lt;algorithm&gt;
-
-using namespace std;
-
-long long int qz[220000] = {}, num[220000], mm[220000] = {}, an[220000], ans = -1e9;
-
-int main()
-{
-	int n;
-	cin &gt;&gt; n;
-	for(int i = 1; i &lt;= n; ++i) {
-		scanf(&#34;%lld&#34;, &amp;num[i]);
-		qz[i] = num[i] + qz[i - 1];
-		mm[i] = min(mm[i - 1], qz[i - 1]);
-		ans = max(ans, qz[i] - mm[i]);
-	}
-	cout &lt;&lt; ans;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;cstdio&gt;
+</span></span><span class="line"><span class="cl">#include &lt;algorithm&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">long long int qz[220000] = {}, num[220000], mm[220000] = {}, an[220000], ans = -1e9;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int n;
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; n;
+</span></span><span class="line"><span class="cl">	for(int i = 1; i &lt;= n; ++i) {
+</span></span><span class="line"><span class="cl">		scanf(&#34;%lld&#34;, &amp;num[i]);
+</span></span><span class="line"><span class="cl">		qz[i] = num[i] + qz[i - 1];
+</span></span><span class="line"><span class="cl">		mm[i] = min(mm[i - 1], qz[i - 1]);
+</span></span><span class="line"><span class="cl">		ans = max(ans, qz[i] - mm[i]);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; ans;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>时间复杂度确实是小, 但是有一个问题就是空间复杂度太大了, 没必要这样开数组.</p>
 <p>看了别人的题解, dalao们用的是滚动数组, 一个上面220000的数组只用两个元素循环滚动即可.</p>
@@ -355,26 +355,26 @@ int main()
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;cstdio&gt;
-#include &lt;algorithm&gt;
-
-using namespace std;
-
-long long int qz[2] = {}, mm[2] = {}, ans = -1e9, m, n;
-
-int main()
-{
-	cin &gt;&gt; n;
-	for( int i = 1; i &lt;= n; ++i ) {
-		scanf(&#34;%lld&#34;, &amp;m);
-		qz[i % 2] = qz[(i + 1) % 2] + m;
-		mm[i % 2] = min(mm[(i + 1) % 2], qz[(i + 1) % 2]);
-		ans = max(ans, qz[i % 2] - mm[i % 2]);
-	}
-	cout &lt;&lt; ans;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;cstdio&gt;
+</span></span><span class="line"><span class="cl">#include &lt;algorithm&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">long long int qz[2] = {}, mm[2] = {}, ans = -1e9, m, n;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; n;
+</span></span><span class="line"><span class="cl">	for( int i = 1; i &lt;= n; ++i ) {
+</span></span><span class="line"><span class="cl">		scanf(&#34;%lld&#34;, &amp;m);
+</span></span><span class="line"><span class="cl">		qz[i % 2] = qz[(i + 1) % 2] + m;
+</span></span><span class="line"><span class="cl">		mm[i % 2] = min(mm[(i + 1) % 2], qz[(i + 1) % 2]);
+</span></span><span class="line"><span class="cl">		ans = max(ans, qz[i % 2] - mm[i % 2]);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; ans;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>写这道题还发现了或者说学到了或者说巩固了几个小知识</p>
 <ol>
@@ -385,8 +385,8 @@ int main()
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">std::ios::sync_with_stdio(false);
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">std::ios::sync_with_stdio(false);
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>此为巩固</p>
 <ol start="2">
@@ -399,9 +399,9 @@ int main()
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">long long int n;
-scanf(&#34;%lld&#34;, &amp;n);
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">long long int n;
+</span></span><span class="line"><span class="cl">scanf(&#34;%lld&#34;, &amp;n);
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>如果n的类型写为long long Dev会发出警告, 还不知道为什么</p>
 <p>百度一下, 又网友说long long 就是long long int , 只是int省略掉了</p>
@@ -438,30 +438,30 @@ scanf(&#34;%lld&#34;, &amp;n);
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;algorithm&gt;
-#include &lt;vector&gt;
-using namespace std;
-const int INF = 0x3f3f3f3f;
-
-int main()
-{
-	int x;
-	vector&lt;int&gt; v;
-	while (cin &gt;&gt; x) {
-		v.push_back(x);
-	}
-	int qz = 0, MAX = -INF;
-	for (int i = 0; i &lt; v.size(); ++i) {
-		if (qz + v[i] &lt;= 0) qz = 0;
-		else {
-			qz += v[i];
-			MAX = max(MAX, qz);
-		}
-	}
-	cout &lt;&lt; MAX;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;algorithm&gt;
+</span></span><span class="line"><span class="cl">#include &lt;vector&gt;
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">const int INF = 0x3f3f3f3f;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int x;
+</span></span><span class="line"><span class="cl">	vector&lt;int&gt; v;
+</span></span><span class="line"><span class="cl">	while (cin &gt;&gt; x) {
+</span></span><span class="line"><span class="cl">		v.push_back(x);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	int qz = 0, MAX = -INF;
+</span></span><span class="line"><span class="cl">	for (int i = 0; i &lt; v.size(); ++i) {
+</span></span><span class="line"><span class="cl">		if (qz + v[i] &lt;= 0) qz = 0;
+</span></span><span class="line"><span class="cl">		else {
+</span></span><span class="line"><span class="cl">			qz += v[i];
+</span></span><span class="line"><span class="cl">			MAX = max(MAX, qz);
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; MAX;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div>
     </div>
@@ -546,7 +546,7 @@ int main()
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

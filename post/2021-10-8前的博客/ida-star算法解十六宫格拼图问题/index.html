@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/ida-star%E7%AE%97%E6%B3%95%E8%A7%A3%E5%8D%81%E5%85%AD%E5%AE%AB%E6%A0%BC%E6%8B%BC%E5%9B%BE%E9%97%AE%E9%A2%98/" />
@@ -49,7 +49,7 @@
 <meta itemprop="name" content="IDA Star算法解十六宫格拼图问题">
 <meta itemprop="description" content="IDA*算法, ID(Iterative Deepening)指的是迭代加深. 它的思想是重复进行限制最大深度的深度优先搜索(此限制从某个最小值遍历到最大值), 也称为深"><meta itemprop="datePublished" content="2018-10-01T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2018-10-01T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1830">
+<meta itemprop="wordCount" content="1834">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="IDA Star算法解十六宫格拼图问题"/>
 <meta name="twitter:description" content="IDA*算法, ID(Iterative Deepening)指的是迭代加深. 它的思想是重复进行限制最大深度的深度优先搜索(此限制从某个最小值遍历到最大值), 也称为深"/>
@@ -136,7 +136,7 @@
         <div class="post-category">
             <a href="../../../categories/%E7%AE%97%E6%B3%95/"> 算法 </a>
             </div>
-          <span class="more-meta"> 1830 words </span>
+          <span class="more-meta"> 1834 words </span>
           <span class="more-meta"> 4 mins read </span>
         
       </div>
@@ -307,107 +307,107 @@ y坐标距离 <code>abs(i % N - j % N)</code>
 </span><span class="lnt">100
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp">
-</span><span class="cp"></span>
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-<span class="cp">#define N 4
-</span><span class="cp">#define N2 16
-</span><span class="cp">#define LIMIT 57
-</span><span class="cp"></span>
-<span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">dx</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">};</span>
-<span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">dy</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
-<span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">dir</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="sc">&#39;r&#39;</span><span class="p">,</span> <span class="sc">&#39;u&#39;</span><span class="p">,</span> <span class="sc">&#39;l&#39;</span><span class="p">,</span> <span class="sc">&#39;d&#39;</span><span class="p">};</span>
-<span class="kt">int</span> <span class="n">MDT</span><span class="p">[</span><span class="n">N2</span><span class="p">][</span><span class="n">N2</span><span class="p">];</span>
-
-<span class="k">struct</span> <span class="nc">Puzzle</span> <span class="p">{</span>
-	<span class="kt">int</span> <span class="n">f</span><span class="p">[</span><span class="n">N2</span><span class="p">],</span> <span class="n">space</span><span class="p">,</span> <span class="n">MD</span><span class="p">;</span> <span class="c1">// 位置, 空格, 曼哈顿距离
-</span><span class="c1"></span><span class="p">};</span>
-
-<span class="n">Puzzle</span> <span class="n">state</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">limit</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">path</span><span class="p">[</span><span class="n">LIMIT</span><span class="p">];</span>
-
-<span class="kt">int</span> <span class="nf">getALLMD</span><span class="p">(</span><span class="n">Puzzle</span> <span class="n">pz</span><span class="p">)</span> <span class="p">{</span>
-	<span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">pz</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">N2</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
-		<span class="n">sum</span> <span class="o">+=</span> <span class="n">MDT</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">pz</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
-	<span class="p">}</span>
-	<span class="k">return</span> <span class="n">sum</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">bool</span> <span class="nf">isSolved</span><span class="p">()</span> <span class="p">{</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-	<span class="p">}</span>
-	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">bool</span> <span class="nf">dfs</span><span class="p">(</span><span class="kt">int</span> <span class="n">depth</span><span class="p">,</span> <span class="kt">int</span> <span class="n">prev</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">MD</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span> <span class="c1">// 搜索到了答案.
-</span><span class="c1"></span>	<span class="k">if</span> <span class="p">(</span><span class="n">depth</span> <span class="o">+</span> <span class="n">state</span><span class="p">.</span><span class="n">MD</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// 超过当前迭代限制
-</span><span class="c1"></span>	
-	<span class="kt">int</span> <span class="n">sx</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">space</span> <span class="o">/</span> <span class="n">N</span><span class="p">;</span>
-	<span class="kt">int</span> <span class="n">sy</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">space</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
-	<span class="n">Puzzle</span> <span class="n">tmp</span><span class="p">;</span>
-	
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">r</span><span class="p">)</span> <span class="p">{</span>
-		<span class="kt">int</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">sx</span> <span class="o">+</span> <span class="n">dx</span><span class="p">[</span><span class="n">r</span><span class="p">];</span>
-		<span class="kt">int</span> <span class="n">ty</span> <span class="o">=</span> <span class="n">sy</span> <span class="o">+</span> <span class="n">dy</span><span class="p">[</span><span class="n">r</span><span class="p">];</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">tx</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">ty</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">tx</span> <span class="o">&gt;=</span> <span class="n">N</span> <span class="o">||</span> <span class="n">ty</span> <span class="o">&gt;=</span> <span class="n">N</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">-</span> <span class="n">min</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">// 妙! 避免迂回. 减少了很多不必要搜索
-</span><span class="c1"></span>		<span class="n">tmp</span> <span class="o">=</span> <span class="n">state</span><span class="p">;</span>
-		
-		<span class="n">state</span><span class="p">.</span><span class="n">MD</span> <span class="o">-=</span> <span class="n">MDT</span><span class="p">[</span><span class="n">tx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ty</span><span class="p">][</span><span class="n">state</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">tx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ty</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span> <span class="c1">// 消除原位置的曼哈顿距离
-</span><span class="c1"></span>		<span class="n">state</span><span class="p">.</span><span class="n">MD</span> <span class="o">+=</span> <span class="n">MDT</span><span class="p">[</span><span class="n">sx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">sy</span><span class="p">][</span><span class="n">state</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">tx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ty</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span> <span class="c1">// 添加新位置的曼哈顿距离, 注意, MDT由非0/16产生
-</span><span class="c1"></span>		<span class="n">swap</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">tx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ty</span><span class="p">],</span> <span class="n">state</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">sx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">sy</span><span class="p">]);</span>
-		<span class="n">state</span><span class="p">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">tx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ty</span><span class="p">;</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">dfs</span><span class="p">(</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span> <span class="p">{</span> <span class="c1">// 先搜索, 搜索成功后再添加路径. 巧妙, 值得学习
-</span><span class="c1"></span>			<span class="n">path</span><span class="p">[</span><span class="n">depth</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span><span class="p">;</span>
-			<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-		<span class="p">}</span>
-		<span class="n">state</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span> <span class="c1">// 回溯复原
-</span><span class="c1"></span>	<span class="p">}</span>
-	<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="n">string</span> <span class="nf">iterative_deepening</span><span class="p">(</span><span class="n">Puzzle</span> <span class="n">in</span><span class="p">)</span> <span class="p">{</span>
-	<span class="n">in</span><span class="p">.</span><span class="n">MD</span> <span class="o">=</span> <span class="n">getALLMD</span><span class="p">(</span><span class="n">in</span><span class="p">);</span>
-	
-	<span class="k">for</span> <span class="p">(</span><span class="n">limit</span> <span class="o">=</span> <span class="n">in</span><span class="p">.</span><span class="n">MD</span><span class="p">;</span> <span class="n">limit</span> <span class="o">&lt;=</span> <span class="n">LIMIT</span><span class="p">;</span> <span class="n">limit</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 绝了, 原来是这样加一个常数
-</span><span class="c1"></span>		<span class="n">state</span> <span class="o">=</span> <span class="n">in</span><span class="p">;</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">dfs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">))</span> <span class="p">{</span>
-			<span class="n">string</span> <span class="n">ans</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="p">;</span>
-			<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">ans</span> <span class="o">+=</span> <span class="n">dir</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
-			<span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	<span class="k">return</span> <span class="s">&#34;unsolvable&#34;</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
-<span class="p">{</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">MDT</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">N</span> <span class="o">-</span> <span class="n">j</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span> <span class="o">+</span> <span class="n">abs</span><span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">N</span> <span class="o">-</span> <span class="n">j</span> <span class="o">%</span> <span class="n">N</span><span class="p">);</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	
-	<span class="n">Puzzle</span> <span class="n">in</span><span class="p">;</span>
-	
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">in</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">in</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">in</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">N2</span><span class="p">;</span>
-			<span class="n">in</span><span class="p">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	<span class="n">string</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">iterative_deepening</span><span class="p">(</span><span class="n">in</span><span class="p">);</span>
-	<span class="k">if</span> <span class="p">(</span><span class="n">ans</span> <span class="o">!=</span> <span class="s">&#34;unsolvable&#34;</span><span class="p">)</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ans</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ans</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define N 4
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define N2 16
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define LIMIT 57
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">dx</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">dy</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">dir</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="sc">&#39;r&#39;</span><span class="p">,</span> <span class="sc">&#39;u&#39;</span><span class="p">,</span> <span class="sc">&#39;l&#39;</span><span class="p">,</span> <span class="sc">&#39;d&#39;</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">MDT</span><span class="p">[</span><span class="n">N2</span><span class="p">][</span><span class="n">N2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Puzzle</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">f</span><span class="p">[</span><span class="n">N2</span><span class="p">],</span> <span class="n">space</span><span class="p">,</span> <span class="n">MD</span><span class="p">;</span> <span class="c1">// 位置, 空格, 曼哈顿距离
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Puzzle</span> <span class="n">state</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">limit</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">path</span><span class="p">[</span><span class="n">LIMIT</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">getALLMD</span><span class="p">(</span><span class="n">Puzzle</span> <span class="n">pz</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">pz</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">N2</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">sum</span> <span class="o">+=</span> <span class="n">MDT</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">pz</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">sum</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">isSolved</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="nf">dfs</span><span class="p">(</span><span class="kt">int</span> <span class="n">depth</span><span class="p">,</span> <span class="kt">int</span> <span class="n">prev</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">MD</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span> <span class="c1">// 搜索到了答案.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="p">(</span><span class="n">depth</span> <span class="o">+</span> <span class="n">state</span><span class="p">.</span><span class="n">MD</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// 超过当前迭代限制
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">sx</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">space</span> <span class="o">/</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">sy</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">space</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Puzzle</span> <span class="n">tmp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">r</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">sx</span> <span class="o">+</span> <span class="n">dx</span><span class="p">[</span><span class="n">r</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">ty</span> <span class="o">=</span> <span class="n">sy</span> <span class="o">+</span> <span class="n">dy</span><span class="p">[</span><span class="n">r</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">tx</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">ty</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">tx</span> <span class="o">&gt;=</span> <span class="n">N</span> <span class="o">||</span> <span class="n">ty</span> <span class="o">&gt;=</span> <span class="n">N</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">-</span> <span class="n">min</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">// 妙! 避免迂回. 减少了很多不必要搜索
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">tmp</span> <span class="o">=</span> <span class="n">state</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		
+</span></span><span class="line"><span class="cl">		<span class="n">state</span><span class="p">.</span><span class="n">MD</span> <span class="o">-=</span> <span class="n">MDT</span><span class="p">[</span><span class="n">tx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ty</span><span class="p">][</span><span class="n">state</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">tx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ty</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span> <span class="c1">// 消除原位置的曼哈顿距离
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">state</span><span class="p">.</span><span class="n">MD</span> <span class="o">+=</span> <span class="n">MDT</span><span class="p">[</span><span class="n">sx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">sy</span><span class="p">][</span><span class="n">state</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">tx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ty</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span> <span class="c1">// 添加新位置的曼哈顿距离, 注意, MDT由非0/16产生
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">swap</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">tx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ty</span><span class="p">],</span> <span class="n">state</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">sx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">sy</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">state</span><span class="p">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">tx</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">ty</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">dfs</span><span class="p">(</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span> <span class="p">{</span> <span class="c1">// 先搜索, 搜索成功后再添加路径. 巧妙, 值得学习
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="n">path</span><span class="p">[</span><span class="n">depth</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="n">state</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span> <span class="c1">// 回溯复原
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">string</span> <span class="nf">iterative_deepening</span><span class="p">(</span><span class="n">Puzzle</span> <span class="n">in</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">in</span><span class="p">.</span><span class="n">MD</span> <span class="o">=</span> <span class="n">getALLMD</span><span class="p">(</span><span class="n">in</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="n">limit</span> <span class="o">=</span> <span class="n">in</span><span class="p">.</span><span class="n">MD</span><span class="p">;</span> <span class="n">limit</span> <span class="o">&lt;=</span> <span class="n">LIMIT</span><span class="p">;</span> <span class="n">limit</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 绝了, 原来是这样加一个常数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">state</span> <span class="o">=</span> <span class="n">in</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">dfs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">string</span> <span class="n">ans</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">ans</span> <span class="o">+=</span> <span class="n">dir</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="s">&#34;unsolvable&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">MDT</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">N</span> <span class="o">-</span> <span class="n">j</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span> <span class="o">+</span> <span class="n">abs</span><span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">N</span> <span class="o">-</span> <span class="n">j</span> <span class="o">%</span> <span class="n">N</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">Puzzle</span> <span class="n">in</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N2</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">in</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">in</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">in</span><span class="p">.</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">N2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">in</span><span class="p">.</span><span class="n">space</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">string</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">iterative_deepening</span><span class="p">(</span><span class="n">in</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">ans</span> <span class="o">!=</span> <span class="s">&#34;unsolvable&#34;</span><span class="p">)</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ans</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ans</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>参考数据:</p>
 <div class="highlight"><div class="chroma">
@@ -448,41 +448,41 @@ y坐标距离 <code>abs(i % N - j % N)</code>
 </span><span class="lnt">34
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">6</span> <span class="mi">13</span> <span class="mi">5</span> <span class="mi">2</span>
-<span class="mi">8</span> <span class="mi">1</span> <span class="mi">10</span> <span class="mi">12</span>
-<span class="mi">3</span> <span class="mi">7</span> <span class="mi">15</span> <span class="mi">9</span>
-<span class="mi">14</span> <span class="mi">4</span> <span class="mi">0</span> <span class="mi">11</span> <span class="c1">// 53
-</span><span class="c1"></span>
-<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
-<span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">0</span>
-<span class="mi">5</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span>
-<span class="mi">9</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span>  <span class="c1">// 8
-</span><span class="c1"></span>
-<span class="mi">5</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">14</span>
-<span class="mi">10</span> <span class="mi">13</span> <span class="mi">1</span> <span class="mi">6</span>
-<span class="mi">12</span> <span class="mi">2</span> <span class="mi">7</span> <span class="mi">15</span>
-<span class="mi">4</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">11</span>  <span class="c1">// 56
-</span><span class="c1"></span>
-<span class="mi">12</span> <span class="mi">7</span> <span class="mi">2</span> <span class="mi">4</span>
-<span class="mi">5</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">9</span>
-<span class="mi">14</span> <span class="mi">13</span> <span class="mi">6</span> <span class="mi">8</span>
-<span class="mi">3</span> <span class="mi">15</span> <span class="mi">10</span> <span class="mi">11</span> <span class="c1">// 47
-</span><span class="c1"></span>
-<span class="mi">5</span> <span class="mi">11</span> <span class="mi">10</span> <span class="mi">7</span>
-<span class="mi">13</span> <span class="mi">0</span> <span class="mi">9</span> <span class="mi">3</span>
-<span class="mi">14</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span>
-<span class="mi">1</span> <span class="mi">15</span> <span class="mi">6</span> <span class="mi">12</span>  <span class="c1">// 38
-</span><span class="c1"></span>
-<span class="mi">5</span> <span class="mi">1</span> <span class="mi">4</span> <span class="mi">7</span>
-<span class="mi">2</span> <span class="mi">0</span> <span class="mi">11</span> <span class="mi">3</span>
-<span class="mi">9</span> <span class="mi">6</span> <span class="mi">10</span> <span class="mi">8</span>
-<span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">12</span>  <span class="c1">// 14
-</span><span class="c1"></span>
-<span class="mi">9</span> <span class="mi">14</span> <span class="mi">13</span> <span class="mi">15</span>
-<span class="mi">5</span> <span class="mi">3</span> <span class="mi">11</span> <span class="mi">6</span>
-<span class="mi">8</span> <span class="mi">12</span> <span class="mi">2</span> <span class="mi">1</span>
-<span class="mi">10</span> <span class="mi">7</span> <span class="mi">4</span> <span class="mi">0</span>  <span class="c1">// unsolvable
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="mi">6</span> <span class="mi">13</span> <span class="mi">5</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="mi">8</span> <span class="mi">1</span> <span class="mi">10</span> <span class="mi">12</span>
+</span></span><span class="line"><span class="cl"><span class="mi">3</span> <span class="mi">7</span> <span class="mi">15</span> <span class="mi">9</span>
+</span></span><span class="line"><span class="cl"><span class="mi">14</span> <span class="mi">4</span> <span class="mi">0</span> <span class="mi">11</span> <span class="c1">// 53
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="mi">5</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span>
+</span></span><span class="line"><span class="cl"><span class="mi">9</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span>  <span class="c1">// 8
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="mi">5</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">14</span>
+</span></span><span class="line"><span class="cl"><span class="mi">10</span> <span class="mi">13</span> <span class="mi">1</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl"><span class="mi">12</span> <span class="mi">2</span> <span class="mi">7</span> <span class="mi">15</span>
+</span></span><span class="line"><span class="cl"><span class="mi">4</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">11</span>  <span class="c1">// 56
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="mi">12</span> <span class="mi">7</span> <span class="mi">2</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="mi">5</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">9</span>
+</span></span><span class="line"><span class="cl"><span class="mi">14</span> <span class="mi">13</span> <span class="mi">6</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl"><span class="mi">3</span> <span class="mi">15</span> <span class="mi">10</span> <span class="mi">11</span> <span class="c1">// 47
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="mi">5</span> <span class="mi">11</span> <span class="mi">10</span> <span class="mi">7</span>
+</span></span><span class="line"><span class="cl"><span class="mi">13</span> <span class="mi">0</span> <span class="mi">9</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="mi">14</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl"><span class="mi">1</span> <span class="mi">15</span> <span class="mi">6</span> <span class="mi">12</span>  <span class="c1">// 38
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="mi">5</span> <span class="mi">1</span> <span class="mi">4</span> <span class="mi">7</span>
+</span></span><span class="line"><span class="cl"><span class="mi">2</span> <span class="mi">0</span> <span class="mi">11</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="mi">9</span> <span class="mi">6</span> <span class="mi">10</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl"><span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">12</span>  <span class="c1">// 14
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="mi">9</span> <span class="mi">14</span> <span class="mi">13</span> <span class="mi">15</span>
+</span></span><span class="line"><span class="cl"><span class="mi">5</span> <span class="mi">3</span> <span class="mi">11</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl"><span class="mi">8</span> <span class="mi">12</span> <span class="mi">2</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="mi">10</span> <span class="mi">7</span> <span class="mi">4</span> <span class="mi">0</span>  <span class="c1">// unsolvable
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>十六宫格随机数据: <strong>排列置乱算法</strong></p>
 <div class="highlight"><div class="chroma">
@@ -513,31 +513,31 @@ y坐标距离 <code>abs(i % N - j % N)</code>
 </span><span class="lnt">24
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp">
-</span><span class="cp">#define RAND(l, r) l+(int)(r-l+1)*rand()/(RAND_MAX+1)
-</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
-<span class="p">{</span>
-	<span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
-	<span class="kt">int</span> <span class="n">data</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
-	<span class="p">}</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-		<span class="kt">int</span> <span class="n">ind</span> <span class="o">=</span> <span class="n">RAND</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
-		<span class="n">swap</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">ind</span><span class="p">]);</span>
-	<span class="p">}</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
-		<span class="p">}</span>
-		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cstdlib&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define RAND(l, r) l+(int)(r-l+1)*rand()/(RAND_MAX+1)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">data</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">ind</span> <span class="o">=</span> <span class="n">RAND</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">swap</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">ind</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div>
     </div>
@@ -622,7 +622,7 @@ y坐标距离 <code>abs(i % N - j % N)</code>
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

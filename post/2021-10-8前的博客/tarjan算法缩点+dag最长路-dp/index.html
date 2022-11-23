@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/tarjan%E7%AE%97%E6%B3%95%E7%BC%A9%E7%82%B9&#43;dag%E6%9C%80%E9%95%BF%E8%B7%AF-dp/" />
@@ -185,29 +185,29 @@
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="kt">void</span> <span class="nf">tarjan</span><span class="p">(</span><span class="kt">int</span> <span class="n">u</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="n">dfn</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="o">++</span><span class="n">index</span><span class="p">;</span>
-	<span class="n">stack</span><span class="p">[</span><span class="o">++</span><span class="n">top</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">;</span>
-	<span class="n">in_stack</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-		<span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
-		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">dfn</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="p">{</span> <span class="c1">// 更新新的点.
-</span><span class="c1"></span>			<span class="n">tarjan</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
-			<span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">low</span><span class="p">[</span><span class="n">v</span><span class="p">]);</span>
-		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">in_stack</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="p">{</span>
-			<span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">low</span><span class="p">[</span><span class="n">v</span><span class="p">]);</span>
-		<span class="p">}</span> <span class="c1">// 还剩下一种不在栈中但是已经访问过的情况,是其他连通分量的
-</span><span class="c1"></span>	<span class="p">}</span>
-	<span class="k">if</span> <span class="p">(</span><span class="n">dfn</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">==</span> <span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">])</span> <span class="p">{</span>
-		<span class="k">do</span> <span class="p">{</span>
-			<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">stack</span><span class="p">[</span><span class="n">top</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
-			<span class="n">in_stack</span><span class="p">[</span><span class="n">stack</span><span class="p">[</span><span class="n">top</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// 漏写了这一条.
-</span><span class="c1"></span>		<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">stack</span><span class="p">[</span><span class="o">--</span><span class="n">top</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">u</span><span class="p">);</span>
-		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">tarjan</span><span class="p">(</span><span class="kt">int</span> <span class="n">u</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">dfn</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="o">++</span><span class="n">index</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">stack</span><span class="p">[</span><span class="o">++</span><span class="n">top</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">in_stack</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">dfn</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="p">{</span> <span class="c1">// 更新新的点.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="n">tarjan</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">low</span><span class="p">[</span><span class="n">v</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">in_stack</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">low</span><span class="p">[</span><span class="n">v</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span> <span class="c1">// 还剩下一种不在栈中但是已经访问过的情况,是其他连通分量的
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">dfn</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">==</span> <span class="n">low</span><span class="p">[</span><span class="n">u</span><span class="p">])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">do</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">stack</span><span class="p">[</span><span class="n">top</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">in_stack</span><span class="p">[</span><span class="n">stack</span><span class="p">[</span><span class="n">top</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// 漏写了这一条.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">stack</span><span class="p">[</span><span class="o">--</span><span class="n">top</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">u</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="第二个问题-对每个强连通分量进行缩点-使得此图变成一张dag">第二个问题: 对每个强连通分量进行缩点, 使得此图变成一张DAG.</h2>
 <p>在Tarjan函数内部他们的主要区别是当<code>dfn[u] == low[u]</code>的这一段</p>
@@ -225,17 +225,17 @@
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">if (dfn[u] == low[u]) {
-		cnt++;
-		int now;
-		do {
-			now = sta.top();
-			sta.pop();
-			in_stack[now] = false;
-			to[now] = cnt;
-		} while (now != u);
-	}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">if (dfn[u] == low[u]) {
+</span></span><span class="line"><span class="cl">		cnt++;
+</span></span><span class="line"><span class="cl">		int now;
+</span></span><span class="line"><span class="cl">		do {
+</span></span><span class="line"><span class="cl">			now = sta.top();
+</span></span><span class="line"><span class="cl">			sta.pop();
+</span></span><span class="line"><span class="cl">			in_stack[now] = false;
+</span></span><span class="line"><span class="cl">			to[now] = cnt;
+</span></span><span class="line"><span class="cl">		} while (now != u);
+</span></span><span class="line"><span class="cl">	}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
 <li>
@@ -256,13 +256,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">for (int i = 1; i &lt;= n; ++i) {
-		for (int j = 0; j &lt; G[i].size(); ++j) {
-			int u = to[i], v = to[G[i][j]];
-			if (u != v) Now[u].insert(v);
-		}
-	}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">for (int i = 1; i &lt;= n; ++i) {
+</span></span><span class="line"><span class="cl">		for (int j = 0; j &lt; G[i].size(); ++j) {
+</span></span><span class="line"><span class="cl">			int u = to[i], v = to[G[i][j]];
+</span></span><span class="line"><span class="cl">			if (u != v) Now[u].insert(v);
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>通过<code>to</code>数组关联起原图和缩点后图的点, 从而建立新图.</strong></p>
 <p>这样, 通过<code>dfn[u] == low[u]</code>处的修改, 以及结合<code>to</code>数组建立新图的过程, 就实现了Tarjan算法的缩点.</p>
@@ -280,15 +280,15 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">for (int i = 1; i &lt;= n; ++i) {
-		for (int j = 0; j &lt; G[i].size(); ++j) {
-			if (to[i] != to[G[i][j]]) {
-				out[to[i]]++;
-				in[to[G[i][j]]]++;
-			}
-		}
-	}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">for (int i = 1; i &lt;= n; ++i) {
+</span></span><span class="line"><span class="cl">		for (int j = 0; j &lt; G[i].size(); ++j) {
+</span></span><span class="line"><span class="cl">			if (to[i] != to[G[i][j]]) {
+</span></span><span class="line"><span class="cl">				out[to[i]]++;
+</span></span><span class="line"><span class="cl">				in[to[G[i][j]]]++;
+</span></span><span class="line"><span class="cl">			}
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>一二层循环遍历之前所有的边, 里面一个条件语句, <strong>判断边的两端点是否指向同一个缩点, 如果不是, 那么他们在<code>to</code>数组中所指向的新的结点也将作为一条边</strong>. <strong>利用<code>to</code>数组可以快速方便的获取新图中的入度和出度, 这样的话要知道入度和出度就无需建立新图.</strong></p>
 <p>##第四个问题: 缩点之后求解DAG最长路</p>
@@ -310,18 +310,18 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">int DP(int u)
-{
-	if (dp[u]) return dp[u];
-	set&lt;int&gt;::iterator is = Now[u].begin();
-	while (is != Now[u].end()) {
-		dp[u] = max(dp[u], DP(*is));
-		is++;
-	}
-	dp[u] += val_now[u];
-	return dp[u];
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">int DP(int u)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	if (dp[u]) return dp[u];
+</span></span><span class="line"><span class="cl">	set&lt;int&gt;::iterator is = Now[u].begin();
+</span></span><span class="line"><span class="cl">	while (is != Now[u].end()) {
+</span></span><span class="line"><span class="cl">		dp[u] = max(dp[u], DP(*is));
+</span></span><span class="line"><span class="cl">		is++;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	dp[u] += val_now[u];
+</span></span><span class="line"><span class="cl">	return dp[u];
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>状态转移方程: <code>dp[i] = max{dp[j] | (i, j) ∈E} + val_now[i]</code></strong>
 <strong>区别于边为权值的方程:<code>dp[i] = max{dp[j]+length[i→j] | (i,j)∈E}</code></strong></p>
@@ -408,85 +408,85 @@
 </span><span class="lnt">78
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;algorithm&gt;
-#include &lt;iostream&gt;
-#include &lt;vector&gt;
-#include &lt;stack&gt;
-#include &lt;set&gt;
-using namespace std;
-
-const int maxn = 10005;
-stack&lt;int&gt; sta;
-vector&lt;int&gt; G[maxn];
-set&lt;int&gt; Now[maxn];
-int n, m, index = 0, cnt = 0, ans = 0;
-int to[maxn], dfn[maxn] = {}, low[maxn];
-int dp[maxn] = {}, val[maxn], val_now[maxn] = {};
-bool in_stack[maxn] = {};
-
-void tarjan(int u)
-{
-	dfn[u] = low[u] = ++index;
-	in_stack[u] = true;
-	sta.push(u);
-	for (int i = 0; i &lt; G[u].size(); ++i) {
-		int v = G[u][i];
-		if (dfn[v] == 0) {
-			tarjan(v);
-			low[u] = min(low[u], low[v]);
-		} else if (in_stack[v]) low[u] = min(low[u], low[v]);
-	}
-	if (dfn[u] == low[u]) {
-		cnt++;
-		int now;
-		do {
-			now = sta.top();
-			sta.pop();
-			in_stack[now] = false;
-			to[now] = cnt;
-		} while (now != u);
-	}
-}
-
-int DP(int u)
-{
-	if (dp[u]) return dp[u];
-	set&lt;int&gt;::iterator is = Now[u].begin();
-	while (is != Now[u].end()) {
-		dp[u] = max(dp[u], DP(*is));
-		is++;
-	}
-	dp[u] += val_now[u];
-	return dp[u];
-}
-
-int main()
-{
-	cin &gt;&gt; n &gt;&gt; m;
-	for (int i = 1; i &lt;= n; ++i)
-		cin &gt;&gt; val[i];
-	for (int i = 0; i &lt; m; ++i) {
-		int u, v;
-		cin &gt;&gt; u &gt;&gt; v;
-		G[u].push_back(v);
-	}
-	for (int i = 1; i &lt;= n; ++i)
-		if (dfn[i] == 0) tarjan(i);
-	for (int i = 1; i &lt;= n; ++i) {
-		for (int j = 0; j &lt; G[i].size(); ++j) {
-			int u = to[i], v = to[G[i][j]];
-			if (u != v) Now[u].insert(v);
-		}
-	}
-	for (int i = 1; i &lt;= n; ++i) {
-		int t = to[i];
-		val_now[t] += val[i];
-	}
-	for (int i = 1; i &lt;= cnt; ++i)
-		ans = max(ans, dp[i] = DP(i));
-	cout &lt;&lt; ans;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;algorithm&gt;
+</span></span><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;vector&gt;
+</span></span><span class="line"><span class="cl">#include &lt;stack&gt;
+</span></span><span class="line"><span class="cl">#include &lt;set&gt;
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">const int maxn = 10005;
+</span></span><span class="line"><span class="cl">stack&lt;int&gt; sta;
+</span></span><span class="line"><span class="cl">vector&lt;int&gt; G[maxn];
+</span></span><span class="line"><span class="cl">set&lt;int&gt; Now[maxn];
+</span></span><span class="line"><span class="cl">int n, m, index = 0, cnt = 0, ans = 0;
+</span></span><span class="line"><span class="cl">int to[maxn], dfn[maxn] = {}, low[maxn];
+</span></span><span class="line"><span class="cl">int dp[maxn] = {}, val[maxn], val_now[maxn] = {};
+</span></span><span class="line"><span class="cl">bool in_stack[maxn] = {};
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void tarjan(int u)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	dfn[u] = low[u] = ++index;
+</span></span><span class="line"><span class="cl">	in_stack[u] = true;
+</span></span><span class="line"><span class="cl">	sta.push(u);
+</span></span><span class="line"><span class="cl">	for (int i = 0; i &lt; G[u].size(); ++i) {
+</span></span><span class="line"><span class="cl">		int v = G[u][i];
+</span></span><span class="line"><span class="cl">		if (dfn[v] == 0) {
+</span></span><span class="line"><span class="cl">			tarjan(v);
+</span></span><span class="line"><span class="cl">			low[u] = min(low[u], low[v]);
+</span></span><span class="line"><span class="cl">		} else if (in_stack[v]) low[u] = min(low[u], low[v]);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	if (dfn[u] == low[u]) {
+</span></span><span class="line"><span class="cl">		cnt++;
+</span></span><span class="line"><span class="cl">		int now;
+</span></span><span class="line"><span class="cl">		do {
+</span></span><span class="line"><span class="cl">			now = sta.top();
+</span></span><span class="line"><span class="cl">			sta.pop();
+</span></span><span class="line"><span class="cl">			in_stack[now] = false;
+</span></span><span class="line"><span class="cl">			to[now] = cnt;
+</span></span><span class="line"><span class="cl">		} while (now != u);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int DP(int u)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	if (dp[u]) return dp[u];
+</span></span><span class="line"><span class="cl">	set&lt;int&gt;::iterator is = Now[u].begin();
+</span></span><span class="line"><span class="cl">	while (is != Now[u].end()) {
+</span></span><span class="line"><span class="cl">		dp[u] = max(dp[u], DP(*is));
+</span></span><span class="line"><span class="cl">		is++;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	dp[u] += val_now[u];
+</span></span><span class="line"><span class="cl">	return dp[u];
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; n &gt;&gt; m;
+</span></span><span class="line"><span class="cl">	for (int i = 1; i &lt;= n; ++i)
+</span></span><span class="line"><span class="cl">		cin &gt;&gt; val[i];
+</span></span><span class="line"><span class="cl">	for (int i = 0; i &lt; m; ++i) {
+</span></span><span class="line"><span class="cl">		int u, v;
+</span></span><span class="line"><span class="cl">		cin &gt;&gt; u &gt;&gt; v;
+</span></span><span class="line"><span class="cl">		G[u].push_back(v);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	for (int i = 1; i &lt;= n; ++i)
+</span></span><span class="line"><span class="cl">		if (dfn[i] == 0) tarjan(i);
+</span></span><span class="line"><span class="cl">	for (int i = 1; i &lt;= n; ++i) {
+</span></span><span class="line"><span class="cl">		for (int j = 0; j &lt; G[i].size(); ++j) {
+</span></span><span class="line"><span class="cl">			int u = to[i], v = to[G[i][j]];
+</span></span><span class="line"><span class="cl">			if (u != v) Now[u].insert(v);
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	for (int i = 1; i &lt;= n; ++i) {
+</span></span><span class="line"><span class="cl">		int t = to[i];
+</span></span><span class="line"><span class="cl">		val_now[t] += val[i];
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	for (int i = 1; i &lt;= cnt; ++i)
+</span></span><span class="line"><span class="cl">		ans = max(ans, dp[i] = DP(i));
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; ans;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>**我认为Tarjan算法缩点的核心就是<code>to</code>数组. **</p>
 
@@ -572,7 +572,7 @@ int main()
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

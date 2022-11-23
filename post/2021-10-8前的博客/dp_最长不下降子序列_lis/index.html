@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/dp_%E6%9C%80%E9%95%BF%E4%B8%8D%E4%B8%8B%E9%99%8D%E5%AD%90%E5%BA%8F%E5%88%97_lis/" />
@@ -219,33 +219,33 @@
 </span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;vector&gt;
-using namespace std;
-
-int main()
-{
-	int n, x;
-	vector&lt;int&gt; v;
-	cin &gt;&gt; n;
-	for (int i = 0; i &lt; n; ++i) {
-		cin &gt;&gt; x;
-		v.push_back(x);
-	}
-	int dp[(int)v.size()] = {1}, ans = 1;
-	for (int i = 1; i &lt; (int)v.size(); ++i) {
-		for (int j = 0; j &lt; i; ++j) {
-			if (v[i] &gt;= v[j]) dp[i] = max(dp[i], dp[j] + 1); // 状态转移方程
-		}
-		ans = max(ans, dp[i]);
-	}
-	cout &lt;&lt; ans;
-}
-/*
-8
-1 2 3 -9 3 9 0 11
-*/
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;vector&gt;
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int n, x;
+</span></span><span class="line"><span class="cl">	vector&lt;int&gt; v;
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; n;
+</span></span><span class="line"><span class="cl">	for (int i = 0; i &lt; n; ++i) {
+</span></span><span class="line"><span class="cl">		cin &gt;&gt; x;
+</span></span><span class="line"><span class="cl">		v.push_back(x);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	int dp[(int)v.size()] = {1}, ans = 1;
+</span></span><span class="line"><span class="cl">	for (int i = 1; i &lt; (int)v.size(); ++i) {
+</span></span><span class="line"><span class="cl">		for (int j = 0; j &lt; i; ++j) {
+</span></span><span class="line"><span class="cl">			if (v[i] &gt;= v[j]) dp[i] = max(dp[i], dp[j] + 1); // 状态转移方程
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">		ans = max(ans, dp[i]);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; ans;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">/*
+</span></span><span class="line"><span class="cl">8
+</span></span><span class="line"><span class="cl">1 2 3 -9 3 9 0 11
+</span></span><span class="line"><span class="cl">*/
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="三-onlogn方法-维护单调数组">三. O(nlogn)方法, 维护单调数组</h3>
 <p>这个方法也是DP方法</p>
@@ -302,39 +302,39 @@ int main()
 </span><span class="lnt">32
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;algorithm&gt;
-#include &lt;vector&gt;
-using namespace std;
-
-int main()
-{
-	int n, x;
-	vector&lt;int&gt; v, vec;
-	cin &gt;&gt; n;
-	for (int i = 0; i &lt; n; ++i) {
-		cin &gt;&gt; x;
-		v.push_back(x);
-	}
-	for (int i = 0; i &lt; (int)v.size(); ++i) {
-		if (i == 0) vec.push_back(v[0]);
-		else {
-			if (v[i] &gt;= vec[vec.size() - 1]) vec.push_back(v[i]);
-			else *upper_bound(vec.begin(), vec.end(), v[i]) = v[i];
-		}
-	}
-	for (int i = 0; i &lt; (int)vec.size(); ++i) {
-		cout &lt;&lt; vec[i] &lt;&lt; &#39; &#39;;
-	}
-	cout &lt;&lt; endl;
-	cout &lt;&lt; &#34;len == &#34; &lt;&lt; vec.size() &lt;&lt; endl;
-}
-
-/*
-9
-2 1 5 3 6 4 8 9 7
-*/
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;algorithm&gt;
+</span></span><span class="line"><span class="cl">#include &lt;vector&gt;
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int n, x;
+</span></span><span class="line"><span class="cl">	vector&lt;int&gt; v, vec;
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; n;
+</span></span><span class="line"><span class="cl">	for (int i = 0; i &lt; n; ++i) {
+</span></span><span class="line"><span class="cl">		cin &gt;&gt; x;
+</span></span><span class="line"><span class="cl">		v.push_back(x);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	for (int i = 0; i &lt; (int)v.size(); ++i) {
+</span></span><span class="line"><span class="cl">		if (i == 0) vec.push_back(v[0]);
+</span></span><span class="line"><span class="cl">		else {
+</span></span><span class="line"><span class="cl">			if (v[i] &gt;= vec[vec.size() - 1]) vec.push_back(v[i]);
+</span></span><span class="line"><span class="cl">			else *upper_bound(vec.begin(), vec.end(), v[i]) = v[i];
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	for (int i = 0; i &lt; (int)vec.size(); ++i) {
+</span></span><span class="line"><span class="cl">		cout &lt;&lt; vec[i] &lt;&lt; &#39; &#39;;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; endl;
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; &#34;len == &#34; &lt;&lt; vec.size() &lt;&lt; endl;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">/*
+</span></span><span class="line"><span class="cl">9
+</span></span><span class="line"><span class="cl">2 1 5 3 6 4 8 9 7
+</span></span><span class="line"><span class="cl">*/
+</span></span></code></pre></td></tr></table>
 </div>
 </div>
     </div>
@@ -419,7 +419,7 @@ int main()
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

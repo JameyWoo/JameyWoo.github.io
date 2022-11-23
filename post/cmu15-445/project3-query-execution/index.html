@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/cmu15-445/project3-query-execution/" />
@@ -200,37 +200,37 @@
 </span><span class="lnt">30
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">zip project3-submission.zip \
-src/include/buffer/lru_replacer.h \
-src/buffer/lru_replacer.cpp \
-src/include/buffer/buffer_pool_manager_instance.h \
-src/buffer/buffer_pool_manager_instance.cpp \
-src/include/storage/page/hash_table_directory_page.h \
-src/storage/page/hash_table_directory_page.cpp \
-src/include/storage/page/hash_table_bucket_page.h \
-src/storage/page/hash_table_bucket_page.cpp \
-src/include/container/hash/extendible_hash_table.h \
-src/container/hash/extendible_hash_table.cpp \
-src/include/execution/execution_engine.h \
-src/include/execution/executors/seq_scan_executor.h \
-src/include/execution/executors/insert_executor.h \
-src/include/execution/executors/update_executor.h \
-src/include/execution/executors/delete_executor.h \
-src/include/execution/executors/nested_loop_join_executor.h \
-src/include/execution/executors/hash_join_executor.h \
-src/include/execution/executors/aggregation_executor.h \
-src/include/execution/executors/limit_executor.h \
-src/include/execution/executors/distinct_executor.h \
-src/execution/seq_scan_executor.cpp \
-src/execution/insert_executor.cpp \
-src/execution/update_executor.cpp \
-src/execution/delete_executor.cpp \
-src/execution/nested_loop_join_executor.cpp \
-src/execution/hash_join_executor.cpp \
-src/execution/aggregation_executor.cpp \
-src/execution/limit_executor.cpp \
-src/execution/distinct_executor.cpp
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">zip project3-submission.zip \
+</span></span><span class="line"><span class="cl">src/include/buffer/lru_replacer.h \
+</span></span><span class="line"><span class="cl">src/buffer/lru_replacer.cpp \
+</span></span><span class="line"><span class="cl">src/include/buffer/buffer_pool_manager_instance.h \
+</span></span><span class="line"><span class="cl">src/buffer/buffer_pool_manager_instance.cpp \
+</span></span><span class="line"><span class="cl">src/include/storage/page/hash_table_directory_page.h \
+</span></span><span class="line"><span class="cl">src/storage/page/hash_table_directory_page.cpp \
+</span></span><span class="line"><span class="cl">src/include/storage/page/hash_table_bucket_page.h \
+</span></span><span class="line"><span class="cl">src/storage/page/hash_table_bucket_page.cpp \
+</span></span><span class="line"><span class="cl">src/include/container/hash/extendible_hash_table.h \
+</span></span><span class="line"><span class="cl">src/container/hash/extendible_hash_table.cpp \
+</span></span><span class="line"><span class="cl">src/include/execution/execution_engine.h \
+</span></span><span class="line"><span class="cl">src/include/execution/executors/seq_scan_executor.h \
+</span></span><span class="line"><span class="cl">src/include/execution/executors/insert_executor.h \
+</span></span><span class="line"><span class="cl">src/include/execution/executors/update_executor.h \
+</span></span><span class="line"><span class="cl">src/include/execution/executors/delete_executor.h \
+</span></span><span class="line"><span class="cl">src/include/execution/executors/nested_loop_join_executor.h \
+</span></span><span class="line"><span class="cl">src/include/execution/executors/hash_join_executor.h \
+</span></span><span class="line"><span class="cl">src/include/execution/executors/aggregation_executor.h \
+</span></span><span class="line"><span class="cl">src/include/execution/executors/limit_executor.h \
+</span></span><span class="line"><span class="cl">src/include/execution/executors/distinct_executor.h \
+</span></span><span class="line"><span class="cl">src/execution/seq_scan_executor.cpp \
+</span></span><span class="line"><span class="cl">src/execution/insert_executor.cpp \
+</span></span><span class="line"><span class="cl">src/execution/update_executor.cpp \
+</span></span><span class="line"><span class="cl">src/execution/delete_executor.cpp \
+</span></span><span class="line"><span class="cl">src/execution/nested_loop_join_executor.cpp \
+</span></span><span class="line"><span class="cl">src/execution/hash_join_executor.cpp \
+</span></span><span class="line"><span class="cl">src/execution/aggregation_executor.cpp \
+</span></span><span class="line"><span class="cl">src/execution/limit_executor.cpp \
+</span></span><span class="line"><span class="cl">src/execution/distinct_executor.cpp
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>只有一个task, 不过这个task非常的长, 因为有要实现很多东西, 各种查询执行的模块如Insert, Select, 聚合等等, 不过它实现好了火山模型, 所以做这个的时候应该会比较有意思而且比较快, 而且可以从它这么好的源码来学习了解实际火山模型, 非常nice.</p>
 <p>主要是实现以下三类操作:</p>
@@ -282,14 +282,14 @@ src/execution/distinct_executor.cpp
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">      <span class="n">Tuple</span> <span class="n">tuple</span><span class="p">;</span>
-      <span class="n">RID</span> <span class="n">rid</span><span class="p">;</span>
-      <span class="k">while</span> <span class="p">(</span><span class="n">executor</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tuple</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rid</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">result_set</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
-          <span class="n">result_set</span><span class="o">-&gt;</span><span class="n">push_back</span><span class="p">(</span><span class="n">tuple</span><span class="p">);</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">      <span class="n">Tuple</span> <span class="n">tuple</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">RID</span> <span class="n">rid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">while</span> <span class="p">(</span><span class="n">executor</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tuple</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rid</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">result_set</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">result_set</span><span class="o">-&gt;</span><span class="n">push_back</span><span class="p">(</span><span class="n">tuple</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>现在让我有点困惑的是, 这里都没有Insert任何数据, 那么我要获取什么数据呢?</p>
 <p>并不是! 数据是在表中, 而表是在<code>src/catalog/table_geneartor.cpp</code>中生成的, 可以看到各种表. 例如他们的size</p>
@@ -301,8 +301,8 @@ src/execution/distinct_executor.cpp
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">TableHeap *table_heap_ptr_;
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">TableHeap *table_heap_ptr_;
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这个TableHeap应该就是代表<strong>堆表结构</strong>, 它实现了一些方法对表进行访问, 例如</p>
 <ol>
@@ -403,7 +403,7 @@ src/execution/distinct_executor.cpp
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

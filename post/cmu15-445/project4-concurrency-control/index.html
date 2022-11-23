@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/cmu15-445/project4-concurrency-control/" />
@@ -186,12 +186,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd build
-make lock_manager_test
-make transaction_test
-./test/lock_manager_test
-./test/transaction_test
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cd build
+</span></span><span class="line"><span class="cl">make lock_manager_test
+</span></span><span class="line"><span class="cl">make transaction_test
+</span></span><span class="line"><span class="cl">./test/lock_manager_test
+</span></span><span class="line"><span class="cl">./test/transaction_test
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="task-1---lock-manager">TASK #1 - LOCK MANAGER</h2>
 <p>为确保事务操作交叉执行的正确性，DBMS将使用lock manager（LM）来控制事务何时被允许访问数据项。LM的基本思想是它维护有关活动事务当前锁的锁的内部数据结构。事务在允许访问数据项之前向LM发出锁定请求。LM将授予锁定到调用事务，阻塞(block)将该事务块，或中止事务。</p>
@@ -255,22 +255,22 @@ make transaction_test
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">/**
- * Transaction states for 2PL:
- *
- *     _________________________
- *    |                         v
- * GROWING -&gt; SHRINKING -&gt; COMMITTED   ABORTED
- *    |__________|________________________^
- *
- * Transaction states for Non-2PL:
- *     __________
- *    |          v
- * GROWING  -&gt; COMMITTED     ABORTED
- *    |_________________________^
- *
- **/
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/**
+</span></span><span class="line"><span class="cl"> * Transaction states for 2PL:
+</span></span><span class="line"><span class="cl"> *
+</span></span><span class="line"><span class="cl"> *     _________________________
+</span></span><span class="line"><span class="cl"> *    |                         v
+</span></span><span class="line"><span class="cl"> * GROWING -&gt; SHRINKING -&gt; COMMITTED   ABORTED
+</span></span><span class="line"><span class="cl"> *    |__________|________________________^
+</span></span><span class="line"><span class="cl"> *
+</span></span><span class="line"><span class="cl"> * Transaction states for Non-2PL:
+</span></span><span class="line"><span class="cl"> *     __________
+</span></span><span class="line"><span class="cl"> *    |          v
+</span></span><span class="line"><span class="cl"> * GROWING  -&gt; COMMITTED     ABORTED
+</span></span><span class="line"><span class="cl"> *    |_________________________^
+</span></span><span class="line"><span class="cl"> *
+</span></span><span class="line"><span class="cl"> **/
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="task-2---deadlock-prevention">TASK #2 - DEADLOCK PREVENTION</h2>
 <p>如果您的锁管理器被告知使用预防死锁，那么您的锁管理器应该使用<strong>WOUND-WAIT算法</strong>来决定中止哪些事务。</p>
@@ -400,7 +400,7 @@ make transaction_test
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

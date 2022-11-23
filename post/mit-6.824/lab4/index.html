@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/mit-6.824/lab4/" />
@@ -191,12 +191,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Config</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Num</span>    <span class="kt">int</span>              <span class="c1">// config number
-</span><span class="c1"></span>	<span class="nx">Shards</span> <span class="p">[</span><span class="nx">NShards</span><span class="p">]</span><span class="kt">int</span>     <span class="c1">// shard -&gt; gid 
-</span><span class="c1"></span>	<span class="nx">Groups</span> <span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">][]</span><span class="kt">string</span> <span class="c1">// gid -&gt; servers[]
-</span><span class="c1"></span><span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Config</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">Num</span>    <span class="kt">int</span>              <span class="c1">// config number
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Shards</span> <span class="p">[</span><span class="nx">NShards</span><span class="p">]</span><span class="kt">int</span>     <span class="c1">// shard -&gt; gid 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">Groups</span> <span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">][]</span><span class="kt">string</span> <span class="c1">// gid -&gt; servers[]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>包括了每个shard对应的group id（简称gid），以及每个raft group的每个server的名字列表（string表示）。</p>
 <h3 id="内容介绍">内容介绍</h3>
@@ -335,8 +335,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">2021/10/11 21:56:04 [WARNING] client.go:132	 client PutAppend shard: 8, gid: 100, ok: true, reply: {WrongLeader:false Err:ErrWrongGroup}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">2021/10/11 21:56:04 [WARNING] client.go:132	 client PutAppend shard: 8, gid: 100, ok: true, reply: {WrongLeader:false Err:ErrWrongGroup}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>奇怪的是，他本不应该ErrWrongGroup的；在wrongGroup函数中，kv.config 变成了一个没有赋值的config，Num==0，但在updateConfig中打印的日志来看它确实是赋值了的。</p>
 <p>分析了很久，突然明白了。。。我的ErrWrongGroup的判断是在isLeader之前的，而我设置的更新config是只能leader更新，所以follower的config是没有更新的，所以导致了client一直访问到follower然后ErrWrongGroup，然后一直循环。只有当server为0的时候是leader，这个测试才会通过！所以就会出现不确定的情况！</p>
@@ -362,21 +362,21 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:3}
-2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:2}
-2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:6}
-2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:5}
-2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:2}
-2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:3}
-2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:4}
-2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:2}
-2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:6}
-2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:2}
-2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:5}
-2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:3}
-2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:4}
-2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:2}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:3}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:2}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:6}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:5}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:2}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:3}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:4}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:34 [WARNING] server.go:76	 [0] Get args: &amp;{Key:2}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:6}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:2}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:5}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:3}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:4}
+</span></span><span class="line"><span class="cl">2021/10/11 21:28:35 [WARNING] server.go:76	 [0] Get args: &amp;{Key:2}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>解决了第一种bug之后，第二个bug也没有出现了。</p>
 </li>
@@ -401,20 +401,20 @@
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">2021/10/12 08:59:26 [WARNING] server.go:76	 gid: 101, [0] Get args: &amp;{Key:0}
-2021/10/12 08:59:26 [WARNING] server.go:50	 gid: 101, [0] prepare to opt: {Ch:0xc000351500 Req:{Key:0}}
-2021/10/12 08:59:26 [WARNING] server.go:153	 gid: 101, [0] apply: {Ch:0xc000351500 Req:{Key:0}}
-2021/10/12 08:59:26 [WARNING] server.go:128	 gid: 101, [0] get key: 0, value: 
-2021/10/12 08:59:26 [WARNING] server.go:153	 gid: 101, [1] apply: {Ch:&lt;nil&gt; Req:{Key:0}}
-2021/10/12 08:59:26 [WARNING] server.go:128	 gid: 101, [1] get key: 0, value: 
-2021/10/12 08:59:26 [WARNING] server.go:153	 gid: 101, [2] apply: {Ch:&lt;nil&gt; Req:{Key:0}}
-2021/10/12 08:59:26 [WARNING] server.go:128	 gid: 101, [2] get key: 0, value: 
-    TestJoinLeave: test_test.go:21: Get(0): expected:
-        Dg6DN7YYzr
-        received:
---- FAIL: TestJoinLeave (5.75s)
-FAIL
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">2021/10/12 08:59:26 [WARNING] server.go:76	 gid: 101, [0] Get args: &amp;{Key:0}
+</span></span><span class="line"><span class="cl">2021/10/12 08:59:26 [WARNING] server.go:50	 gid: 101, [0] prepare to opt: {Ch:0xc000351500 Req:{Key:0}}
+</span></span><span class="line"><span class="cl">2021/10/12 08:59:26 [WARNING] server.go:153	 gid: 101, [0] apply: {Ch:0xc000351500 Req:{Key:0}}
+</span></span><span class="line"><span class="cl">2021/10/12 08:59:26 [WARNING] server.go:128	 gid: 101, [0] get key: 0, value: 
+</span></span><span class="line"><span class="cl">2021/10/12 08:59:26 [WARNING] server.go:153	 gid: 101, [1] apply: {Ch:&lt;nil&gt; Req:{Key:0}}
+</span></span><span class="line"><span class="cl">2021/10/12 08:59:26 [WARNING] server.go:128	 gid: 101, [1] get key: 0, value: 
+</span></span><span class="line"><span class="cl">2021/10/12 08:59:26 [WARNING] server.go:153	 gid: 101, [2] apply: {Ch:&lt;nil&gt; Req:{Key:0}}
+</span></span><span class="line"><span class="cl">2021/10/12 08:59:26 [WARNING] server.go:128	 gid: 101, [2] get key: 0, value: 
+</span></span><span class="line"><span class="cl">    TestJoinLeave: test_test.go:21: Get(0): expected:
+</span></span><span class="line"><span class="cl">        Dg6DN7YYzr
+</span></span><span class="line"><span class="cl">        received:
+</span></span><span class="line"><span class="cl">--- FAIL: TestJoinLeave (5.75s)
+</span></span><span class="line"><span class="cl">FAIL
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>后面这种出现value为空，而ErrWrongGroup为false的情况，是因为没有将shards数据进行迁移，导致在Join，Leave之后，gid101的raft servers里没有数据，所以即使gid匹配了，value都是空，所以一直会出错。</p>
 <p>急匆匆实现了一个RPC逻辑，以及在updateConfig的时候进行shard数据迁移，没想到进行TestJoinLeave的时候一遍过了。还以为又要调试到爆炸。不过还是不完善的，因为这个测试还比较基本，没有什么错误的逻辑，所以我这个基本的逻辑也可以过了。</p>
@@ -428,8 +428,8 @@ FAIL
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">TestSnapshot: config.go:94: persister.RaftStateSize() 11094, but maxraftstate 1000
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">TestSnapshot: config.go:94: persister.RaftStateSize() 11094, but maxraftstate 1000
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>看了一下运行错误的报错，发现它是提示map的并发写（可是debug模式执行为什么没有这个问题，debug模式难道不会并发吗？）</p>
 <div class="highlight"><div class="chroma">
@@ -437,8 +437,8 @@ FAIL
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">fatal error: concurrent map iteration and map write
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">fatal error: concurrent map iteration and map write
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这就是lab文档中多次提到的问题，我在前面实现的代码中为了先追求简单而忽略了这个问题！于是回去检查，发现几个要修改的点：</p>
 <ol>
@@ -469,15 +469,15 @@ FAIL
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">2021/10/12 18:56:10 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
-2021/10/12 18:56:10 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
-2021/10/12 18:56:10 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
-2021/10/12 18:56:10 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
-2021/10/12 18:56:11 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
-2021/10/12 18:56:11 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
-2021/10/12 18:56:12 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
-2021/10/12 18:56:12 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">2021/10/12 18:56:10 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
+</span></span><span class="line"><span class="cl">2021/10/12 18:56:10 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
+</span></span><span class="line"><span class="cl">2021/10/12 18:56:10 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
+</span></span><span class="line"><span class="cl">2021/10/12 18:56:10 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
+</span></span><span class="line"><span class="cl">2021/10/12 18:56:11 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
+</span></span><span class="line"><span class="cl">2021/10/12 18:56:11 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
+</span></span><span class="line"><span class="cl">2021/10/12 18:56:12 [WARNING] server.go:186	 gid: 100, [0] start snapshot, raftStateSize: 3111
+</span></span><span class="line"><span class="cl">2021/10/12 18:56:12 [WARNING] server.go:193	 gid: 100, [0] end snapshot, raftStateSize: 3111
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>一直在执行snapshot，而这个RaftStateSize一直没有减少。很奇怪。</p>
 <p>定位问题到saveSnapshot逻辑，调试发现有很多很多协程在raft实现的persist这里阻塞了，而这里的逻辑是在persist之后，通知apply触发快照。尝试给applyCh加了很大size的缓冲，于是不阻塞了。</p>
@@ -486,8 +486,8 @@ FAIL
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">rf.applyCh &lt;- msg
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">rf.applyCh &lt;- msg
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>解决了第一个问题，这个测试有时候能够通过，但是有时候会出现check失败的情况，所以第二个问题还是存在的。</p>
 <p>尽管Pass的情况比Fail要多，但是这个问题还是尽量要解决掉。出现这个问题的根源应该还是shardkv更新config以及迁移shard数据的细节造成的。</p>
@@ -504,13 +504,13 @@ FAIL
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">Op</span><span class="p">{})</span>
-<span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">JoinArgs</span><span class="p">{})</span>
-<span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">LeaveArgs</span><span class="p">{})</span>
-<span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">MoveArgs</span><span class="p">{})</span>
-<span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">QueryArgs</span><span class="p">{})</span>
-<span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">Config</span><span class="p">{})</span> <span class="c1">// fuck!
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">Op</span><span class="p">{})</span>
+</span></span><span class="line"><span class="cl"><span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">JoinArgs</span><span class="p">{})</span>
+</span></span><span class="line"><span class="cl"><span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">LeaveArgs</span><span class="p">{})</span>
+</span></span><span class="line"><span class="cl"><span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">MoveArgs</span><span class="p">{})</span>
+</span></span><span class="line"><span class="cl"><span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">QueryArgs</span><span class="p">{})</span>
+</span></span><span class="line"><span class="cl"><span class="nx">labgob</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">Config</span><span class="p">{})</span> <span class="c1">// fuck!
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>一开始我没有注册这个Config，导致实验过程中出现了奇怪的现象，具体表现为当leader被kill之后，本应从followers中选出一个新的leader然后新leader快速恢复状态，但是状态却全部丢失了！</p>
 <p>打印了许多日志进行调试后，发现除了leader apply的msg的config全是nil, 例如下面这条日志</p>
@@ -519,8 +519,8 @@ FAIL
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">2021/10/05 17:24:14   [INFO]  raft.go:441   [2] apply msg: {CommandValid:true Command:&lt;nil&gt; CommandIndex:3}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">2021/10/05 17:24:14   [INFO]  raft.go:441   [2] apply msg: {CommandValid:true Command:&lt;nil&gt; CommandIndex:3}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>之后对RequestAppendEntries进行了调试, 发现在这里获得的log entries中, Get的都是OK的, 而Config的都是nil的, 想到之前踩过的坑，就是没有Register某struct，导致数据丢失。注册之后果然是这样！</p>
 <h3 id="初始化mapchannel">初始化map，channel</h3>
@@ -612,7 +612,7 @@ FAIL
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

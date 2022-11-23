@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/%E5%80%8D%E5%A2%9E%E6%B3%95%E6%B1%82lca-%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" />
@@ -226,21 +226,21 @@ parents[u][2], 是u结点的2²祖先结点, 即4祖先, 也即(父亲的父亲)
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">getData</span><span class="p">()</span>
-<span class="p">{</span>
-	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
-	<span class="kt">int</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">;</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">u</span> <span class="o">&gt;&gt;</span> <span class="n">v</span><span class="p">;</span>
-		<span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
-		<span class="n">parents</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">;</span>
-		<span class="n">from</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-	<span class="p">}</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">from</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="n">root</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">getData</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">u</span> <span class="o">&gt;&gt;</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">parents</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">from</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">from</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="n">root</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="步骤二">步骤二</h3>
 <p><strong>获取各结点的深度, 可以用DFS或这BFS方法</strong></p>
@@ -271,30 +271,30 @@ parents[u][2], 是u结点的2²祖先结点, 即4祖先, 也即(父亲的父亲)
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">void getDepth_dfs(int u) // DFS求深度
-{
-	int len = G[u].size();
-	for (int i = 0; i &lt; len; ++i) {
-		int v = G[u][i];
-		depth[v] = depth[u] + 1;
-		getDepth_dfs(v);
-	}
-}
-
-void getDepth_bfs(int u) // BFS求深度
-{
-	queue&lt;int&gt; Q;
-	Q.push(u);
-	while (!Q.empty()) {
-		int v = Q.front();
-		Q.pop();
-		for (int i = 0; i &lt; G[v].size(); ++i) {
-			depth[G[v][i]] = depth[v] + 1;
-			Q.push(G[v][i]);
-		}
-	}
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">void getDepth_dfs(int u) // DFS求深度
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int len = G[u].size();
+</span></span><span class="line"><span class="cl">	for (int i = 0; i &lt; len; ++i) {
+</span></span><span class="line"><span class="cl">		int v = G[u][i];
+</span></span><span class="line"><span class="cl">		depth[v] = depth[u] + 1;
+</span></span><span class="line"><span class="cl">		getDepth_dfs(v);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void getDepth_bfs(int u) // BFS求深度
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	queue&lt;int&gt; Q;
+</span></span><span class="line"><span class="cl">	Q.push(u);
+</span></span><span class="line"><span class="cl">	while (!Q.empty()) {
+</span></span><span class="line"><span class="cl">		int v = Q.front();
+</span></span><span class="line"><span class="cl">		Q.pop();
+</span></span><span class="line"><span class="cl">		for (int i = 0; i &lt; G[v].size(); ++i) {
+</span></span><span class="line"><span class="cl">			depth[G[v][i]] = depth[v] + 1;
+</span></span><span class="line"><span class="cl">			Q.push(G[v][i]);
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="步骤三">步骤三</h3>
 <p><strong>求祖先</strong></p>
@@ -318,15 +318,15 @@ void getDepth_bfs(int u) // BFS求深度
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">void getParents()
-{
-	for (int up = 1; (1 &lt;&lt; up) &lt;= n; ++up) {
-		for (int i = 1; i &lt;= n; ++i) {
-			parents[i][up] = parents[parents[i][up - 1]][up - 1];
-		}
-	}
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">void getParents()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	for (int up = 1; (1 &lt;&lt; up) &lt;= n; ++up) {
+</span></span><span class="line"><span class="cl">		for (int i = 1; i &lt;= n; ++i) {
+</span></span><span class="line"><span class="cl">			parents[i][up] = parents[parents[i][up - 1]][up - 1];
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="步骤四">步骤四</h3>
 <p>做完了前面<strong>O(VlogV)<strong>的预处理操作, 剩下的就是查询了, 一次查询</strong>O(logV)</strong></p>
@@ -360,32 +360,32 @@ void getDepth_bfs(int u) // BFS求深度
 </span><span class="lnt">25
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">int Lca(int u, int v)
-{
-	if (depth[u] &lt; depth[v]) swap(u, v); // 使满足u深度更大, 便于后面操作 
-	int i = -1, j;
-	// i求的是最大二分跨度 
-	while ((1 &lt;&lt; (i + 1)) &lt;= depth[u]) ++i;
-	
-	// 下面这个循环是为了让u和v到同一深度 
-	for (j = i; j &gt;= 0; --j) {
-		if (depth[u] - (1 &lt;&lt; j) &gt;= depth[v]) { // 是&gt;=, 因为如果&lt;,代表跳过头了,跳到了上面. 
-			u = parents[u][j];
-		}
-	}
-	
-	if (u == v) return u; // 刚好是祖宗 
-	
-	// u和v一起二分找祖宗
-	for (j = i; j &gt;= 0; --j) {
-		if (parents[u][j] != parents[v][j]) {
-			u = parents[u][j];
-			v = parents[v][j];
-		}
-	}
-	return parents[u][0]; // 说明上个循环迭代到了Lca的子结点 
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">int Lca(int u, int v)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	if (depth[u] &lt; depth[v]) swap(u, v); // 使满足u深度更大, 便于后面操作 
+</span></span><span class="line"><span class="cl">	int i = -1, j;
+</span></span><span class="line"><span class="cl">	// i求的是最大二分跨度 
+</span></span><span class="line"><span class="cl">	while ((1 &lt;&lt; (i + 1)) &lt;= depth[u]) ++i;
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	// 下面这个循环是为了让u和v到同一深度 
+</span></span><span class="line"><span class="cl">	for (j = i; j &gt;= 0; --j) {
+</span></span><span class="line"><span class="cl">		if (depth[u] - (1 &lt;&lt; j) &gt;= depth[v]) { // 是&gt;=, 因为如果&lt;,代表跳过头了,跳到了上面. 
+</span></span><span class="line"><span class="cl">			u = parents[u][j];
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	if (u == v) return u; // 刚好是祖宗 
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	// u和v一起二分找祖宗
+</span></span><span class="line"><span class="cl">	for (j = i; j &gt;= 0; --j) {
+</span></span><span class="line"><span class="cl">		if (parents[u][j] != parents[v][j]) {
+</span></span><span class="line"><span class="cl">			u = parents[u][j];
+</span></span><span class="line"><span class="cl">			v = parents[v][j];
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	return parents[u][0]; // 说明上个循环迭代到了Lca的子结点 
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
 <li>
@@ -533,133 +533,133 @@ void getDepth_bfs(int u) // BFS求深度
 </span><span class="lnt">126
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;algorithm&gt;
-#include &lt;cstring&gt;
-#include &lt;queue&gt;
-#include &lt;vector&gt;
-using namespace std;
-
-const int maxn = 10005;
-int parents[maxn][20], depth[maxn];
-int n, from[maxn], root = -1;
-vector&lt;int&gt; G[maxn];
-
-void init()
-{
-	memset(parents, -1, sizeof(parents));
-	memset(from, -1, sizeof(from));
-	memset(depth, -1, sizeof(depth));
-}
-
-void getData()
-{
-	cin &gt;&gt; n;
-	int u, v;
-	for (int i = 1; i &lt; n; ++i) {
-		cin &gt;&gt; u &gt;&gt; v;
-		G[u].push_back(v);
-		parents[v][0] = u;
-		from[v] = 1;
-	}
-	for (int i = 1; i &lt;= n; ++i) {
-		if (from[i] == -1) root = i;
-	}
-}
-
-void getDepth_dfs(int u)
-{
-	int len = G[u].size();
-	for (int i = 0; i &lt; len; ++i) {
-		int v = G[u][i];
-		depth[v] = depth[u] + 1;
-		getDepth_dfs(v);
-	}
-}
-
-void getDepth_bfs(int u)
-{
-	queue&lt;int&gt; Q;
-	Q.push(u);
-	while (!Q.empty()) {
-		int v = Q.front();
-		Q.pop();
-		for (int i = 0; i &lt; G[v].size(); ++i) {
-			depth[G[v][i]] = depth[v] + 1;
-			Q.push(G[v][i]);
-		}
-	}
-}
-
-void getParents()
-{
-	for (int up = 1; (1 &lt;&lt; up) &lt;= n; ++up) {
-		for (int i = 1; i &lt;= n; ++i) {
-			parents[i][up] = parents[parents[i][up - 1]][up - 1];
-		}
-	}
-}
-
-int Lca(int u, int v)
-{
-	if (depth[u] &lt; depth[v]) swap(u, v);
-	int i = -1, j;
-	while ((1 &lt;&lt; (i + 1)) &lt;= depth[u]) ++i;
-	for (j = i; j &gt;= 0; --j) {
-		if (depth[u] - (1 &lt;&lt; j) &gt;= depth[v]) {
-			u = parents[u][j];
-		}
-	}
-	if (u == v) return u;
-	for (j = i; j &gt;= 0; --j) {
-		if (parents[u][j] != parents[v][j]) {
-			u = parents[u][j];
-			v = parents[v][j];
-		}
-	}
-	return parents[u][0];
-}
-
-void questions()
-{
-	int q, u, v;
-	cin &gt;&gt; q;
-	for (int i = 0; i &lt; q; ++i) {
-		cin &gt;&gt; u &gt;&gt; v;
-		int ans = Lca(u, v);
-		cout &lt;&lt; ans &lt;&lt; endl;
-		//cout &lt;&lt; u &lt;&lt; &#34; 和 &#34; &lt;&lt; v &lt;&lt; &#34; 的最近公共祖先(LCA)是: &#34; &lt;&lt; ans &lt;&lt; endl; 
-	}
-}
-
-int main()
-{
-	init();
-	getData();
-	depth[root] = 1;
-	getDepth_dfs(root);
-	//getDepth_bfs(root);
-	getParents();
-	questions();
-}
-/*
-9
-1 2
-1 3
-1 4
-2 5
-2 6
-3 7
-6 8
-7 9
-5
-1 3
-5 6
-8 9
-8 4
-5 8
-*/
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;algorithm&gt;
+</span></span><span class="line"><span class="cl">#include &lt;cstring&gt;
+</span></span><span class="line"><span class="cl">#include &lt;queue&gt;
+</span></span><span class="line"><span class="cl">#include &lt;vector&gt;
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">const int maxn = 10005;
+</span></span><span class="line"><span class="cl">int parents[maxn][20], depth[maxn];
+</span></span><span class="line"><span class="cl">int n, from[maxn], root = -1;
+</span></span><span class="line"><span class="cl">vector&lt;int&gt; G[maxn];
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void init()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	memset(parents, -1, sizeof(parents));
+</span></span><span class="line"><span class="cl">	memset(from, -1, sizeof(from));
+</span></span><span class="line"><span class="cl">	memset(depth, -1, sizeof(depth));
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void getData()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; n;
+</span></span><span class="line"><span class="cl">	int u, v;
+</span></span><span class="line"><span class="cl">	for (int i = 1; i &lt; n; ++i) {
+</span></span><span class="line"><span class="cl">		cin &gt;&gt; u &gt;&gt; v;
+</span></span><span class="line"><span class="cl">		G[u].push_back(v);
+</span></span><span class="line"><span class="cl">		parents[v][0] = u;
+</span></span><span class="line"><span class="cl">		from[v] = 1;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	for (int i = 1; i &lt;= n; ++i) {
+</span></span><span class="line"><span class="cl">		if (from[i] == -1) root = i;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void getDepth_dfs(int u)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int len = G[u].size();
+</span></span><span class="line"><span class="cl">	for (int i = 0; i &lt; len; ++i) {
+</span></span><span class="line"><span class="cl">		int v = G[u][i];
+</span></span><span class="line"><span class="cl">		depth[v] = depth[u] + 1;
+</span></span><span class="line"><span class="cl">		getDepth_dfs(v);
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void getDepth_bfs(int u)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	queue&lt;int&gt; Q;
+</span></span><span class="line"><span class="cl">	Q.push(u);
+</span></span><span class="line"><span class="cl">	while (!Q.empty()) {
+</span></span><span class="line"><span class="cl">		int v = Q.front();
+</span></span><span class="line"><span class="cl">		Q.pop();
+</span></span><span class="line"><span class="cl">		for (int i = 0; i &lt; G[v].size(); ++i) {
+</span></span><span class="line"><span class="cl">			depth[G[v][i]] = depth[v] + 1;
+</span></span><span class="line"><span class="cl">			Q.push(G[v][i]);
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void getParents()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	for (int up = 1; (1 &lt;&lt; up) &lt;= n; ++up) {
+</span></span><span class="line"><span class="cl">		for (int i = 1; i &lt;= n; ++i) {
+</span></span><span class="line"><span class="cl">			parents[i][up] = parents[parents[i][up - 1]][up - 1];
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int Lca(int u, int v)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	if (depth[u] &lt; depth[v]) swap(u, v);
+</span></span><span class="line"><span class="cl">	int i = -1, j;
+</span></span><span class="line"><span class="cl">	while ((1 &lt;&lt; (i + 1)) &lt;= depth[u]) ++i;
+</span></span><span class="line"><span class="cl">	for (j = i; j &gt;= 0; --j) {
+</span></span><span class="line"><span class="cl">		if (depth[u] - (1 &lt;&lt; j) &gt;= depth[v]) {
+</span></span><span class="line"><span class="cl">			u = parents[u][j];
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	if (u == v) return u;
+</span></span><span class="line"><span class="cl">	for (j = i; j &gt;= 0; --j) {
+</span></span><span class="line"><span class="cl">		if (parents[u][j] != parents[v][j]) {
+</span></span><span class="line"><span class="cl">			u = parents[u][j];
+</span></span><span class="line"><span class="cl">			v = parents[v][j];
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	return parents[u][0];
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void questions()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int q, u, v;
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; q;
+</span></span><span class="line"><span class="cl">	for (int i = 0; i &lt; q; ++i) {
+</span></span><span class="line"><span class="cl">		cin &gt;&gt; u &gt;&gt; v;
+</span></span><span class="line"><span class="cl">		int ans = Lca(u, v);
+</span></span><span class="line"><span class="cl">		cout &lt;&lt; ans &lt;&lt; endl;
+</span></span><span class="line"><span class="cl">		//cout &lt;&lt; u &lt;&lt; &#34; 和 &#34; &lt;&lt; v &lt;&lt; &#34; 的最近公共祖先(LCA)是: &#34; &lt;&lt; ans &lt;&lt; endl; 
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	init();
+</span></span><span class="line"><span class="cl">	getData();
+</span></span><span class="line"><span class="cl">	depth[root] = 1;
+</span></span><span class="line"><span class="cl">	getDepth_dfs(root);
+</span></span><span class="line"><span class="cl">	//getDepth_bfs(root);
+</span></span><span class="line"><span class="cl">	getParents();
+</span></span><span class="line"><span class="cl">	questions();
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">/*
+</span></span><span class="line"><span class="cl">9
+</span></span><span class="line"><span class="cl">1 2
+</span></span><span class="line"><span class="cl">1 3
+</span></span><span class="line"><span class="cl">1 4
+</span></span><span class="line"><span class="cl">2 5
+</span></span><span class="line"><span class="cl">2 6
+</span></span><span class="line"><span class="cl">3 7
+</span></span><span class="line"><span class="cl">6 8
+</span></span><span class="line"><span class="cl">7 9
+</span></span><span class="line"><span class="cl">5
+</span></span><span class="line"><span class="cl">1 3
+</span></span><span class="line"><span class="cl">5 6
+</span></span><span class="line"><span class="cl">8 9
+</span></span><span class="line"><span class="cl">8 4
+</span></span><span class="line"><span class="cl">5 8
+</span></span><span class="line"><span class="cl">*/
+</span></span></code></pre></td></tr></table>
 </div>
 </div>
     </div>
@@ -746,7 +746,7 @@ int main()
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

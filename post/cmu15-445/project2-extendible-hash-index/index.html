@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/cmu15-445/project2-extendible-hash-index/" />
@@ -190,19 +190,19 @@
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">zip project2-submission.zip src/include/buffer/lru_replacer.h \
-src/buffer/lru_replacer.cpp \
-src/include/buffer/buffer_pool_manager_instance.h \
-src/buffer/buffer_pool_manager_instance.cpp \
-src/include/buffer/parallel_buffer_pool_manager.h \
-src/buffer/parallel_buffer_pool_manager.cpp \
-src/include/storage/page/hash_table_directory_page.h \
-src/storage/page/hash_table_directory_page.cpp \
-src/include/storage/page/hash_table_bucket_page.h \
-src/storage/page/hash_table_bucket_page.cpp \
-src/include/container/hash/extendible_hash_table.h \
-src/container/hash/extendible_hash_table.cpp
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">zip project2-submission.zip src/include/buffer/lru_replacer.h \
+</span></span><span class="line"><span class="cl">src/buffer/lru_replacer.cpp \
+</span></span><span class="line"><span class="cl">src/include/buffer/buffer_pool_manager_instance.h \
+</span></span><span class="line"><span class="cl">src/buffer/buffer_pool_manager_instance.cpp \
+</span></span><span class="line"><span class="cl">src/include/buffer/parallel_buffer_pool_manager.h \
+</span></span><span class="line"><span class="cl">src/buffer/parallel_buffer_pool_manager.cpp \
+</span></span><span class="line"><span class="cl">src/include/storage/page/hash_table_directory_page.h \
+</span></span><span class="line"><span class="cl">src/storage/page/hash_table_directory_page.cpp \
+</span></span><span class="line"><span class="cl">src/include/storage/page/hash_table_bucket_page.h \
+</span></span><span class="line"><span class="cl">src/storage/page/hash_table_bucket_page.cpp \
+</span></span><span class="line"><span class="cl">src/include/container/hash/extendible_hash_table.h \
+</span></span><span class="line"><span class="cl">src/container/hash/extendible_hash_table.cpp
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="task--1---page-layouts">Task # 1 - PAGE LAYOUTS</h2>
 <p>需要实现两类Page的布局, 一个是作为目录, 一个则是bucket本身</p>
@@ -281,17 +281,17 @@ src/container/hash/extendible_hash_table.cpp
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">KeyType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">ValueType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">KeyComparator</span><span class="o">&gt;</span>
-<span class="kt">bool</span> <span class="n">HASH_TABLE_BUCKET_TYPE</span><span class="o">::</span><span class="n">IsFull</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">OCCUPIED_BYTE_SIZE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// 不能写成 *(readable_ + i) != 0xff, 会被直接优化成 return false; 打不了断点
-</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">readable_</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">KeyType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">ValueType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">KeyComparator</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">HASH_TABLE_BUCKET_TYPE</span><span class="o">::</span><span class="n">IsFull</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">OCCUPIED_BYTE_SIZE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 不能写成 *(readable_ + i) != 0xff, 会被直接优化成 return false; 打不了断点
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">readable_</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>看起来有点麻烦, 因为每次判断一个page是否是full都需要遍历这个数组. 如果能维护一个size变量从而比较快的判断出是否是full就更好了. 但是这个bucket page似乎是要直接从buffer pool上的一个page强制类型转化的, 所以似乎不能随便添加成员变量.</p>
 <p>而directory_page那部分就更简单了, 每个方法都只有少数的几行.</p>
@@ -334,8 +334,8 @@ src/container/hash/extendible_hash_table.cpp
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">2021-11-04 21:54:01 [../src/storage/page/hash_table_bucket_page.cpp:36:Insert] DEBUG - 一个bucket page中的key-value数量, BUCKET_ARRAY_SIZE: 496
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">2021-11-04 21:54:01 [../src/storage/page/hash_table_bucket_page.cpp:36:Insert] DEBUG - 一个bucket page中的key-value数量, BUCKET_ARRAY_SIZE: 496
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>实现相关的问题:</p>
 <ol>
@@ -413,64 +413,64 @@ src/container/hash/extendible_hash_table.cpp
 </span><span class="lnt">57
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">KeyType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">ValueType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">KeyComparator</span><span class="o">&gt;</span>
-<span class="kt">bool</span> <span class="n">HASH_TABLE_TYPE</span><span class="o">::</span><span class="n">SplitInsert</span><span class="p">(</span><span class="n">Transaction</span> <span class="o">*</span><span class="n">transaction</span><span class="p">,</span> <span class="k">const</span> <span class="n">KeyType</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">,</span> <span class="k">const</span> <span class="n">ValueType</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="k">nullptr</span> <span class="o">==</span> <span class="n">transaction</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// 更新 对应bucket 的 LocalDepth
-</span><span class="c1"></span>    <span class="n">HashTableDirectoryPage</span> <span class="o">*</span><span class="n">dir_page</span> <span class="o">=</span> <span class="n">FetchDirectoryPage</span><span class="p">();</span>
-    <span class="c1">// 通过hash函数找到对应的bucket page对应的 pageid
-</span><span class="c1"></span>    <span class="n">page_id_t</span> <span class="n">bucket_page_id</span> <span class="o">=</span> <span class="n">KeyToPageId</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dir_page</span><span class="p">);</span>
-    <span class="k">auto</span> <span class="n">bucket_page</span> <span class="o">=</span> <span class="n">FetchBucketPage</span><span class="p">(</span><span class="n">bucket_page_id</span><span class="p">);</span>
-    <span class="n">page_id_t</span> <span class="n">new_bucket_page_id</span><span class="p">;</span>
-    <span class="n">Page</span> <span class="o">*</span><span class="n">new_bucket_page</span> <span class="o">=</span> <span class="n">buffer_pool_manager_</span><span class="o">-&gt;</span><span class="n">NewPage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">new_bucket_page_id</span><span class="p">);</span> <span class="c1">// 内存泄漏
-</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="k">nullptr</span> <span class="o">==</span> <span class="n">new_bucket_page</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">LOG_ERROR</span><span class="p">(</span><span class="s">&#34;Split时分配新的bucket page失败&#34;</span><span class="p">);</span> <span class="c1">// 泄露
-</span><span class="c1"></span>      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="kt">uint32_t</span> <span class="n">bucket_index</span> <span class="o">=</span> <span class="n">KeyToDirectoryIndex</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dir_page</span><span class="p">);</span>
-    <span class="kt">uint32_t</span> <span class="n">local_depth</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="kt">uint32_t</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">bucket_index</span> <span class="o">&amp;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepthMask</span><span class="p">(</span><span class="n">bucket_index</span><span class="p">);</span>
-    <span class="c1">// 转移, 将 directory page 上的bucket_id进行重分配
-</span><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">DIRECTORY_ARRAY_SIZE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1">// 找到需要指向新的 bucket_page 的 indexes
-</span><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="n">mask</span> <span class="o">==</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepthMask</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span> <span class="p">{</span> <span class="c1">// ! 这里应该用 LocalDepthMask吧(是的!!!nice!!!)
-</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span> <span class="p">{</span> 
-          <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">SetBucketPageId</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">new_bucket_page_id</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">IncrLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// local depth + 1
-</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">local_depth</span><span class="p">)</span> <span class="p">{</span>
-          <span class="n">local_depth</span> <span class="o">=</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="c1">// 更新GlobalDepth, 如果需要的话
-</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">local_depth</span> <span class="o">&gt;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetGlobalDepth</span><span class="p">())</span> <span class="p">{</span>
-      <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">IncrGlobalDepth</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="c1">// 将旧的key-value全部取出来, 然后重新执行插入
-</span><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">MappingType</span><span class="o">&gt;</span> <span class="n">all_key_values</span><span class="p">;</span>
-    <span class="n">all_key_values</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">));</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">BUCKET_ARRAY_SIZE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">all_key_values</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">bucket_page</span><span class="o">-&gt;</span><span class="n">KeyAt</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">bucket_page</span><span class="o">-&gt;</span><span class="n">ValueAt</span><span class="p">(</span><span class="n">i</span><span class="p">)));</span>
-      <span class="n">bucket_page</span><span class="o">-&gt;</span><span class="n">RemoveAt</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// remove干净
-</span><span class="c1"></span>    <span class="p">}</span>
-    <span class="kt">bool</span> <span class="n">insert_success</span><span class="p">;</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">all_key_values</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1">// ! 靠, 之前这里 key 传递成了上面的key, 导致 hash值一直是一样的我日
-</span><span class="c1"></span>      <span class="n">page_id_t</span> <span class="n">page_id</span> <span class="o">=</span> <span class="n">KeyToPageId</span><span class="p">(</span><span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">,</span> <span class="n">dir_page</span><span class="p">);</span>
-      <span class="k">auto</span> <span class="n">page</span> <span class="o">=</span> <span class="n">FetchBucketPage</span><span class="p">(</span><span class="n">page_id</span><span class="p">);</span>
-      <span class="n">insert_success</span> <span class="o">=</span> <span class="n">page</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">,</span> <span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span><span class="p">,</span> <span class="n">comparator_</span><span class="p">);</span>
-      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">insert_success</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;SplitInsert 失败: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-        <span class="n">page</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">,</span> <span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span><span class="p">,</span> <span class="n">comparator_</span><span class="p">);</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">KeyType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">ValueType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">KeyComparator</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">HASH_TABLE_TYPE</span><span class="o">::</span><span class="n">SplitInsert</span><span class="p">(</span><span class="n">Transaction</span> <span class="o">*</span><span class="n">transaction</span><span class="p">,</span> <span class="k">const</span> <span class="n">KeyType</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">,</span> <span class="k">const</span> <span class="n">ValueType</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="k">nullptr</span> <span class="o">==</span> <span class="n">transaction</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 更新 对应bucket 的 LocalDepth
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">HashTableDirectoryPage</span> <span class="o">*</span><span class="n">dir_page</span> <span class="o">=</span> <span class="n">FetchDirectoryPage</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 通过hash函数找到对应的bucket page对应的 pageid
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">page_id_t</span> <span class="n">bucket_page_id</span> <span class="o">=</span> <span class="n">KeyToPageId</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dir_page</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">auto</span> <span class="n">bucket_page</span> <span class="o">=</span> <span class="n">FetchBucketPage</span><span class="p">(</span><span class="n">bucket_page_id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">page_id_t</span> <span class="n">new_bucket_page_id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Page</span> <span class="o">*</span><span class="n">new_bucket_page</span> <span class="o">=</span> <span class="n">buffer_pool_manager_</span><span class="o">-&gt;</span><span class="n">NewPage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">new_bucket_page_id</span><span class="p">);</span> <span class="c1">// 内存泄漏
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="k">nullptr</span> <span class="o">==</span> <span class="n">new_bucket_page</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">LOG_ERROR</span><span class="p">(</span><span class="s">&#34;Split时分配新的bucket page失败&#34;</span><span class="p">);</span> <span class="c1">// 泄露
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">bucket_index</span> <span class="o">=</span> <span class="n">KeyToDirectoryIndex</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dir_page</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">local_depth</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint32_t</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">bucket_index</span> <span class="o">&amp;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepthMask</span><span class="p">(</span><span class="n">bucket_index</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 转移, 将 directory page 上的bucket_id进行重分配
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">DIRECTORY_ARRAY_SIZE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 找到需要指向新的 bucket_page 的 indexes
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="n">mask</span> <span class="o">==</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepthMask</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span> <span class="p">{</span> <span class="c1">// ! 这里应该用 LocalDepthMask吧(是的!!!nice!!!)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">          <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">SetBucketPageId</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">new_bucket_page_id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">IncrLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// local depth + 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">local_depth</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">local_depth</span> <span class="o">=</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetLocalDepth</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 更新GlobalDepth, 如果需要的话
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">local_depth</span> <span class="o">&gt;</span> <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">GetGlobalDepth</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">dir_page</span><span class="o">-&gt;</span><span class="n">IncrGlobalDepth</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 将旧的key-value全部取出来, 然后重新执行插入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">MappingType</span><span class="o">&gt;</span> <span class="n">all_key_values</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">all_key_values</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">BUCKET_ARRAY_SIZE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">all_key_values</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">bucket_page</span><span class="o">-&gt;</span><span class="n">KeyAt</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">bucket_page</span><span class="o">-&gt;</span><span class="n">ValueAt</span><span class="p">(</span><span class="n">i</span><span class="p">)));</span>
+</span></span><span class="line"><span class="cl">      <span class="n">bucket_page</span><span class="o">-&gt;</span><span class="n">RemoveAt</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// remove干净
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="n">insert_success</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">all_key_values</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// ! 靠, 之前这里 key 传递成了上面的key, 导致 hash值一直是一样的我日
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">page_id_t</span> <span class="n">page_id</span> <span class="o">=</span> <span class="n">KeyToPageId</span><span class="p">(</span><span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">,</span> <span class="n">dir_page</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">auto</span> <span class="n">page</span> <span class="o">=</span> <span class="n">FetchBucketPage</span><span class="p">(</span><span class="n">page_id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">insert_success</span> <span class="o">=</span> <span class="n">page</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">,</span> <span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span><span class="p">,</span> <span class="n">comparator_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">insert_success</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;SplitInsert 失败: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">page</span><span class="o">-&gt;</span><span class="n">Insert</span><span class="p">(</span><span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">,</span> <span class="n">all_key_values</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span><span class="p">,</span> <span class="n">comparator_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Merge部分的逻辑相对SplitInsert比较简单, 只需要找到对应key的bucekt index, 然后根据这个bucket index找到对应的split image的索引, 然后将选择这两个中较小的一个作为合并索引(他们共同的前缀). 之后在dir_page上遍历以更新信息, 维护local depth, 最后判断global depth是否也需要更新.</p>
 <h2 id="task-3---concurrency-control">TASK #3 - CONCURRENCY CONTROL</h2>
@@ -571,7 +571,7 @@ src/container/hash/extendible_hash_table.cpp
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

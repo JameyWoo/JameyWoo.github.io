@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/vscode%E4%B8%ADleetcode%E7%9A%84debug%E7%8E%AF%E5%A2%83snippet%E8%AE%BE%E7%BD%AE/" />
@@ -49,7 +49,7 @@
 <meta itemprop="name" content="Vscode中leetcode的debug环境snippet设置">
 <meta itemprop="description" content="这篇博客介绍一个在vscode中调试leetcode代码的方法(技巧). 众所周知, leetcode中做题和其他OJ有很大区别, 其他OJ大多都"><meta itemprop="datePublished" content="2020-04-03T14:41:01+08:00" />
 <meta itemprop="dateModified" content="2020-04-03T14:41:01+08:00" />
-<meta itemprop="wordCount" content="2152">
+<meta itemprop="wordCount" content="2158">
 <meta itemprop="keywords" content="vscode,leetcode," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Vscode中leetcode的debug环境snippet设置"/>
 <meta name="twitter:description" content="这篇博客介绍一个在vscode中调试leetcode代码的方法(技巧). 众所周知, leetcode中做题和其他OJ有很大区别, 其他OJ大多都"/>
@@ -136,7 +136,7 @@
         <div class="post-category">
             <a href="../../../categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"> 开发工具 </a>
             </div>
-          <span class="more-meta"> 2152 words </span>
+          <span class="more-meta"> 2158 words </span>
           <span class="more-meta"> 5 mins read </span>
         
       </div>
@@ -297,143 +297,143 @@
 </span><span class="lnt">136
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;stack&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;unordered_map&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
-</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-
-<span class="c1">// debug 函数中是否输出的宏定义。 如果定义PRINT，那么在控制台中就会输出
-</span><span class="c1">// #define PRINT_DEBUG
-</span><span class="c1"></span>
-<span class="c1">// 链表结构
-</span><span class="c1"></span><span class="k">struct</span> <span class="nc">ListNode</span> <span class="p">{</span>
-    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
-    <span class="n">ListNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
-    <span class="n">ListNode</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">val</span>  <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
-        <span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="c1">// 树结构
-</span><span class="c1"></span><span class="k">struct</span> <span class="nc">TreeNode</span> <span class="p">{</span>
-    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
-    <span class="n">TreeNode</span> <span class="o">*</span><span class="n">left</span><span class="p">,</span> <span class="o">*</span><span class="n">right</span><span class="p">;</span>
-    <span class="n">TreeNode</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">val</span>  <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
-        <span class="n">left</span> <span class="o">=</span> <span class="n">right</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-
-<span class="c1">// 用来设置调试断点分隔的空函数
-</span><span class="c1"></span><span class="kt">void</span> <span class="nf">stop</span><span class="p">()</span> <span class="p">{}</span>
-
-<span class="c1">// 通过传入一个 vector 来得到一个 list
-</span><span class="c1"></span><span class="n">ListNode</span> <span class="o">*</span><span class="nf">getList</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    <span class="n">ListNode</span> <span class="o">*</span><span class="n">start</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
-    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="nl">v</span> <span class="p">:</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
-        <span class="n">head</span>	   <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">start</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="c1">// 传递解析了的参数之后真正进行建立树的函数
-</span><span class="c1">// leetcode 用的是层次遍历的方法
-</span><span class="c1"></span><span class="n">TreeNode</span> <span class="o">*</span><span class="nf">buildTree</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nums</span><span class="p">,</span> <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">isNULL</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">isNULL</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
-	<span class="n">TreeNode</span> <span class="o">*</span><span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-	<span class="n">queue</span><span class="o">&lt;</span><span class="n">TreeNode</span> <span class="o">*&gt;</span> <span class="n">Q</span><span class="p">;</span>
-	<span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
-	<span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-	<span class="k">while</span> <span class="p">(</span><span class="n">not</span> <span class="n">Q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
-		<span class="n">TreeNode</span> <span class="o">*</span><span class="n">front</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
-		<span class="n">Q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">front</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
-			<span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
-			<span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="k">break</span><span class="p">;</span>
-			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
-		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
-		<span class="p">}</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">front</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
-			<span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
-			<span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="k">break</span><span class="p">;</span>
-			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
-		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	<span class="n">stop</span><span class="p">();</span>
-	<span class="k">return</span> <span class="n">root</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="c1">// 两个参数， 第一个是跟 leetcode 中一样的表示结点值的列表
-</span><span class="c1">// 但是由于 有null表示空结点，所以传递字符串方便解析
-</span><span class="c1"></span><span class="n">TreeNode</span> <span class="o">*</span><span class="nf">getTree</span><span class="p">(</span><span class="n">string</span> <span class="n">nodes</span><span class="p">)</span> <span class="p">{</span>
-	<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nums</span><span class="p">;</span>
-	<span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">isNULL</span><span class="p">;</span>
-	<span class="n">nodes</span> <span class="o">+=</span> <span class="s">&#34;,&#34;</span><span class="p">;</span>
-
-	<span class="c1">// 结点的值以及索引
-</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nodes</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;,&#39;</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">nums</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
-			<span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-			<span class="n">val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-			<span class="k">continue</span><span class="p">;</span>
-		<span class="p">}</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;n&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nodes</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;u&#39;</span> <span class="o">&amp;&amp;</span>
-			<span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;l&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;l&#39;</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-			<span class="n">i</span> <span class="o">+=</span> <span class="mi">3</span><span class="p">;</span>
-			<span class="k">continue</span><span class="p">;</span>
-		<span class="p">}</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="sc">&#39;0&#39;</span> <span class="o">||</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="p">{</span>
-			<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-		<span class="p">}</span>
-		<span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">);</span>
-	<span class="p">}</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="n">isNULL</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-	<span class="p">}</span>
-	<span class="n">stop</span><span class="p">();</span>
-	<span class="n">TreeNode</span> <span class="o">*</span><span class="n">tree</span> <span class="o">=</span> <span class="n">buildTree</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">isNULL</span><span class="p">);</span>
-	<span class="k">return</span> <span class="n">tree</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="c1">// 调试一个 int 类型的链表， 思路是把链表转化成 vector，然后设置断点，就可以方便地显示整个vector也就是list的值。
-</span><span class="c1"></span><span class="kt">void</span> <span class="nf">debug_list</span><span class="p">(</span><span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">;</span>
-    <span class="k">while</span> <span class="p">(</span><span class="n">head</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">vec</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">);</span>
-<span class="cp">#ifdef PRINT_DEBUG
-</span><span class="cp"></span>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
-<span class="cp">#endif
-</span><span class="cp"></span>        <span class="n">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="cp">#ifdef PRINT_DEBUG
-</span><span class="cp"></span>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-<span class="cp">#endif
-</span><span class="cp"></span>    <span class="n">stop</span><span class="p">();</span>
-<span class="p">}</span>
-
-<span class="c1">// 待替换的题目
-</span><span class="c1"></span><span class="n">leetcode_problem</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">Solution</span> <span class="o">*</span><span class="n">sol</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">Solution</span><span class="p">();</span>
-    
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stack&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unordered_map&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// debug 函数中是否输出的宏定义。 如果定义PRINT，那么在控制台中就会输出
+</span></span></span><span class="line"><span class="cl"><span class="c1">// #define PRINT_DEBUG
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 链表结构
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="nc">ListNode</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">val</span>  <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 树结构
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="nc">TreeNode</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TreeNode</span> <span class="o">*</span><span class="n">left</span><span class="p">,</span> <span class="o">*</span><span class="n">right</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TreeNode</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">val</span>  <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">left</span> <span class="o">=</span> <span class="n">right</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 用来设置调试断点分隔的空函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">stop</span><span class="p">()</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 通过传入一个 vector 来得到一个 list
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ListNode</span> <span class="o">*</span><span class="nf">getList</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ListNode</span> <span class="o">*</span><span class="n">start</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="nl">v</span> <span class="p">:</span> <span class="n">vec</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">head</span>	   <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">start</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 传递解析了的参数之后真正进行建立树的函数
+</span></span></span><span class="line"><span class="cl"><span class="c1">// leetcode 用的是层次遍历的方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">TreeNode</span> <span class="o">*</span><span class="nf">buildTree</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nums</span><span class="p">,</span> <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">isNULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">isNULL</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">TreeNode</span> <span class="o">*</span><span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">queue</span><span class="o">&lt;</span><span class="n">TreeNode</span> <span class="o">*&gt;</span> <span class="n">Q</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">not</span> <span class="n">Q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">TreeNode</span> <span class="o">*</span><span class="n">front</span> <span class="o">=</span> <span class="n">Q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">front</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">front</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">Q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">index</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 两个参数， 第一个是跟 leetcode 中一样的表示结点值的列表
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 但是由于 有null表示空结点，所以传递字符串方便解析
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">TreeNode</span> <span class="o">*</span><span class="nf">getTree</span><span class="p">(</span><span class="n">string</span> <span class="n">nodes</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">nums</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">isNULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">nodes</span> <span class="o">+=</span> <span class="s">&#34;,&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 结点的值以及索引
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kt">int</span> <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nodes</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;,&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">nums</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;n&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nodes</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;u&#39;</span> <span class="o">&amp;&amp;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;l&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;l&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">isNULL</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">i</span> <span class="o">+=</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="sc">&#39;0&#39;</span> <span class="o">||</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="n">val</span> <span class="o">=</span> <span class="n">val</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">isNULL</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="n">isNULL</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">TreeNode</span> <span class="o">*</span><span class="n">tree</span> <span class="o">=</span> <span class="n">buildTree</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">isNULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">tree</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 调试一个 int 类型的链表， 思路是把链表转化成 vector，然后设置断点，就可以方便地显示整个vector也就是list的值。
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">debug_list</span><span class="p">(</span><span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vec</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">head</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vec</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#ifdef PRINT_DEBUG
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>        <span class="n">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#ifdef PRINT_DEBUG
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 待替换的题目
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">leetcode_problem</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Solution</span> <span class="o">*</span><span class="n">sol</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">Solution</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>vscode的snippet不可以直接将所有的代码直接放上去, 可以一行一行地设置snippet, 但我找到一种方便地添加整个代码的方法.</p>
 <ol>
@@ -457,8 +457,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;\n#include &lt;map&gt;\n#include &lt;queue&gt;\n#include &lt;stack&gt;\n#include &lt;unordered_map&gt;\n#include &lt;vector&gt;\nusing namespace std;\n\n// debug 函数中是否输出的宏定义。 如果定义PRINT，那么在控制台中就会输出\n// #define PRINT_DEBUG\n\n// 链表结构\nstruct ListNode {\n\tint val;\n\tListNode *next;\n\tListNode(int v) {\n\t\tval  = v;\n\t\tnext = NULL;\n\t}\n};\n\n// 树结构\nstruct TreeNode {\n\tint val;\n\tTreeNode *left, *right;\n\tTreeNode(int v) {\n\t\tval  = v;\n\t\tleft = right = NULL;\n\t}\n};\n\n// 用来设置调试断点分隔的空函数\nvoid stop() {}\n\n// 通过传入一个 vector 来得到一个 list\nListNode *getList(vector&lt;int&gt; vec) {\n\tListNode *head  = new ListNode(0);\n\tListNode *start = head;\n\tfor (auto v : vec) {\n\t\thead-&gt;next = new ListNode(v);\n\t\thead\t   = head-&gt;next;\n\t}\n\treturn start-&gt;next;\n}\n\n// 传递解析了的参数之后真正进行建立树的函数\n// leetcode 用的是层次遍历的方法\nTreeNode *buildTree(vector&lt;int&gt; nums, unordered_map&lt;int, int&gt; isNULL) {\n\tif (nums.size() == 0 || isNULL[0] == 1) return NULL;\n\tTreeNode *root = new TreeNode(nums[0]);\n\tqueue&lt;TreeNode *&gt; Q;\n\tQ.push(root);\n\tint index = 1;\n\twhile (not Q.empty()) {\n\t\tTreeNode *front = Q.front();\n\t\tQ.pop();\n\t\tif (isNULL[index] == -1) {\n\t\t\tfront-&gt;left = new TreeNode(nums[index]);\n\t\t\tQ.push(front-&gt;left);\n\t\t\tif (index &gt;= nums.size()) break;\n\t\t\tindex++;\n\t\t} else if (isNULL[index] == 1) {\n\t\t\tindex++;\n\t\t}\n\t\tif (isNULL[index] == -1) {\n\t\t\tfront-&gt;right = new TreeNode(nums[index]);\n\t\t\tQ.push(front-&gt;right);\n\t\t\tif (index &gt;= nums.size()) break;\n\t\t\tindex++;\n\t\t} else if (isNULL[index] == 1) {\n\t\t\tindex++;\n\t\t}\n\t}\n\tstop();\n\treturn root;\n}\n \nTreeNode *getTree(string nodes) {\n\tvector&lt;int&gt; nums;\n\tunordered_map&lt;int, int&gt; isNULL;\n\tnodes += \&#34;,\&#34;;\n\n\tint val = 0, index = 0;\n\tfor (int i = 0; i &lt; nodes.size(); i++) {\n\t\tif (nodes[i] == &#39; &#39;) continue;\n\t\tif (nodes[i] == &#39;,&#39;) {\n\t\t\tnums.push_back(val);\n\t\t\tindex += 1;\n\t\t\tval = 0;\n\t\t\tcontinue;\n\t\t}\n\t\tif (nodes[i] == &#39;n&#39; &amp;&amp; i &lt; nodes.size() - 4 &amp;&amp; nodes[i + 1] == &#39;u&#39; &amp;&amp;\n\t\t\tnodes[i + 2] == &#39;l&#39; &amp;&amp; nodes[i + 3] == &#39;l&#39;) {\n\t\t\tisNULL[index] = 1;\n\t\t\ti += 3;\n\t\t\tcontinue;\n\t\t}\n\t\tif (nodes[i] &lt; &#39;0&#39; || nodes[i] &gt; &#39;9&#39;) {\n\t\t\texit(1);\n\t\t}\n\t\tval = val * 10 + (nodes[i] - &#39;0&#39;);\n\t}\n\tfor (int i = 0; i &lt; nums.size(); i++) {\n\t\tif (isNULL[i] != 1) isNULL[i] = -1;\n\t}\n\tstop();\n\tTreeNode *tree = buildTree(nums, isNULL);\n\treturn tree;\n}\n\n// 调试一个 int 类型的链表， 思路是把链表转化成 vector，然后设置断点，就可以方便地显示整个vector也就是list的值。\nvoid debug_list(ListNode *head) {\n\tvector&lt;int&gt; vec;\n\twhile (head != NULL) {\n\t\tvec.push_back(head-&gt;val);\n#ifdef PRINT_DEBUG\n\t\tcout &lt;&lt; head-&gt;val &lt;&lt; &#39; &#39;;\n#endif\n\t\thead = head-&gt;next;\n\t}\n#ifdef PRINT_DEBUG\n\tcout &lt;&lt; endl;\n#endif\n\tstop();\n}\n\n// 待替换的题目\n${leetcode_problem}\n\nint main() {\n\tSolution *sol  = new Solution();\n\t${solve}\n}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;\n#include &lt;map&gt;\n#include &lt;queue&gt;\n#include &lt;stack&gt;\n#include &lt;unordered_map&gt;\n#include &lt;vector&gt;\nusing namespace std;\n\n// debug 函数中是否输出的宏定义。 如果定义PRINT，那么在控制台中就会输出\n// #define PRINT_DEBUG\n\n// 链表结构\nstruct ListNode {\n\tint val;\n\tListNode *next;\n\tListNode(int v) {\n\t\tval  = v;\n\t\tnext = NULL;\n\t}\n};\n\n// 树结构\nstruct TreeNode {\n\tint val;\n\tTreeNode *left, *right;\n\tTreeNode(int v) {\n\t\tval  = v;\n\t\tleft = right = NULL;\n\t}\n};\n\n// 用来设置调试断点分隔的空函数\nvoid stop() {}\n\n// 通过传入一个 vector 来得到一个 list\nListNode *getList(vector&lt;int&gt; vec) {\n\tListNode *head  = new ListNode(0);\n\tListNode *start = head;\n\tfor (auto v : vec) {\n\t\thead-&gt;next = new ListNode(v);\n\t\thead\t   = head-&gt;next;\n\t}\n\treturn start-&gt;next;\n}\n\n// 传递解析了的参数之后真正进行建立树的函数\n// leetcode 用的是层次遍历的方法\nTreeNode *buildTree(vector&lt;int&gt; nums, unordered_map&lt;int, int&gt; isNULL) {\n\tif (nums.size() == 0 || isNULL[0] == 1) return NULL;\n\tTreeNode *root = new TreeNode(nums[0]);\n\tqueue&lt;TreeNode *&gt; Q;\n\tQ.push(root);\n\tint index = 1;\n\twhile (not Q.empty()) {\n\t\tTreeNode *front = Q.front();\n\t\tQ.pop();\n\t\tif (isNULL[index] == -1) {\n\t\t\tfront-&gt;left = new TreeNode(nums[index]);\n\t\t\tQ.push(front-&gt;left);\n\t\t\tif (index &gt;= nums.size()) break;\n\t\t\tindex++;\n\t\t} else if (isNULL[index] == 1) {\n\t\t\tindex++;\n\t\t}\n\t\tif (isNULL[index] == -1) {\n\t\t\tfront-&gt;right = new TreeNode(nums[index]);\n\t\t\tQ.push(front-&gt;right);\n\t\t\tif (index &gt;= nums.size()) break;\n\t\t\tindex++;\n\t\t} else if (isNULL[index] == 1) {\n\t\t\tindex++;\n\t\t}\n\t}\n\tstop();\n\treturn root;\n}\n \nTreeNode *getTree(string nodes) {\n\tvector&lt;int&gt; nums;\n\tunordered_map&lt;int, int&gt; isNULL;\n\tnodes += \&#34;,\&#34;;\n\n\tint val = 0, index = 0;\n\tfor (int i = 0; i &lt; nodes.size(); i++) {\n\t\tif (nodes[i] == &#39; &#39;) continue;\n\t\tif (nodes[i] == &#39;,&#39;) {\n\t\t\tnums.push_back(val);\n\t\t\tindex += 1;\n\t\t\tval = 0;\n\t\t\tcontinue;\n\t\t}\n\t\tif (nodes[i] == &#39;n&#39; &amp;&amp; i &lt; nodes.size() - 4 &amp;&amp; nodes[i + 1] == &#39;u&#39; &amp;&amp;\n\t\t\tnodes[i + 2] == &#39;l&#39; &amp;&amp; nodes[i + 3] == &#39;l&#39;) {\n\t\t\tisNULL[index] = 1;\n\t\t\ti += 3;\n\t\t\tcontinue;\n\t\t}\n\t\tif (nodes[i] &lt; &#39;0&#39; || nodes[i] &gt; &#39;9&#39;) {\n\t\t\texit(1);\n\t\t}\n\t\tval = val * 10 + (nodes[i] - &#39;0&#39;);\n\t}\n\tfor (int i = 0; i &lt; nums.size(); i++) {\n\t\tif (isNULL[i] != 1) isNULL[i] = -1;\n\t}\n\tstop();\n\tTreeNode *tree = buildTree(nums, isNULL);\n\treturn tree;\n}\n\n// 调试一个 int 类型的链表， 思路是把链表转化成 vector，然后设置断点，就可以方便地显示整个vector也就是list的值。\nvoid debug_list(ListNode *head) {\n\tvector&lt;int&gt; vec;\n\twhile (head != NULL) {\n\t\tvec.push_back(head-&gt;val);\n#ifdef PRINT_DEBUG\n\t\tcout &lt;&lt; head-&gt;val &lt;&lt; &#39; &#39;;\n#endif\n\t\thead = head-&gt;next;\n\t}\n#ifdef PRINT_DEBUG\n\tcout &lt;&lt; endl;\n#endif\n\tstop();\n}\n\n// 待替换的题目\n${leetcode_problem}\n\nint main() {\n\tSolution *sol  = new Solution();\n\t${solve}\n}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>注意, snippet中可以设置变量, 比如<code>${leetcode_problem}</code>, 输入snippet之后, 光标会按顺序移动到这些变量出, 按TAB切换光标位置.</p>
 <p>有特殊的snippet变量, 比如<code>${1}</code>, 是光标出现的第一个位置, <code>${2}</code>依此类推.</p>
@@ -555,7 +555,7 @@
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

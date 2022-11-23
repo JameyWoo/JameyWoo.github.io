@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/tcp%E7%AC%94%E8%AE%B0/" />
@@ -203,21 +203,21 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">	if there is new data to send #有数据要发送
-        # 发送窗口缓冲区和队列数据 &gt;=mss，队列数据（available data）为原有的队列数据加上新到来的数据
-        # 也就是说缓冲区数据超过mss大小，nagle算法尽可能发送足够大的数据包
-        if the window size &gt;= MSS and available data is &gt;= MSS 
-            send complete MSS segment now # 立即发送
-        else
-            if there is unconfirmed data still in the pipe # 前一次发送的包没有收到ack
-                # 将该包数据放入队列中，直到收到一个ack再发送缓冲区数据
-                enqueue data in the buffer until an acknowledge is received 
-            else
-                send data immediately # 立即发送
-            end if
-        end if
-    end if　
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">	if there is new data to send #有数据要发送
+</span></span><span class="line"><span class="cl">        # 发送窗口缓冲区和队列数据 &gt;=mss，队列数据（available data）为原有的队列数据加上新到来的数据
+</span></span><span class="line"><span class="cl">        # 也就是说缓冲区数据超过mss大小，nagle算法尽可能发送足够大的数据包
+</span></span><span class="line"><span class="cl">        if the window size &gt;= MSS and available data is &gt;= MSS 
+</span></span><span class="line"><span class="cl">            send complete MSS segment now # 立即发送
+</span></span><span class="line"><span class="cl">        else
+</span></span><span class="line"><span class="cl">            if there is unconfirmed data still in the pipe # 前一次发送的包没有收到ack
+</span></span><span class="line"><span class="cl">                # 将该包数据放入队列中，直到收到一个ack再发送缓冲区数据
+</span></span><span class="line"><span class="cl">                enqueue data in the buffer until an acknowledge is received 
+</span></span><span class="line"><span class="cl">            else
+</span></span><span class="line"><span class="cl">                send data immediately # 立即发送
+</span></span><span class="line"><span class="cl">            end if
+</span></span><span class="line"><span class="cl">        end if
+</span></span><span class="line"><span class="cl">    end if　
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>即</p>
 <div class="highlight"><div class="chroma">
@@ -230,13 +230,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Nagle算法的实现规则：
-如果包长度达到MSS，则允许发送；
-如果该包含有FIN，则允许发送；
-设置了TCP_NODELAY选项，则允许发送；
-未设置TCP_CORK选项时，若所有发出去的小数据包（包长度小于MSS）均被确认，则允许发送；
-上述条件都未满足，但发生了超时（一般为200ms），则立即发送。
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Nagle算法的实现规则：
+</span></span><span class="line"><span class="cl">如果包长度达到MSS，则允许发送；
+</span></span><span class="line"><span class="cl">如果该包含有FIN，则允许发送；
+</span></span><span class="line"><span class="cl">设置了TCP_NODELAY选项，则允许发送；
+</span></span><span class="line"><span class="cl">未设置TCP_CORK选项时，若所有发出去的小数据包（包长度小于MSS）均被确认，则允许发送；
+</span></span><span class="line"><span class="cl">上述条件都未满足，但发生了超时（一般为200ms），则立即发送。
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>
@@ -386,7 +386,7 @@ and an ACK for the data that was sent prior to the FIN.</p>
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

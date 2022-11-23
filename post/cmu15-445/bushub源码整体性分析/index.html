@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/cmu15-445/bushub%E6%BA%90%E7%A0%81%E6%95%B4%E4%BD%93%E6%80%A7%E5%88%86%E6%9E%90/" />
@@ -227,30 +227,30 @@
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">  <span class="kt">bool</span> <span class="nf">Execute</span><span class="p">(</span><span class="k">const</span> <span class="n">AbstractPlanNode</span> <span class="o">*</span><span class="n">plan</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tuple</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">result_set</span><span class="p">,</span> <span class="n">Transaction</span> <span class="o">*</span><span class="n">txn</span><span class="p">,</span>
-               <span class="n">ExecutorContext</span> <span class="o">*</span><span class="n">exec_ctx</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// Construct and executor for the plan
-</span><span class="c1"></span>    <span class="k">auto</span> <span class="n">executor</span> <span class="o">=</span> <span class="n">ExecutorFactory</span><span class="o">::</span><span class="n">CreateExecutor</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">plan</span><span class="p">);</span>
-
-    <span class="c1">// Prepare the root executor
-</span><span class="c1"></span>    <span class="n">executor</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">();</span>
-
-    <span class="c1">// Execute the query plan
-</span><span class="c1"></span>    <span class="k">try</span> <span class="p">{</span>
-      <span class="n">Tuple</span> <span class="n">tuple</span><span class="p">;</span>
-      <span class="n">RID</span> <span class="n">rid</span><span class="p">;</span>
-      <span class="k">while</span> <span class="p">(</span><span class="n">executor</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tuple</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rid</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">result_set</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
-          <span class="n">result_set</span><span class="o">-&gt;</span><span class="n">push_back</span><span class="p">(</span><span class="n">tuple</span><span class="p">);</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1">// TODO(student): handle exceptions 所以这里要做什么?
-</span><span class="c1"></span>    <span class="p">}</span>
-
-    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-  <span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">  <span class="kt">bool</span> <span class="nf">Execute</span><span class="p">(</span><span class="k">const</span> <span class="n">AbstractPlanNode</span> <span class="o">*</span><span class="n">plan</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Tuple</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">result_set</span><span class="p">,</span> <span class="n">Transaction</span> <span class="o">*</span><span class="n">txn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">               <span class="n">ExecutorContext</span> <span class="o">*</span><span class="n">exec_ctx</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Construct and executor for the plan
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">auto</span> <span class="n">executor</span> <span class="o">=</span> <span class="n">ExecutorFactory</span><span class="o">::</span><span class="n">CreateExecutor</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">plan</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Prepare the root executor
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">executor</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Execute the query plan
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">Tuple</span> <span class="n">tuple</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">RID</span> <span class="n">rid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">while</span> <span class="p">(</span><span class="n">executor</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tuple</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rid</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">result_set</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">result_set</span><span class="o">-&gt;</span><span class="n">push_back</span><span class="p">(</span><span class="n">tuple</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// TODO(student): handle exceptions 所以这里要做什么?
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这个方法中, 有一个while循环, 不断地从executor中调用Next方法获取下一行数据并添加到result_set. 这就是火山模型典型的用法.</p>
 <p>而传递进来的plan参数的作用就是为了调用ExecutorFactory来创建一个Executor算子.</p>
@@ -261,9 +261,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">AbstractExecutor</span><span class="o">&gt;</span> <span class="n">ExecutorFactory</span><span class="o">::</span><span class="n">CreateExecutor</span><span class="p">(</span><span class="n">ExecutorContext</span> <span class="o">*</span><span class="n">exec_ctx</span><span class="p">,</span>
-                                                                  <span class="k">const</span> <span class="n">AbstractPlanNode</span> <span class="o">*</span><span class="n">plan</span><span class="p">)</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">AbstractExecutor</span><span class="o">&gt;</span> <span class="n">ExecutorFactory</span><span class="o">::</span><span class="n">CreateExecutor</span><span class="p">(</span><span class="n">ExecutorContext</span> <span class="o">*</span><span class="n">exec_ctx</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                                                  <span class="k">const</span> <span class="n">AbstractPlanNode</span> <span class="o">*</span><span class="n">plan</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>中, 它会根据plan的不同type来创建不同的Executor, 对于简单的plan如SeqScan, 他会直接创建</p>
 <div class="highlight"><div class="chroma">
@@ -273,10 +273,10 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">    <span class="k">case</span> <span class="n">PlanType</span><span class="o">::</span><span class="nl">SeqScan</span><span class="p">:</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">SeqScanExecutor</span><span class="o">&gt;</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">SeqScanPlanNode</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">plan</span><span class="p">));</span>
-    <span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">    <span class="k">case</span> <span class="n">PlanType</span><span class="o">::</span><span class="nl">SeqScan</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">SeqScanExecutor</span><span class="o">&gt;</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">SeqScanPlanNode</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">plan</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>而对于其他非底层的如Limit或Insert等, 则会生成child_executor</p>
 <div class="highlight"><div class="chroma">
@@ -288,12 +288,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">    <span class="k">case</span> <span class="n">PlanType</span><span class="o">::</span><span class="nl">Limit</span><span class="p">:</span> <span class="p">{</span>
-      <span class="k">auto</span> <span class="n">limit_plan</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">LimitPlanNode</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">plan</span><span class="p">);</span>
-      <span class="k">auto</span> <span class="n">child_executor</span> <span class="o">=</span> <span class="n">ExecutorFactory</span><span class="o">::</span><span class="n">CreateExecutor</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">limit_plan</span><span class="o">-&gt;</span><span class="n">GetChildPlan</span><span class="p">());</span>
-      <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">LimitExecutor</span><span class="o">&gt;</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">limit_plan</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">child_executor</span><span class="p">));</span>
-    <span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">    <span class="k">case</span> <span class="n">PlanType</span><span class="o">::</span><span class="nl">Limit</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">auto</span> <span class="n">limit_plan</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">LimitPlanNode</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">plan</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">auto</span> <span class="n">child_executor</span> <span class="o">=</span> <span class="n">ExecutorFactory</span><span class="o">::</span><span class="n">CreateExecutor</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">limit_plan</span><span class="o">-&gt;</span><span class="n">GetChildPlan</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">LimitExecutor</span><span class="o">&gt;</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">limit_plan</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">child_executor</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>因为Limit下面是一定有子节点的, Insert的数据分为两种, 一种是直接插入raw数据一种是根据子查询的结构, 因此也是可能有child_executor的.</p>
 <h3 id="plan和executor算子的关系">plan和executor算子的关系</h3>
@@ -310,14 +310,14 @@
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">    <span class="k">case</span> <span class="n">PlanType</span><span class="o">::</span><span class="nl">NestedLoopJoin</span><span class="p">:</span> <span class="p">{</span>
-      <span class="k">auto</span> <span class="n">nested_loop_join_plan</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">NestedLoopJoinPlanNode</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">plan</span><span class="p">);</span>
-      <span class="k">auto</span> <span class="n">left</span> <span class="o">=</span> <span class="n">ExecutorFactory</span><span class="o">::</span><span class="n">CreateExecutor</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">nested_loop_join_plan</span><span class="o">-&gt;</span><span class="n">GetLeftPlan</span><span class="p">());</span>
-      <span class="k">auto</span> <span class="n">right</span> <span class="o">=</span> <span class="n">ExecutorFactory</span><span class="o">::</span><span class="n">CreateExecutor</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">nested_loop_join_plan</span><span class="o">-&gt;</span><span class="n">GetRightPlan</span><span class="p">());</span>
-      <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">NestedLoopJoinExecutor</span><span class="o">&gt;</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">nested_loop_join_plan</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">left</span><span class="p">),</span>
-                                                      <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">right</span><span class="p">));</span>
-    <span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">    <span class="k">case</span> <span class="n">PlanType</span><span class="o">::</span><span class="nl">NestedLoopJoin</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">auto</span> <span class="n">nested_loop_join_plan</span> <span class="o">=</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">NestedLoopJoinPlanNode</span> <span class="o">*&gt;</span><span class="p">(</span><span class="n">plan</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">auto</span> <span class="n">left</span> <span class="o">=</span> <span class="n">ExecutorFactory</span><span class="o">::</span><span class="n">CreateExecutor</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">nested_loop_join_plan</span><span class="o">-&gt;</span><span class="n">GetLeftPlan</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">      <span class="k">auto</span> <span class="n">right</span> <span class="o">=</span> <span class="n">ExecutorFactory</span><span class="o">::</span><span class="n">CreateExecutor</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">nested_loop_join_plan</span><span class="o">-&gt;</span><span class="n">GetRightPlan</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">NestedLoopJoinExecutor</span><span class="o">&gt;</span><span class="p">(</span><span class="n">exec_ctx</span><span class="p">,</span> <span class="n">nested_loop_join_plan</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">left</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                                                      <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">right</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>这里需要注意</strong>: abstract plan是有子节点的, 而abstract executor则没有, 所以实现具体的executor时, 需要根据该算子的特点去创建对应的child.</p>
 <h3 id="expressions">expressions</h3>
@@ -411,7 +411,7 @@
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

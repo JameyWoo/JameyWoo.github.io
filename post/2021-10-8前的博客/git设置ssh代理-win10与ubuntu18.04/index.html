@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/git%E8%AE%BE%E7%BD%AEssh%E4%BB%A3%E7%90%86-win10%E4%B8%8Eubuntu18.04/" />
@@ -176,18 +176,18 @@
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">// 设置 http 代理
-git config --global http.proxy &#34;http://127.0.0.1:8080&#34;
-git config --global https.proxy &#34;http://127.0.0.1:8080&#34;
-
-// 或者 socks5 代理
-git config --global http.proxy &#34;socks5://127.0.0.1:1080&#34;
-git config --global https.proxy &#34;socks5://127.0.0.1:1080&#34;
-
-// 取消代理
-git config --global --unset http.proxy
-git config --global --unset https.proxy
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">// 设置 http 代理
+</span></span><span class="line"><span class="cl">git config --global http.proxy &#34;http://127.0.0.1:8080&#34;
+</span></span><span class="line"><span class="cl">git config --global https.proxy &#34;http://127.0.0.1:8080&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// 或者 socks5 代理
+</span></span><span class="line"><span class="cl">git config --global http.proxy &#34;socks5://127.0.0.1:1080&#34;
+</span></span><span class="line"><span class="cl">git config --global https.proxy &#34;socks5://127.0.0.1:1080&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// 取消代理
+</span></span><span class="line"><span class="cl">git config --global --unset http.proxy
+</span></span><span class="line"><span class="cl">git config --global --unset https.proxy
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这种方式可以成功代理 http 方式的 git clone, 但是用 ssh 方式就还是 10+/20+ KiB的速度. 我之前一般都是用 ssh 的方式 clone.</p>
 <h2 id="ssh-代理">ssh 代理</h2>
@@ -206,15 +206,15 @@ git config --global --unset https.proxy
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Host github.com
-  User git
-  Port 22
-  Hostname github.com
-  # socks5 代理用这个
-  ProxyCommand connect -S 127.0.0.1:10808 -a none %h %p
-  # http 代理用下面这个
-  # ProxyCommand connect -H 127.0.0.1:10809 -a none %h %p
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Host github.com
+</span></span><span class="line"><span class="cl">  User git
+</span></span><span class="line"><span class="cl">  Port 22
+</span></span><span class="line"><span class="cl">  Hostname github.com
+</span></span><span class="line"><span class="cl">  # socks5 代理用这个
+</span></span><span class="line"><span class="cl">  ProxyCommand connect -S 127.0.0.1:10808 -a none %h %p
+</span></span><span class="line"><span class="cl">  # http 代理用下面这个
+</span></span><span class="line"><span class="cl">  # ProxyCommand connect -H 127.0.0.1:10809 -a none %h %p
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>其中, <code>127.0.0.1:10808</code> 设置成自己的代理配置. 我用的是 socks5 代理.</p>
 <p>connect 是一个exe可执行程序, 在我的电脑中是在下面的目录</p>
@@ -223,8 +223,8 @@ git config --global --unset https.proxy
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">C:\Program Files\Git\mingw64\bin\connect.exe
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">C:\Program Files\Git\mingw64\bin\connect.exe
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>要使用这个命令, 需要将目录 <code>C:\Program Files\Git\mingw64\bin</code> 添加到环境变量</p>
 <p>执行 <code>connect -h</code> 可获取相关帮助</p>
@@ -240,15 +240,15 @@ git config --global --unset https.proxy
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">$ connect -h
-connect --- simple relaying command via proxy.
-Version 1.105
-usage: C:\Program Files\Git\mingw64\bin\connect.exe [-dnhst45] [-p local-port]
-          [-H proxy-server[:port]] [-S [user@]socks-server[:port]]
-          [-T proxy-server[:port]]
-          [-c telnet-proxy-command]
-          host port
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$ connect -h
+</span></span><span class="line"><span class="cl">connect --- simple relaying command via proxy.
+</span></span><span class="line"><span class="cl">Version 1.105
+</span></span><span class="line"><span class="cl">usage: C:\Program Files\Git\mingw64\bin\connect.exe [-dnhst45] [-p local-port]
+</span></span><span class="line"><span class="cl">          [-H proxy-server[:port]] [-S [user@]socks-server[:port]]
+</span></span><span class="line"><span class="cl">          [-T proxy-server[:port]]
+</span></span><span class="line"><span class="cl">          [-c telnet-proxy-command]
+</span></span><span class="line"><span class="cl">          host port
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="ubuntu-1804">Ubuntu-18.04</h3>
 <p>在ubuntu-18.04中也是类似的配置, 不过我不是用<code>connect.exe</code>, 而是用<code>nc</code>命令.</p>
@@ -264,14 +264,14 @@ usage: C:\Program Files\Git\mingw64\bin\connect.exe [-dnhst45] [-p local-port]
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Host github.com
-    HostName github.com
-    User git
-    # http 代理方法
-    # ProxyCommand socat - PROXY:127.0.0.1:%h:%p,proxyport=6667
-    # socks5 代理方法
-    ProxyCommand nc -v -x 127.0.0.1:10808 %h %p
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Host github.com
+</span></span><span class="line"><span class="cl">    HostName github.com
+</span></span><span class="line"><span class="cl">    User git
+</span></span><span class="line"><span class="cl">    # http 代理方法
+</span></span><span class="line"><span class="cl">    # ProxyCommand socat - PROXY:127.0.0.1:%h:%p,proxyport=6667
+</span></span><span class="line"><span class="cl">    # socks5 代理方法
+</span></span><span class="line"><span class="cl">    ProxyCommand nc -v -x 127.0.0.1:10808 %h %p
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>设置成功后, 执行 <code>git clone</code>, 速度达到了 <code>4MB/s</code>.</p>
 <p><img src="../../../images/20200330-1.png" alt=""></p>
@@ -358,7 +358,7 @@ usage: C:\Program Files\Git\mingw64\bin\connect.exe [-dnhst45] [-p local-port]
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

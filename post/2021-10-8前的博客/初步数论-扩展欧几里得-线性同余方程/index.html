@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/%E5%88%9D%E6%AD%A5%E6%95%B0%E8%AE%BA-%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97-%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E6%96%B9%E7%A8%8B/" />
@@ -174,12 +174,12 @@ ax ≡ 1(mod m)
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">int gcd(int a, int b)
-{
-	if( b==0 ) return a;
-	else return gcd(b,a%b);
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">int gcd(int a, int b)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	if( b==0 ) return a;
+</span></span><span class="line"><span class="cl">	else return gcd(b,a%b);
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>函数返回的是a, b的最大公约数,一般用gcd(a,b)来表示,数论中一般用(a,b)来表示a,b的最大公约数
 由于此算法较为基础,在此不过多赘述.</p>
@@ -196,7 +196,7 @@ y = y0 - a*t;
 ?
 </code></pre>
 <p>我们要知道,这个通解中未知数的表达式的运算过程是互相抵消的.如:</p>
-<pre><code>    (b/gcd) *t *a - (a/gcd) *t *b = 0;
+<pre><code>	(b/gcd) *t *a - (a/gcd) *t *b = 0;
 </code></pre>
 <p>而如果a, b不是互质的, 另一种形式那么会漏掉一些解.读者自己斟酌.(具体证明博主也不知如何是好)</p>
 <p>如何求解呢?
@@ -239,19 +239,19 @@ y = y0 - a*t;
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">int ex_gcd( int a, int b, int &amp;x, int &amp;y )
-{
-	if( b==0 ){
-		x = 1, y = 0;
-		return a;
-	}
-	int ans = ex_gcd(b,a%b,x,y);
-	int tmp = x;
-	x = y;
-	y = tmp - a/b*y;
-	return ans;
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">int ex_gcd( int a, int b, int &amp;x, int &amp;y )
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	if( b==0 ){
+</span></span><span class="line"><span class="cl">		x = 1, y = 0;
+</span></span><span class="line"><span class="cl">		return a;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	int ans = ex_gcd(b,a%b,x,y);
+</span></span><span class="line"><span class="cl">	int tmp = x;
+</span></span><span class="line"><span class="cl">	x = y;
+</span></span><span class="line"><span class="cl">	y = tmp - a/b*y;
+</span></span><span class="line"><span class="cl">	return ans;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>欧几里得算法只能求a, b的最大公因数,而扩展欧几里得算法不仅可以求gcd(a,b),还可以求出a* x + b* y = gcd的通解只需在欧几里得算法的基础上稍加改动
 然而,求通解有什么用呢?
@@ -294,31 +294,31 @@ a* x + b* y = gcd = 1, 说明a, b互质, 那么推广的式子a* x + m* y = 1中
 </span><span class="lnt">24
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-using namespace std;
-
-int ex_gcd( int a, int b, int &amp;x, int &amp;y )
-{
-	if( b==0 ){
-		x = 1, y = 0;//递归到终止条件, 初始化x, y
-		return a;
-	}
-	int ans = ex_gcd(b,a%b,x,y);//继续递归,此前不对x, y进行操作
-	int temp = x;
-	x = y;
-	y = tmp - a/b*y;//利用推导出的两个相邻状态的代换式进行迭代
-	return ans;
-}
-
-int main( )
-{
-	int a, b, x, y;
-	cin &gt;&gt; a &gt;&gt; b;
-	if( ex_gcd(a,b,x,y)==1 ){
-		cout &lt;&lt; (x+b)%b; 
-	}
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int ex_gcd( int a, int b, int &amp;x, int &amp;y )
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	if( b==0 ){
+</span></span><span class="line"><span class="cl">		x = 1, y = 0;//递归到终止条件, 初始化x, y
+</span></span><span class="line"><span class="cl">		return a;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	int ans = ex_gcd(b,a%b,x,y);//继续递归,此前不对x, y进行操作
+</span></span><span class="line"><span class="cl">	int temp = x;
+</span></span><span class="line"><span class="cl">	x = y;
+</span></span><span class="line"><span class="cl">	y = tmp - a/b*y;//利用推导出的两个相邻状态的代换式进行迭代
+</span></span><span class="line"><span class="cl">	return ans;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main( )
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int a, b, x, y;
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; a &gt;&gt; b;
+</span></span><span class="line"><span class="cl">	if( ex_gcd(a,b,x,y)==1 ){
+</span></span><span class="line"><span class="cl">		cout &lt;&lt; (x+b)%b; 
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>注意,在ex_gcd()中求得的x可能为负值,因此采用了　cout &laquo; (x+b)%b; 这样的输出方式，输出ｘ最小的正整数解</p>
 <p>到这里就结束了,我们讲了什么呢?</p>
@@ -414,7 +414,7 @@ int main( )
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

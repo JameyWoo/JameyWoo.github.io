@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/cmu15-445/buffer_pool/" />
@@ -153,8 +153,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">zip project0-submission.zip src/include/primer/p0_starter.h
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">zip project0-submission.zip src/include/primer/p0_starter.h
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>这次终于顺利将代码提交到了Gradescop, 但是测试没有通过, 好消息是有一部分通过了, 说明是代码实现出了一点问题, 想来改改还是可以过的.</p>
 <p>执行命令将响应代码压缩为zip文件然后上传提交</p>
@@ -163,8 +163,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">zip project1-submission.zip src/include/buffer/lru_replacer.h src/buffer/lru_replacer.cpp src/include/buffer/buffer_pool_manager_instance.h src/buffer/buffer_pool_manager_instance.cpp src/include/buffer/parallel_buffer_pool_manager.h src/buffer/parallel_buffer_pool_manager.cpp
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">zip project1-submission.zip src/include/buffer/lru_replacer.h src/buffer/lru_replacer.cpp src/include/buffer/buffer_pool_manager_instance.h src/buffer/buffer_pool_manager_instance.cpp src/include/buffer/parallel_buffer_pool_manager.h src/buffer/parallel_buffer_pool_manager.cpp
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>不管是standalone还是parallel, 测试都止步于 FetchPage, 之前的测试都通过了, 而之后的都没有通过, 没有通过的如下</p>
 <ul>
@@ -186,12 +186,12 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">size_t LRUReplacer::Size() {
-    latch_.lock();
-    return size_;
-    latch_.unlock();
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">size_t LRUReplacer::Size() {
+</span></span><span class="line"><span class="cl">    latch_.lock();
+</span></span><span class="line"><span class="cl">    return size_;
+</span></span><span class="line"><span class="cl">    latch_.unlock();
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>然而这个测试还是没有通过, 并发那里是time out, 和没加锁前一样, 而且总分还从30变成20分了&hellip; 尴尬</p>
 <p>将锁换成 scoped_lock 并且调整了锁的范围之后终于过了LRU的并发测试. scoped_lock 是我新学到的东西, 以前没学过, 发现知识还比较欠缺.</p>
@@ -230,8 +230,8 @@
             <span class="prev-text nav-default">初步数论 扩展欧几里得 线性同余方程</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        <a class="next" href="../../../post/cmu15-445/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/">
-            <span class="next-text nav-default">CMU 15-445笔记: 数据存储</span>
+        <a class="next" href="../../../post/%E6%95%B0%E6%8D%AE%E5%BA%93/mmap/">
+            <span class="next-text nav-default"></span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
           </a>
@@ -287,7 +287,7 @@
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

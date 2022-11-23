@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/cmu15-445/project1-buffer-pool/" />
@@ -164,8 +164,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">zip project1-submission.zip src/include/buffer/lru_replacer.h src/buffer/lru_replacer.cpp src/include/buffer/buffer_pool_manager_instance.h src/buffer/buffer_pool_manager_instance.cpp src/include/buffer/parallel_buffer_pool_manager.h src/buffer/parallel_buffer_pool_manager.cpp
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">zip project1-submission.zip src/include/buffer/lru_replacer.h src/buffer/lru_replacer.cpp src/include/buffer/buffer_pool_manager_instance.h src/buffer/buffer_pool_manager_instance.cpp src/include/buffer/parallel_buffer_pool_manager.h src/buffer/parallel_buffer_pool_manager.cpp
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>刚提交时分数只有20分, 晕, 于是反复地修改, 提交, 得到反馈, 再修改, 提交, 最后终于拿到了100分. 分数也从<code>20 -&gt; 30 -&gt; 32 -&gt; 42 -&gt; 68 -&gt; 67 -&gt; 97 -&gt; 100</code>, 不断地发现错误和解决错误.</p>
 <p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgs/image-20211027201450564.png" alt="image-20211027201450564"></p>
@@ -195,8 +195,8 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">std::scoped_lock lock{latch_};
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">std::scoped_lock lock{latch_};
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>避免因为忘记释放锁而造成的死锁问题, 它是一种<strong>资源分配时初始化(RAII)方法</strong>, 在对象析构的时候自动释放锁. 跟go语言的</p>
 <div class="highlight"><div class="chroma">
@@ -205,9 +205,9 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mutex.lock()
-defer mutex.unlock()
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mutex.lock()
+</span></span><span class="line"><span class="cl">defer mutex.unlock()
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>很像, 而且还更方便一点.</p>
 <p>LRU算法较简单, 注意一些细节即可通过测试</p>
@@ -356,7 +356,7 @@ defer mutex.unlock()
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {

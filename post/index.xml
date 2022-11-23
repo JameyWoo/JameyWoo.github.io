@@ -243,10 +243,10 @@
     
     <item>
       <title>Darknet  目标检测开源库学习记录</title>
-      <link>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/darknet-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%BC%80%E6%BA%90%E5%BA%93%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</link>
+      <link>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/darknet--%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%BC%80%E6%BA%90%E5%BA%93%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</link>
       <pubDate>Fri, 28 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/darknet-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%BC%80%E6%BA%90%E5%BA%93%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</guid>
+      <guid>https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/darknet--%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%BC%80%E6%BA%90%E5%BA%93%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/</guid>
       <description>1. 效果展示 官网链接 darknet 实现了c语言版本的yolo v3, 不依赖任何其他库. 因此安装非常简单. 效果图: 2. 安装方法 如何安装? 1 2 3 git clone https://github.com/pjreddie/darknet cd darknet make 然后下载y</description>
     </item>
     
@@ -476,12 +476,30 @@
     </item>
     
     <item>
+      <title></title>
+      <link>https://fiveplus.top/post/%E6%95%B0%E6%8D%AE%E5%BA%93/mmap/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fiveplus.top/post/%E6%95%B0%E6%8D%AE%E5%BA%93/mmap/</guid>
+      <description>前言 这篇文章将会介绍mmap, 以及mmap在DBMS中的应用. 包括mmap的优缺点分析, mmap与其他一些IO方式的对比. mmap是什么? m</description>
+    </item>
+    
+    <item>
       <title>CMU 15-445笔记: 数据存储</title>
       <link>https://fiveplus.top/post/cmu15-445/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://fiveplus.top/post/cmu15-445/%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</guid>
       <description>要介绍的内容 顺序访问、随机访问 mmap以及其为什么不行 因为他的页面会收到操作系统的缓存管理，内和缓冲区高速缓存 直接IO和裸IO的区别，裸IO</description>
+    </item>
+    
+    <item>
+      <title>Raft博士论文总结</title>
+      <link>https://fiveplus.top/post/raft%E5%8D%9A%E5%A3%AB%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://fiveplus.top/post/raft%E5%8D%9A%E5%A3%AB%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/</guid>
+      <description>目录 raft完全总结 raft核心基础 复制状态机 拜占庭将军问题 高可用而不是完全可用 CAP理论：CP 强一致性 持久化保存的状态 hardstate 在日志提交前持久化</description>
     </item>
     
   </channel>

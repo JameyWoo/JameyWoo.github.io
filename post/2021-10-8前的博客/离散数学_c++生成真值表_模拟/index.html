@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.88.1 with theme even" />
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
 
 
 <link rel="canonical" href="https://fiveplus.top/post/2021-10-8%E5%89%8D%E7%9A%84%E5%8D%9A%E5%AE%A2/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6_c&#43;&#43;%E7%94%9F%E6%88%90%E7%9C%9F%E5%80%BC%E8%A1%A8_%E6%A8%A1%E6%8B%9F/" />
@@ -327,171 +327,171 @@
 </span><span class="lnt">164
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;iostream&gt;
-#include &lt;string&gt;
-#include &lt;cmath&gt;
-using namespace std;
-int cnt = 0, chval[26] = {};
-
-void getAlpha(string str, char *chs, int &amp;cnt)  //获取真值表中的字符 
-{
-	int ch[26] = {};
-	for(int i = 0; i &lt; (int)str.length(); ++i) {
-		if(isalpha(str[i])) ch[str[i] - &#39;a&#39;] ++;
-	}
-	for(int i = 0; i &lt; 26; ++i) {
-		if(ch[i]) {
-			chs[cnt++] = i+97;
-		}
-	}
-}
-
-string shuzhitihuan(string str, int chval[26])
-{
-	string st = &#34;&#34;;
-	for(int i = 0; i &lt; str.size(); ++i) {
-		if(str[i] &lt;= &#39;z&#39; &amp;&amp; str[i] &gt;= &#39;a&#39;) {
-			st += chval[str[i] - &#39;a&#39;] ? &#34;1&#34;:&#34;0&#34;;
-		} else st += str[i];
-	}
-	return st;
-}
-
-void qvkuohao(string &amp; str)  //需要去除两种括号()(1)(0)
-{
-	string st = &#34;&#34;;
-	for(int i = 0; i &lt; str.size(); ++i) {
-		if(str[i] == &#39;(&#39; &amp;&amp; i+2 &lt; str.size() &amp;&amp; str[i+2] == &#39;)&#39;) {
-			st += str[i+1];
-			i += 2;
-		} else st += str[i];
-	}
-	str = st;
-}
-
-void qvfei(string &amp;str) 
-{
-	string st = &#34;&#34;;
-	for(int i = 0; i &lt; str.size(); ++i) {
-		if(str[i] == &#39;!&#39; &amp;&amp; i+1 &lt; str.size() &amp;&amp; str[i+1] == &#39;0&#39;) {
-			st += &#39;1&#39;;
-			i++;
-		} else if(str[i] == &#39;!&#39; &amp;&amp; i + 1 &lt; str.size() &amp;&amp; str[i+1] == &#39;1&#39;) {
-			st += &#39;0&#39;;
-			i++;
-		} else st += str[i];
-	}
-	str = st;
-} 
-
-void qvheqv(string &amp;str)
-{
-	string st = &#34;&#34;;
-	for(int i = 0; i &lt; str.size(); ++i) {
-		if(str[i] == &#39;1&#39; &amp;&amp; i+2 &lt; str.size() &amp;&amp; str[i+2] == &#39;1&#39; &amp;&amp; str[i+1] == &#39;*&#39;) {
-			st += &#39;1&#39;;
-			i += 2;
-		} else if(i+2 &lt; str.size() &amp;&amp; str[i+1] == &#39;*&#39; &amp;&amp; ((str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;0&#39;)
-		|| (str[i] == &#39;0&#39; &amp;&amp; str[i+2] == &#39;1&#39;) || (str[i] == &#39;0&#39; &amp;&amp; str[i+2] == &#39;0&#39;))) {
-			st += &#39;0&#39;;
-			i += 2;
-		} else st += str[i];
-	}
-	str = st;
-}
-
-void qvxiqv(string &amp; str)
-{
-	string st = &#34;&#34;;
-	for(int i = 0; i &lt; str.size(); ++i) {
-		if(str[i] == &#39;0&#39; &amp;&amp; i+2 &lt; str.size() &amp;&amp; str[i+2] == &#39;0&#39; &amp;&amp; str[i+1] == &#39;|&#39;) {
-			st += &#39;0&#39;;
-			i += 2;
-		} else if (i+2 &lt; str.size() &amp;&amp; str[i+1] == &#39;|&#39; &amp;&amp; ((str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;0&#39;)
-		|| (str[i] == &#39;0&#39; &amp;&amp; str[i+2] == &#39;1&#39;) || (str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;1&#39;))) {
-			st += &#39;1&#39;;
-			i += 2;
-		} else st += str[i];
-	}
-	str = st;
-}
-
-void qvdantiaojian(string &amp;str)
-{
-	string st = &#34;&#34;;
-	for(int i = 0; i &lt; str.size(); ++i) {
-		if(str[i + 1] == &#39;&gt;&#39; &amp;&amp; str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;0&#39;) {
-			st += &#39;0&#39;;
-			i += 2;
-		} else if(str[i+1] == &#39;&gt;&#39; &amp;&amp; ((str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;1&#39;)
-		|| str[i] == &#39;0&#39; &amp;&amp;(str[i+2] == &#39;1&#39; || str[i+2] == &#39;0&#39;))) {
-			st += &#39;1&#39;;
-			i += 2;
-		} else st += str[i];
-	}
-	str = st;
-}
-
-void qvshuangtiaojian(string &amp;str)
-{
-	string st = &#34;&#34;;
-	for(int i = 0; i &lt; str.size(); ++i) {
-		if(str[i+1] == &#39;-&#39; &amp;&amp; ((str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;1&#39;) || (str[i] == &#39;0&#39; &amp;&amp; str[i+2] == &#39;0&#39;))) {
-			st += &#39;1&#39;;
-			i += 2;
-		} else if(str[i+1] == &#39;-&#39; &amp;&amp; ((str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;0&#39;) || (str[i] == &#39;0&#39; &amp;&amp; str[i+2] == &#39;1&#39;))) {
-			st += &#39;0&#39;;
-			i += 2;
-		} else st += str[i]; 
-	}
-	str = st;
-}
-
-int main()
-{
-	string str, tmp;
-	char chs[12];
-	cin &gt;&gt; str;
-	getAlpha(str, chs, cnt);  //只讨论小写字母
-	tmp = str;
-	for(int j = 0; j &lt; cnt; ++j) {
-		cout &lt;&lt; chs[j] &lt;&lt; &#34;  &#34;;
-	} 
-	cout &lt;&lt; tmp;
-	cout &lt;&lt; endl;
-	for(int i = 0; i &lt; pow(2, cnt); ++i) {
-		for(int j = 0; j &lt; cnt; ++j) { //赋值过程 
-			chval[chs[j] - &#39;a&#39;] = (1 &amp; (i&gt;&gt;(cnt-1-j)));
-		}	cout &lt;&lt; endl;
-		for(int j = 0; j &lt; cnt; ++j) {
-			cout &lt;&lt; chval[chs[j] - &#39;a&#39;] &lt;&lt; &#34;  &#34;;
-		}
-		str = shuzhitihuan(str, chval);
-		while(str.size() != 1) {
-			qvkuohao(str);
-			qvfei(str);
-			qvheqv(str);
-			qvxiqv(str);
-			qvdantiaojian(str);
-			qvshuangtiaojian(str); 
-		}
-		for(int i = 0; i &lt; tmp.size() / 2; ++i) cout &lt;&lt; &#39; &#39;;
-		cout &lt;&lt;  str &lt;&lt; endl;
-		str = tmp;
-	}
-}
-
-/*
-((p*q)*r) 
-(p*q)|(!p*!q)
-(!p|q)*(!q|p) 
-(p&gt;q)*(q&gt;p)
-!(p*q)&gt;(!p*!q)
-p-q 
-(!p|r)*(r&gt;q)|p*q
-p*q|r*b
-*/
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">#include &lt;iostream&gt;
+</span></span><span class="line"><span class="cl">#include &lt;string&gt;
+</span></span><span class="line"><span class="cl">#include &lt;cmath&gt;
+</span></span><span class="line"><span class="cl">using namespace std;
+</span></span><span class="line"><span class="cl">int cnt = 0, chval[26] = {};
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void getAlpha(string str, char *chs, int &amp;cnt)  //获取真值表中的字符 
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	int ch[26] = {};
+</span></span><span class="line"><span class="cl">	for(int i = 0; i &lt; (int)str.length(); ++i) {
+</span></span><span class="line"><span class="cl">		if(isalpha(str[i])) ch[str[i] - &#39;a&#39;] ++;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	for(int i = 0; i &lt; 26; ++i) {
+</span></span><span class="line"><span class="cl">		if(ch[i]) {
+</span></span><span class="line"><span class="cl">			chs[cnt++] = i+97;
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">string shuzhitihuan(string str, int chval[26])
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	string st = &#34;&#34;;
+</span></span><span class="line"><span class="cl">	for(int i = 0; i &lt; str.size(); ++i) {
+</span></span><span class="line"><span class="cl">		if(str[i] &lt;= &#39;z&#39; &amp;&amp; str[i] &gt;= &#39;a&#39;) {
+</span></span><span class="line"><span class="cl">			st += chval[str[i] - &#39;a&#39;] ? &#34;1&#34;:&#34;0&#34;;
+</span></span><span class="line"><span class="cl">		} else st += str[i];
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	return st;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void qvkuohao(string &amp; str)  //需要去除两种括号()(1)(0)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	string st = &#34;&#34;;
+</span></span><span class="line"><span class="cl">	for(int i = 0; i &lt; str.size(); ++i) {
+</span></span><span class="line"><span class="cl">		if(str[i] == &#39;(&#39; &amp;&amp; i+2 &lt; str.size() &amp;&amp; str[i+2] == &#39;)&#39;) {
+</span></span><span class="line"><span class="cl">			st += str[i+1];
+</span></span><span class="line"><span class="cl">			i += 2;
+</span></span><span class="line"><span class="cl">		} else st += str[i];
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	str = st;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void qvfei(string &amp;str) 
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	string st = &#34;&#34;;
+</span></span><span class="line"><span class="cl">	for(int i = 0; i &lt; str.size(); ++i) {
+</span></span><span class="line"><span class="cl">		if(str[i] == &#39;!&#39; &amp;&amp; i+1 &lt; str.size() &amp;&amp; str[i+1] == &#39;0&#39;) {
+</span></span><span class="line"><span class="cl">			st += &#39;1&#39;;
+</span></span><span class="line"><span class="cl">			i++;
+</span></span><span class="line"><span class="cl">		} else if(str[i] == &#39;!&#39; &amp;&amp; i + 1 &lt; str.size() &amp;&amp; str[i+1] == &#39;1&#39;) {
+</span></span><span class="line"><span class="cl">			st += &#39;0&#39;;
+</span></span><span class="line"><span class="cl">			i++;
+</span></span><span class="line"><span class="cl">		} else st += str[i];
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	str = st;
+</span></span><span class="line"><span class="cl">} 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void qvheqv(string &amp;str)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	string st = &#34;&#34;;
+</span></span><span class="line"><span class="cl">	for(int i = 0; i &lt; str.size(); ++i) {
+</span></span><span class="line"><span class="cl">		if(str[i] == &#39;1&#39; &amp;&amp; i+2 &lt; str.size() &amp;&amp; str[i+2] == &#39;1&#39; &amp;&amp; str[i+1] == &#39;*&#39;) {
+</span></span><span class="line"><span class="cl">			st += &#39;1&#39;;
+</span></span><span class="line"><span class="cl">			i += 2;
+</span></span><span class="line"><span class="cl">		} else if(i+2 &lt; str.size() &amp;&amp; str[i+1] == &#39;*&#39; &amp;&amp; ((str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;0&#39;)
+</span></span><span class="line"><span class="cl">		|| (str[i] == &#39;0&#39; &amp;&amp; str[i+2] == &#39;1&#39;) || (str[i] == &#39;0&#39; &amp;&amp; str[i+2] == &#39;0&#39;))) {
+</span></span><span class="line"><span class="cl">			st += &#39;0&#39;;
+</span></span><span class="line"><span class="cl">			i += 2;
+</span></span><span class="line"><span class="cl">		} else st += str[i];
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	str = st;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void qvxiqv(string &amp; str)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	string st = &#34;&#34;;
+</span></span><span class="line"><span class="cl">	for(int i = 0; i &lt; str.size(); ++i) {
+</span></span><span class="line"><span class="cl">		if(str[i] == &#39;0&#39; &amp;&amp; i+2 &lt; str.size() &amp;&amp; str[i+2] == &#39;0&#39; &amp;&amp; str[i+1] == &#39;|&#39;) {
+</span></span><span class="line"><span class="cl">			st += &#39;0&#39;;
+</span></span><span class="line"><span class="cl">			i += 2;
+</span></span><span class="line"><span class="cl">		} else if (i+2 &lt; str.size() &amp;&amp; str[i+1] == &#39;|&#39; &amp;&amp; ((str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;0&#39;)
+</span></span><span class="line"><span class="cl">		|| (str[i] == &#39;0&#39; &amp;&amp; str[i+2] == &#39;1&#39;) || (str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;1&#39;))) {
+</span></span><span class="line"><span class="cl">			st += &#39;1&#39;;
+</span></span><span class="line"><span class="cl">			i += 2;
+</span></span><span class="line"><span class="cl">		} else st += str[i];
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	str = st;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void qvdantiaojian(string &amp;str)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	string st = &#34;&#34;;
+</span></span><span class="line"><span class="cl">	for(int i = 0; i &lt; str.size(); ++i) {
+</span></span><span class="line"><span class="cl">		if(str[i + 1] == &#39;&gt;&#39; &amp;&amp; str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;0&#39;) {
+</span></span><span class="line"><span class="cl">			st += &#39;0&#39;;
+</span></span><span class="line"><span class="cl">			i += 2;
+</span></span><span class="line"><span class="cl">		} else if(str[i+1] == &#39;&gt;&#39; &amp;&amp; ((str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;1&#39;)
+</span></span><span class="line"><span class="cl">		|| str[i] == &#39;0&#39; &amp;&amp;(str[i+2] == &#39;1&#39; || str[i+2] == &#39;0&#39;))) {
+</span></span><span class="line"><span class="cl">			st += &#39;1&#39;;
+</span></span><span class="line"><span class="cl">			i += 2;
+</span></span><span class="line"><span class="cl">		} else st += str[i];
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	str = st;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">void qvshuangtiaojian(string &amp;str)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	string st = &#34;&#34;;
+</span></span><span class="line"><span class="cl">	for(int i = 0; i &lt; str.size(); ++i) {
+</span></span><span class="line"><span class="cl">		if(str[i+1] == &#39;-&#39; &amp;&amp; ((str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;1&#39;) || (str[i] == &#39;0&#39; &amp;&amp; str[i+2] == &#39;0&#39;))) {
+</span></span><span class="line"><span class="cl">			st += &#39;1&#39;;
+</span></span><span class="line"><span class="cl">			i += 2;
+</span></span><span class="line"><span class="cl">		} else if(str[i+1] == &#39;-&#39; &amp;&amp; ((str[i] == &#39;1&#39; &amp;&amp; str[i+2] == &#39;0&#39;) || (str[i] == &#39;0&#39; &amp;&amp; str[i+2] == &#39;1&#39;))) {
+</span></span><span class="line"><span class="cl">			st += &#39;0&#39;;
+</span></span><span class="line"><span class="cl">			i += 2;
+</span></span><span class="line"><span class="cl">		} else st += str[i]; 
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	str = st;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">int main()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	string str, tmp;
+</span></span><span class="line"><span class="cl">	char chs[12];
+</span></span><span class="line"><span class="cl">	cin &gt;&gt; str;
+</span></span><span class="line"><span class="cl">	getAlpha(str, chs, cnt);  //只讨论小写字母
+</span></span><span class="line"><span class="cl">	tmp = str;
+</span></span><span class="line"><span class="cl">	for(int j = 0; j &lt; cnt; ++j) {
+</span></span><span class="line"><span class="cl">		cout &lt;&lt; chs[j] &lt;&lt; &#34;  &#34;;
+</span></span><span class="line"><span class="cl">	} 
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; tmp;
+</span></span><span class="line"><span class="cl">	cout &lt;&lt; endl;
+</span></span><span class="line"><span class="cl">	for(int i = 0; i &lt; pow(2, cnt); ++i) {
+</span></span><span class="line"><span class="cl">		for(int j = 0; j &lt; cnt; ++j) { //赋值过程 
+</span></span><span class="line"><span class="cl">			chval[chs[j] - &#39;a&#39;] = (1 &amp; (i&gt;&gt;(cnt-1-j)));
+</span></span><span class="line"><span class="cl">		}	cout &lt;&lt; endl;
+</span></span><span class="line"><span class="cl">		for(int j = 0; j &lt; cnt; ++j) {
+</span></span><span class="line"><span class="cl">			cout &lt;&lt; chval[chs[j] - &#39;a&#39;] &lt;&lt; &#34;  &#34;;
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">		str = shuzhitihuan(str, chval);
+</span></span><span class="line"><span class="cl">		while(str.size() != 1) {
+</span></span><span class="line"><span class="cl">			qvkuohao(str);
+</span></span><span class="line"><span class="cl">			qvfei(str);
+</span></span><span class="line"><span class="cl">			qvheqv(str);
+</span></span><span class="line"><span class="cl">			qvxiqv(str);
+</span></span><span class="line"><span class="cl">			qvdantiaojian(str);
+</span></span><span class="line"><span class="cl">			qvshuangtiaojian(str); 
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">		for(int i = 0; i &lt; tmp.size() / 2; ++i) cout &lt;&lt; &#39; &#39;;
+</span></span><span class="line"><span class="cl">		cout &lt;&lt;  str &lt;&lt; endl;
+</span></span><span class="line"><span class="cl">		str = tmp;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">/*
+</span></span><span class="line"><span class="cl">((p*q)*r) 
+</span></span><span class="line"><span class="cl">(p*q)|(!p*!q)
+</span></span><span class="line"><span class="cl">(!p|q)*(!q|p) 
+</span></span><span class="line"><span class="cl">(p&gt;q)*(q&gt;p)
+</span></span><span class="line"><span class="cl">!(p*q)&gt;(!p*!q)
+</span></span><span class="line"><span class="cl">p-q 
+</span></span><span class="line"><span class="cl">(!p|r)*(r&gt;q)|p*q
+</span></span><span class="line"><span class="cl">p*q|r*b
+</span></span><span class="line"><span class="cl">*/
+</span></span></code></pre></td></tr></table>
 </div>
 </div>
     </div>
@@ -576,7 +576,7 @@ p*q|r*b
 
 
 
-<script type="text/javascript" src="../../../js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
   <script type="text/javascript">
     window.MathJax = {
       tex: {
