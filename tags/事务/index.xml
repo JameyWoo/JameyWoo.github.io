@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>事务 on 姬小野的部落</title>
+    <link>https://fiveplus.top/tags/%E4%BA%8B%E5%8A%A1/</link>
+    <description>Recent content in 事务 on 姬小野的部落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 07 Nov 2022 09:00:25 +0800</lastBuildDate><atom:link href="https://fiveplus.top/tags/%E4%BA%8B%E5%8A%A1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于2PC、3PC和Percolator的一些对比和理解</title>
+      <link>https://fiveplus.top/post/%E5%85%B3%E4%BA%8E2pc3pc%E5%92%8Cpercolator%E7%9A%84%E4%B8%80%E4%BA%9B%E5%AF%B9%E6%AF%94%E5%92%8C%E7%90%86%E8%A7%A3/</link>
+      <pubDate>Mon, 07 Nov 2022 09:00:25 +0800</pubDate>
+      
+      <guid>https://fiveplus.top/post/%E5%85%B3%E4%BA%8E2pc3pc%E5%92%8Cpercolator%E7%9A%84%E4%B8%80%E4%BA%9B%E5%AF%B9%E6%AF%94%E5%92%8C%E7%90%86%E8%A7%A3/</guid>
+      <description>目录 2PC和Percolator对比 2PC和3PC对比 2PC的问题 3PC 我对2PC和3PC对于协调者依赖的理解 总结 可用性 对比表格 结论 2PC、3P</description>
+    </item>
+    
+  </channel>
+</rss>
