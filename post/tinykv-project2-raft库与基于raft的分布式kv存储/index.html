@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>TinyKV Project2: Raft库与基于raft的分布式kv存储 - 姬小野的部落</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="姬小野" /><meta name="description" content="project2 目录 project2 目录 project2 题解 概述 2A MessageType MsgHup MsgBeat MsgPropose MsgAppend MsgSnapshot MsgAppendResponse MsgRequestVote MsgRequestVoteResponse 2AA 选举流程 收到选举消息的节点 几个关键函数 2AB 2AC 2B struct及含义 代码实现 proposeRaftCommand HandleRaftReady SaveReadyState Append debug 2C snapsho" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
+
+
+<link rel="canonical" href="https://fiveplus.top/post/tinykv-project2-raft%E5%BA%93%E4%B8%8E%E5%9F%BA%E4%BA%8Eraft%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8Fkv%E5%AD%98%E5%82%A8/" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+<link rel="manifest" href="../../manifest.json">
+<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="../../sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="TinyKV Project2: Raft库与基于raft的分布式kv存储" />
+<meta property="og:description" content="project2 目录 project2 目录 project2 题解 概述 2A MessageType MsgHup MsgBeat MsgPropose MsgAppend MsgSnapshot MsgAppendResponse MsgRequestVote MsgRequestVoteResponse 2AA 选举流程 收到选举消息的节点 几个关键函数 2AB 2AC 2B struct及含义 代码实现 proposeRaftCommand HandleRaftReady SaveReadyState Append debug 2C snapsho" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveplus.top/post/tinykv-project2-raft%E5%BA%93%E4%B8%8E%E5%9F%BA%E4%BA%8Eraft%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8Fkv%E5%AD%98%E5%82%A8/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-24T21:08:16+08:00" />
+<meta property="article:modified_time" content="2022-07-24T21:08:16+08:00" />
+
+<meta itemprop="name" content="TinyKV Project2: Raft库与基于raft的分布式kv存储">
+<meta itemprop="description" content="project2 目录 project2 目录 project2 题解 概述 2A MessageType MsgHup MsgBeat MsgPropose MsgAppend MsgSnapshot MsgAppendResponse MsgRequestVote MsgRequestVoteResponse 2AA 选举流程 收到选举消息的节点 几个关键函数 2AB 2AC 2B struct及含义 代码实现 proposeRaftCommand HandleRaftReady SaveReadyState Append debug 2C snapsho"><meta itemprop="datePublished" content="2022-07-24T21:08:16+08:00" />
+<meta itemprop="dateModified" content="2022-07-24T21:08:16+08:00" />
+<meta itemprop="wordCount" content="8752">
+<meta itemprop="keywords" content="数据库,raft,事务," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TinyKV Project2: Raft库与基于raft的分布式kv存储"/>
+<meta name="twitter:description" content="project2 目录 project2 目录 project2 题解 概述 2A MessageType MsgHup MsgBeat MsgPropose MsgAppend MsgSnapshot MsgAppendResponse MsgRequestVote MsgRequestVoteResponse 2AA 选举流程 收到选举消息的节点 几个关键函数 2AB 2AC 2B struct及含义 代码实现 proposeRaftCommand HandleRaftReady SaveReadyState Append debug 2C snapsho"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="../../" class="logo">姬小野</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="../../">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="../../post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="../../tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="../../categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="../../about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="../../" class="logo">姬小野</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="../../">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">TinyKV Project2: Raft库与基于raft的分布式kv存储</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-07-24 </span>
+        <div class="post-category">
+            <a href="../../categories/%E5%88%86%E5%B8%83%E5%BC%8F/"> 分布式 </a>
+            </div>
+          <span class="more-meta"> 8752 words </span>
+          <span class="more-meta"> 18 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#目录">目录</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#2a">2A</a>
+      <ul>
+        <li><a href="#messagetype">MessageType</a></li>
+        <li><a href="#2aa">2AA</a></li>
+        <li><a href="#2ab">2AB</a></li>
+        <li><a href="#2ac">2AC</a></li>
+      </ul>
+    </li>
+    <li><a href="#2b">2B</a>
+      <ul>
+        <li><a href="#struct及含义">struct及含义</a></li>
+        <li><a href="#代码实现">代码实现</a></li>
+        <li><a href="#debug">debug</a></li>
+      </ul>
+    </li>
+    <li><a href="#2c">2C</a>
+      <ul>
+        <li><a href="#snapshot发送流程">snapshot发送流程</a></li>
+        <li><a href="#applysnapshot方法的实现">ApplySnapshot方法的实现</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="project2">project2</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#project2">project2</a>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+</ul>
+</li>
+<li><a href="#project2-%E9%A2%98%E8%A7%A3">project2 题解</a>
+<ul>
+<li><a href="#%E6%A6%82%E8%BF%B0">概述</a></li>
+<li><a href="#2a">2A</a>
+<ul>
+<li><a href="#messagetype">MessageType</a>
+<ul>
+<li><a href="#msghup">MsgHup</a></li>
+<li><a href="#msgbeat">MsgBeat</a></li>
+<li><a href="#msgpropose">MsgPropose</a></li>
+<li><a href="#msgappend">MsgAppend</a></li>
+<li><a href="#msgsnapshot">MsgSnapshot</a></li>
+<li><a href="#msgappendresponse">MsgAppendResponse</a></li>
+<li><a href="#msgrequestvote">MsgRequestVote</a></li>
+<li><a href="#msgrequestvoteresponse">MsgRequestVoteResponse</a></li>
+</ul>
+</li>
+<li><a href="#2aa">2AA</a>
+<ul>
+<li><a href="#%E9%80%89%E4%B8%BE%E6%B5%81%E7%A8%8B">选举流程</a></li>
+<li><a href="#%E6%94%B6%E5%88%B0%E9%80%89%E4%B8%BE%E6%B6%88%E6%81%AF%E7%9A%84%E8%8A%82%E7%82%B9"><strong>收到选举消息的节点</strong></a></li>
+<li><a href="#%E5%87%A0%E4%B8%AA%E5%85%B3%E9%94%AE%E5%87%BD%E6%95%B0">几个关键函数</a></li>
+</ul>
+</li>
+<li><a href="#2ab">2AB</a></li>
+<li><a href="#2ac">2AC</a></li>
+</ul>
+</li>
+<li><a href="#2b">2B</a>
+<ul>
+<li><a href="#struct%E5%8F%8A%E5%90%AB%E4%B9%89">struct及含义</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">代码实现</a>
+<ul>
+<li><a href="#proposeraftcommand"><strong>proposeRaftCommand</strong></a></li>
+<li><a href="#handleraftready"><strong>HandleRaftReady</strong></a></li>
+<li><a href="#savereadystate">SaveReadyState</a></li>
+<li><a href="#append"><strong>Append</strong></a></li>
+</ul>
+</li>
+<li><a href="#debug">debug</a></li>
+</ul>
+</li>
+<li><a href="#2c">2C</a>
+<ul>
+<li><a href="#snapshot%E5%8F%91%E9%80%81%E6%B5%81%E7%A8%8B">snapshot发送流程</a></li>
+<li><a href="#applysnapshot%E6%96%B9%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0">ApplySnapshot方法的实现</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="project2-题解">project2 题解</h1>
+<h2 id="概述">概述</h2>
+<p>project1和project2是分水岭，2直接开始实现raft库，涉及的代码更多并且更复杂。这个project一共有三个部分：</p>
+<ol>
+<li>raft库的实现（2A）</li>
+<li>基于raft的K/V存储服务（2B）</li>
+<li>增加对snapshot的支持（2C）</li>
+</ol>
+<p>raft库是一个一致性算法库，它本身并不具有KV存储的功能，因此我们需要在raft之上建立一个KV存储，并且实现快照。</p>
+<h2 id="2a">2A</h2>
+<p>2A也有多个模块，被分为三个部分：2AA, 2AB, 2AC</p>
+<ul>
+<li>2AA是实现领导选举</li>
+<li>2AB是实现日志复制</li>
+<li>2AC是实现raw node接口</li>
+</ul>
+<h3 id="messagetype">MessageType</h3>
+<p>raft算法本质上是一个大的状态机，任何的操作例如选举、提交数据等，最后的操作一定是封装成一个消息结构体，输入到raft算法库的状态机中。raft算法其实由好几个协议组成，但是在这里，统一定义在了Message这个结构体之中，以下总结了该结构体的成员用途。</p>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>MessageType</td>
+<td>消息类型</td>
+</tr>
+<tr>
+<td>to</td>
+<td>uint64</td>
+<td>消息接收者的节点ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>uint64</td>
+<td>消息发送者的节点ID</td>
+</tr>
+<tr>
+<td>term</td>
+<td>uint64</td>
+<td>任期ID</td>
+</tr>
+<tr>
+<td>logTerm</td>
+<td>uint64</td>
+<td>日志所处的任期ID</td>
+</tr>
+<tr>
+<td>index</td>
+<td>uint64</td>
+<td>日志索引ID，用于节点向leader汇报自己已经commit的日志数据ID</td>
+</tr>
+<tr>
+<td>entries</td>
+<td>Entry</td>
+<td>日志条目数组</td>
+</tr>
+<tr>
+<td>commit</td>
+<td>uint64</td>
+<td>提交日志索引</td>
+</tr>
+<tr>
+<td>snapshot</td>
+<td>Snapshot</td>
+<td>快照数据</td>
+</tr>
+<tr>
+<td>reject</td>
+<td>bool</td>
+<td>是否拒绝</td>
+</tr>
+<tr>
+<td>rejectHint</td>
+<td>uint64</td>
+<td>拒绝同步日志请求时返回的当前节点日志ID，用于被拒绝方快速定位到下一次合适的同步日志位置</td>
+</tr>
+</tbody>
+</table>
+<p>由于这个Message结构体，全部将raft协议相关的数据都定义在了一起，有些协议不是用到其中的全部数据，所以这里的字段都是optinal的。下面将介绍各种不同的消息</p>
+<h4 id="msghup">MsgHup</h4>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>MsgHup</td>
+<td>不用于节点间通信，仅用于发送给本节点让本节点进行选举</td>
+</tr>
+<tr>
+<td>to</td>
+<td>uint64</td>
+<td>消息接收者的节点ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>uint64</td>
+<td>本节点ID</td>
+</tr>
+</tbody>
+</table>
+<h4 id="msgbeat">MsgBeat</h4>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>MsgBeat</td>
+<td>不用于节点间通信，仅用于leader节点在heartbeat定时器到期时向集群中其他节点发送心跳消息</td>
+</tr>
+<tr>
+<td>to</td>
+<td>uint64</td>
+<td>消息接收者的节点ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>uint64</td>
+<td>本节点ID</td>
+</tr>
+</tbody>
+</table>
+<h4 id="msgpropose">MsgPropose</h4>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>MsgProp</td>
+<td>raft库使用者提议（propose）数据</td>
+</tr>
+<tr>
+<td>to</td>
+<td>uint64</td>
+<td>消息接收者的节点ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>uint64</td>
+<td>本节点ID</td>
+</tr>
+<tr>
+<td>entries</td>
+<td>Entry</td>
+<td>日志条目数组</td>
+</tr>
+</tbody>
+</table>
+<p>raft库的使用者向raft库propose数据时，最后会封装成这个类型的消息来进行提交，不同类型的节点处理还不尽相同。</p>
+<h4 id="msgappend">MsgAppend</h4>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>MsgApp</td>
+<td>用于leader向集群中其他节点同步数据的消息</td>
+</tr>
+<tr>
+<td>to</td>
+<td>uint64</td>
+<td>消息接收者的节点ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>uint64</td>
+<td>本节点ID</td>
+</tr>
+<tr>
+<td>entries</td>
+<td>Entry</td>
+<td>日志条目数组</td>
+</tr>
+<tr>
+<td>logTerm</td>
+<td>uint64</td>
+<td>日志所处的任期ID</td>
+</tr>
+<tr>
+<td>index</td>
+<td>uint64</td>
+<td>索引ID</td>
+</tr>
+</tbody>
+</table>
+<h4 id="msgsnapshot">MsgSnapshot</h4>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>MsgSnap</td>
+<td>用于leader向follower同步数据用的快照消息</td>
+</tr>
+<tr>
+<td>to</td>
+<td>uint64</td>
+<td>消息接收者的节点ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>uint64</td>
+<td>本节点ID</td>
+</tr>
+<tr>
+<td>snapshot</td>
+<td>Snapshot</td>
+<td>快照数据</td>
+</tr>
+</tbody>
+</table>
+<h4 id="msgappendresponse">MsgAppendResponse</h4>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>MsgAppResp</td>
+<td>集群中其他节点针对leader的MsgApp/MsgSnap消息的应答消息</td>
+</tr>
+<tr>
+<td>to</td>
+<td>uint64</td>
+<td>消息接收者的节点ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>uint64</td>
+<td>本节点ID</td>
+</tr>
+<tr>
+<td>index</td>
+<td>uint64</td>
+<td>日志索引ID，用于节点向leader汇报自己已经commit的日志数据ID</td>
+</tr>
+<tr>
+<td>reject</td>
+<td>bool</td>
+<td>是否拒绝同步日志的请求</td>
+</tr>
+<tr>
+<td>rejectHint</td>
+<td>uint64</td>
+<td>拒绝同步日志请求时返回的当前节点日志ID，用于被拒绝方快速定位到下一次合适的同步日志位置</td>
+</tr>
+</tbody>
+</table>
+<h4 id="msgrequestvote">MsgRequestVote</h4>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>MsgVote/MsgPreVote</td>
+<td>节点投票给自己以进行新一轮的选举</td>
+</tr>
+<tr>
+<td>to</td>
+<td>uint64</td>
+<td>消息接收者的节点ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>uint64</td>
+<td>本节点ID</td>
+</tr>
+<tr>
+<td>term</td>
+<td>uint64</td>
+<td>任期ID</td>
+</tr>
+<tr>
+<td>index</td>
+<td>uint64</td>
+<td>日志索引ID，用于节点向leader汇报自己已经commit的日志数据ID</td>
+</tr>
+<tr>
+<td>logTerm</td>
+<td>uint64</td>
+<td>日志所处的任期ID</td>
+</tr>
+<tr>
+<td>context</td>
+<td>bytes</td>
+<td>上下文数据</td>
+</tr>
+</tbody>
+</table>
+<h4 id="msgrequestvoteresponse">MsgRequestVoteResponse</h4>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>MsgHeartbeatResp</td>
+<td>用于follower向leader应答心跳消息</td>
+</tr>
+<tr>
+<td>to</td>
+<td>uint64</td>
+<td>消息接收者的节点ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>uint64</td>
+<td>本节点ID</td>
+</tr>
+<tr>
+<td>context</td>
+<td>bytes</td>
+<td>上下文数据，在这里保存一致性读相关的数据</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2aa">2AA</h3>
+<h4 id="选举流程">选举流程</h4>
+<ul>
+<li>节点启动时都以follower状态启动，同时随机选择自己的选举超时时间。之所以每个节点随机选择自己的超时时间，是为了避免同时有两个节点同时进行选举，这种情况下会出现没有任何一个节点赢得半数以上的投票从而这一轮选举失败，继续再进行下一轮选举</li>
+<li>在follower的tick函数tickElection函数中，当选举超时到时，节点向自己发送HUP消息。</li>
+<li>否则进入campaign函数中进行选举：首先将任期号+1，然后广播给其他节点选举消息，带上的其它字段包括：节点当前的最后一条日志索引（Index字段），最后一条日志对应的任期号（LogTerm字段），选举任期号（Term字段，即前面已经进行+1之后的任期号），Context字段（目的是为了告知这一次是否是leader转让类需要强制进行选举的消息）。</li>
+<li>如果在一个选举超时之内，该发起新的选举流程的节点，得到了超过半数的节点投票，那么状态就切换到leader状态，成为leader的同时，leader将发送一条dummy的append消息，目的是为了提交该节点上在此任期之前的值（见疑问部分如何提交之前任期的值）</li>
+</ul>
+<h4 id="收到选举消息的节点"><strong>收到选举消息的节点</strong></h4>
+<p>一个节点在一个任期内只能进行一次投票，当收到其他节点的投票请求时，需要满足一下条件：</p>
+<ol>
+<li>只有在没有给其他节点进行过投票，或者消息的term任期号大于当前节点的任期号，或者之前的投票给的就是这个发出消息的节点</li>
+<li>进行选举的节点，它的日志是更新的，条件为：logterm比本节点最新日志的任期号大，在两者相同的情况下，消息的index大于等于当前节点最新日志的index，即总要保证该选举节点的日志比自己的大。</li>
+</ol>
+<p>只有在同时满足以上两个条件的情况下，才能同意该节点的选举，否则都会被拒绝。这么做的原因是：保证最后能胜出来当新的leader的节点，它上面的日志都是最新的。</p>
+<h4 id="几个关键函数">几个关键函数</h4>
+<p><strong>Step</strong></p>
+<p>step函数接收一个Msg并对他进行处理。是外部传递消息的接口。根据当前节点的不同state，进行特定地处理：stepLeader，stepCandidate，stepFollower。</p>
+<p><strong>Tick</strong></p>
+<p>raft库中并不会进行实际的计时，其时钟是逻辑时钟，是外部通过调用tick方法作为一次逻辑时钟的推进。具体多长时间调用一次tick由外部控制。不同类型的节点对于tick的反应是不一样的。对于follower和candidate，会检测当前时间和上次心跳之间是否超时，如果是那么需要通过Step发送 MessageType_MsgHup。对于leader，则需要检测距离上次发送心跳是否超时，如果是则需要发送 MessageType_MsgBeat。</p>
+<h3 id="2ab">2AB</h3>
+<p>2AB是实现raft的日志复制。</p>
+<p>日志复制的流程为：</p>
+<ol>
+<li>Leader 为客户端提供服务，客户端的每个请求都包含一条即将被状态复制机执行的指令。</li>
+<li>Leader 把该指令作为一条新的日志附加到自身的日志集合，然后向其它节点发起附加条目请求（AppendEntries RPC），来要求它们将这条日志附加到各自本地的日志集合。</li>
+<li>Leader会为每个其他节点维护Match和Next数据，Match表示已经复制过去的进度，Next表示下一个待复制的日志索引。只有Match和Follower存在的日志相匹配时才能复制成功。</li>
+<li>当这条日志已经确保被安全的复制，即<strong>大多数（N/2+1）</strong> 节点都已经复制后，leader 会将该日志 <strong>apply</strong> 到它本地的状态机中，然后把操作成功的结果返回给客户端。</li>
+</ol>
+<h3 id="2ac">2AC</h3>
+<p>2AC是实现raw node接口，即raft库对外提供的调用，在构建基于raft的K/V存储时，每个peer将会有一个RawNode接口。在这个部分，主要需要实现的方法是：</p>
+<ol>
+<li>HasReady</li>
+<li>Ready</li>
+<li>Advance</li>
+</ol>
+<p>RawNode是raft库的接口，把raft库作为一个黑箱来看，其输入是Propose，传递一个消息，其输出是Ready，将会返回一个Ready结构体，从而可以持久化日志和进行apply。</p>
+<p>当客户端需要向raft中发送消息时，他会调用Propose，其调用Step处理Msg。客户端将会不断地调用HasReady，判断出是否有需要处理的数据被更新，如果有那么调用Ready将这些数据通过Ready结构传递出来。在对Ready进行处理之后，会调用Advance告知raft某个Ready已经被处理，在raft中可以更新对应结构了。</p>
+<p>Ready结构为</p>
+<table>
+<thead>
+<tr>
+<th>成员名称</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SoftState</td>
+<td>SoftState</td>
+<td>软状态，软状态易变且不需要保存在WAL日志中的状态数据，包括：集群leader、节点的当前状态</td>
+</tr>
+<tr>
+<td>HardState</td>
+<td>HardState</td>
+<td>硬状态，与软状态相反，需要写入持久化存储中，包括：节点当前Term、Vote、Commit</td>
+</tr>
+<tr>
+<td>ReadStates</td>
+<td>[]ReadStates</td>
+<td>用于读一致性的数据，后续会详细介绍</td>
+</tr>
+<tr>
+<td>Entries</td>
+<td>[]pb.Entry</td>
+<td>在向其他集群发送消息之前需要先写入持久化存储的日志数据</td>
+</tr>
+<tr>
+<td>Snapshot</td>
+<td>pb.Snapshot</td>
+<td>需要写入持久化存储中的快照数据</td>
+</tr>
+<tr>
+<td>CommittedEntries</td>
+<td>[]pb.Entry</td>
+<td>需要输入到状态机中的数据，这些数据之前已经被保存到持久化存储中了</td>
+</tr>
+<tr>
+<td>Messages</td>
+<td>[]pb.Message</td>
+<td>需要发送出去的数据</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2b">2B</h2>
+<p>2B是实现一个基于raft的K/V存储引擎。这部分涉及的代码较多，较为复杂，主要实现 peer_storage.go 中 SaveReadyState() 方法和 Append() 方法，以及peer_storage_handler.go 中的 proposeRaftCommand() 和 HandleRaftReady() 方法。</p>
+<h3 id="struct及含义">struct及含义</h3>
+<p>需要了解raftstore中的各种struct及含义：</p>
+<ol>
+<li>raftstore.peer：raft group中的单个节点，每个peer都有一个rawnode结构，表示他所在的raft group。每个peer还有一个PeerStorage结构，用来存储raft的state</li>
+<li>raftstore.PeerStorage：peer的成员，用来存储raft的state。在2B中，需要实现它的Append和SaveReadyState方法。</li>
+<li>engine_util.Engines: PeerStorage的成员，他有两个badger实例，分别是raftdb和kvdb，<strong>kvdb可以 看成是 Raft 论文中提到的状态机。</strong></li>
+<li>raftstore.raftWorker：它有一个run方法会一直运行，接收raftCh传过来的消息（chan message.Msg类型），然后根据msg中的RegionID找到对应的PeerState，PeerState中包含了peer，之后再通过调用newPeerMsgHandler来进行两种操作：HandleRaftReady，HandleRaftReady。前者用于处理各种消息，例如MsgTypeRaftMessage，MsgTypeRaftCmd等，来自同其他peer的消息就属于MsgTypeRaftMessage，而来自客户端的请求则是MsgTypeRaftCmd。后者则是用于在将消息传递给raft之后，接收它返回的Ready结构，然后处理Ready的内容，处理完后通过Advance告知raft。</li>
+<li>raftstore.peerMsgHandler：2B中需要实现的第二种类型，在raftWorker中被调用，它封装了处理raft消息和其返回的Ready结构的方法，2B中需要实现两种方法：HandleRaftReady，proposeRaftCommand。</li>
+<li>raftstore.RaftStorage: raftstore的入口，它会启动一些workers来异步处理特定的任务。例如前面的raftWorker。它有一个GlobalContext结构，包含整个raftstore的上下文，其中有engine_util.Engines，他是整个raftstore server共有的，在每个PeerStorage中都有该结构，GlobalContext还包含storeMeta结构，存储了raftstore的元数据，例如regionRanges btree.BTree用来查询某个range所属的的region（region end key -&gt; region ID），以及regions map[uint64]metapb.Region（region_id -&gt; region）。</li>
+</ol>
+<h3 id="代码实现">代码实现</h3>
+<p>需要实现两个文件(peer_storage.go, peer_msg_handle.go)中的四个函数：</p>
+<h4 id="proposeraftcommand"><strong>proposeRaftCommand</strong></h4>
+<p>这个函数在HandleMsg()中被调用，<strong>用于处理类型为MsgTypeRaftCmd的消息，这个消息是来自客户端的消息（命令）</strong>，有哪些命令可以看raft_cmdpb.pb, 有：get, put, delete, snap。<strong>它的第二个参数是Callback类型</strong>，包含RaftCmdResponse，客户端发出命令，raftStorage处理完之后，<strong>将结果（或者错误）通过 Callback 返回</strong>。例如客户端进行get了某个key，那么需要将value结果返回。并且如果处理过程中发生了错误，也需要将错误返回，错误通过ErrResp方法封装到RaftCmdResponse结构中。</p>
+<p>proposals是一个记录Proposal的callback的结构，proposals在proposeRaftCommand中被append，每个RaftCommand对应一个proposal，每次处理RaftCommand之后会取出一个proposal，然后将返回的错误提交给它，之后会返回给客户端。</p>
+<p>在2B中需要考虑的错误有：ErrNotLeader，ErrStaleCommand。</p>
+<h4 id="handleraftready"><strong>HandleRaftReady</strong></h4>
+<p>接收来自peer的 Ready 结构，进行处理 （文档中给出了伪代码框架）。
+步骤：</p>
+<ol>
+<li>从Raft模块中获取 Ready（2ac中实现的 <strong>HasReady() 和 Ready()</strong></li>
+<li>将Ready数据保存（持久化），应该是<strong>调用 peer_storage中的SaveReadyState</strong>（我自己实现），里面要实现Entries的持久化（Append）</li>
+<li>按照文档中的伪代码，接下来是直接<strong>发送Messages</strong> （状态和Entries被持久化后就可以发送消息了）</li>
+<li>处理 Ready中的其他结构，Snapshot需要持久化（？），<strong>CommittedEntries需要apply到 状态机</strong>（kvdb）。</li>
+<li>全部执行完后，调用 rawnode（raftgroup）的<strong>Advance()</strong> 告知当前 Ready结构已处理完成</li>
+</ol>
+<p>伪代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">for {
+</span></span><span class="line"><span class="cl">  select {
+</span></span><span class="line"><span class="cl">  case &lt;-s.Ticker:
+</span></span><span class="line"><span class="cl">    Node.Tick()
+</span></span><span class="line"><span class="cl">  default:
+</span></span><span class="line"><span class="cl">    if Node.HasReady() {
+</span></span><span class="line"><span class="cl">      rd := Node.Ready()
+</span></span><span class="line"><span class="cl">      saveToStorage(rd.State, rd.Entries, rd.Snapshot)
+</span></span><span class="line"><span class="cl">      send(rd.Messages)
+</span></span><span class="line"><span class="cl">      for _, entry := range rd.CommittedEntries {
+</span></span><span class="line"><span class="cl">        process(entry)
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      s.Node.Advance(rd)
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>对于单个的entry如何进行处理呢？</strong></p>
+<p>处理单个 entry，根据 eraftpb.pb 中对 Entry 的注释，可以知道entry有normal entries和configuration changes两种。后者应该是
+在project3中使用。 根据 EntryType 来区分这两者：EntryType_EntryNormal，EntryType_EntryConfChange。</p>
+<p>我们咋进行 raft command 处理的时候，会将RaftCmdRequest结果通过Marshal方法编码成raft message中的Data，当处理entry的时候，也需要通过 Unmarshal 方法将entry.Data解码成RaftCmdRequest结构。从而进行处理。</p>
+<p>而一个 RaftCmdRequest 结构中，又有两种类型，RaftCmdRequest注释说 normal requests and administrator request 不能同时装入，同时只能存在一种，2B中需要实现的就是 normal requests。</p>
+<p>一个RaftCmdRequest结构中有一个requests的slice，需要循环遍历这个requests，根据cmd的类型（put，delete，get）进行分别处理。</p>
+<p>之后，需要根据将RaftCmdRequest的处理结果通过proposal的CallBack返回。出现错误则返回错误。</p>
+<p>写入需要通过<strong>engine_util.WriteBatch</strong>结果，以批量，原子地形式一次性将变化写入到状态机中（kvdb）。</p>
+<h4 id="savereadystate">SaveReadyState</h4>
+<p>这个方法在HandleRaftReady中被调用，用于将Ready变化的状态持久化。这些状态（结构）在重启后恢复一致的状态机非常重要。</p>
+<ul>
+<li>Entry: raft 日志，需要被持久化。</li>
+<li>RaftLocalState：用于存储当前 Raft 的 <strong>HardState 和 last Log Index</strong>和<strong>LastTerm</strong>。</li>
+<li>RaftApplyState：用于存储 <strong>Raft applies的last Log index(applied index)和一些截断的（truncated ） Log 信息。</strong></li>
+<li>RegionLocalState：用于在这个Store上<strong>存储Region信息和对应的Peer状态</strong>。Normal 表示该 Peer 正常，Tombstone 表示该 Peer 已从 Region 中移除，无法加入 Raft Group。</li>
+</ul>
+<p>这些结构分别存储在raftdb 和 kvdb中，且<strong>通过writebatch.SetMeta()写入到badger</strong>中。这四类结构的key和value分别如下：</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>KeyFormat</th>
+<th>Value</th>
+<th>DB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>raft_log_key</td>
+<td>0x01 0x02 region_id 0x01 log_idx</td>
+<td>Entry</td>
+<td>raft</td>
+</tr>
+<tr>
+<td>raft_state_key</td>
+<td>0x01 0x02 region_id 0x02</td>
+<td>RaftLocalState</td>
+<td>raft</td>
+</tr>
+<tr>
+<td>apply_state_key</td>
+<td>0x01 0x02 region_id 0x03</td>
+<td>RaftApplyState</td>
+<td>kv</td>
+</tr>
+<tr>
+<td>region_state_key</td>
+<td>0x01 0x03 region_id 0x01</td>
+<td>RegionLocalState</td>
+<td>kv</td>
+</tr>
+</tbody>
+</table>
+<h4 id="append"><strong>Append</strong></h4>
+<p>该方法在SaveReadyState中被调用，用于持久化raft logs。</p>
+<p>同时，这部分log只代表被持久化的log，并不是所有持久化了的log都commit了，有可能部分持久化了的log还需要被 truncated（和内存上的log类似）。</p>
+<h3 id="debug">debug</h3>
+<p>写好了基本实现之后，往往会出现很多的bug，这时需要根据测试去排查bug。</p>
+<ol>
+<li>处理proposal时，如果ntry.Term &lt; prop.term或者entry.Index &lt; prop.index时直接return了，但是应该break，因为可能有kvWB需要在后面进行WriteToDB。</li>
+<li>在process单个entry的时候，应该Set applyState，但是写成 RaftLocalState了，导致apply state一直没有持久化。</li>
+<li>总是发生 runtime error: invalid memory address or nil pointer dereference 这种错误，debug发现是txn为nil导致。发现自己代码里txn的设置是在 cb.Done(resp)之后，导致有时候txn会是nil。而他本应该在Done之前设置。</li>
+</ol>
+<p>但是在CallBack的注释中，对txn的注释是 used for GetSnap，那么2B中不应该涉及啊，怎么老是会因为nil而panic？</p>
+<p>而且我在上一个设置了txn（不管啥情况），但是txn还是nil。经过debug发现，我当时设置的txn是在Done了resp之后设置的。。。但应该在Done之前，因为一旦Done了那边就会处理，然后如果在我设置txn之前处理，那么txn为nil就会导致panic。而且由于协程调度的顺序不是确定的，因此我的这个panic的出现也是有点随机的。</p>
+<p>而之所以txn只会在有Snap的时候才会用到，而2B按理还没有涉及snap却用到了txn是因为在进行Cluster.Scan的时候，那个req就是一个SnapCmd：<code>req := NewSnapCmd()</code>。这就非常坑了，之前的实现都是跳过了snap这个功能，以为在2C中才会出现，但是2B的测试结果出现涉及snap的测试，让我猝不及防。</p>
+<p>有时候 TestOnePartition2B会失败，是下面这种情况</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">=== RUN   TestOnePartition2B
+</span></span><span class="line"><span class="cl">--- FAIL: TestOnePartition2B (12.64s)
+</span></span><span class="line"><span class="cl">panic: can&#39;t get value 7632 for key 6b32 [recovered]
+</span></span><span class="line"><span class="cl">   panic: can&#39;t get value 7632 for key 6b32
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">goroutine 8 [running]:
+</span></span><span class="line"><span class="cl">testing.tRunner.func1.1(0xbeb4c0, 0xc17cb0b730)
+</span></span><span class="line"><span class="cl">   /usr/local/go/src/testing/testing.go:1076 +0x30d
+</span></span><span class="line"><span class="cl">testing.tRunner.func1(0xc000001c80)
+</span></span><span class="line"><span class="cl">   /usr/local/go/src/testing/testing.go:1079 +0x41a
+</span></span><span class="line"><span class="cl">panic(0xbeb4c0, 0xc17cb0b730)
+</span></span><span class="line"><span class="cl">   /usr/local/go/src/runtime/panic.go:969 +0x175
+</span></span><span class="line"><span class="cl">github.com/pingcap-incubator/tinykv/kv/test_raftstore.MustGetCf(0xc0000f77a0, 0xcf6e44, 0x7, 0xc00014dea7, 0x2, 0x2, 0xc00014dea5, 0x2, 0x2)
+</span></span><span class="line"><span class="cl">   /mnt/e/zen/pingcap-talnet/tinykv2022/kv/test_raftstore/utils.go:103 +0x385
+</span></span><span class="line"><span class="cl">github.com/pingcap-incubator/tinykv/kv/test_raftstore.MustGetEqual(...)
+</span></span><span class="line"><span class="cl">   /mnt/e/zen/pingcap-talnet/tinykv2022/kv/test_raftstore/utils.go:111
+</span></span><span class="line"><span class="cl">github.com/pingcap-incubator/tinykv/kv/test_raftstore.TestOnePartition2B(0xc000001c80)
+</span></span><span class="line"><span class="cl">   /mnt/e/zen/pingcap-talnet/tinykv2022/kv/test_raftstore/test_test.go:397 +0xb17
+</span></span><span class="line"><span class="cl">testing.tRunner(0xc000001c80, 0xd2d220)
+</span></span><span class="line"><span class="cl">   /usr/local/go/src/testing/testing.go:1127 +0xef
+</span></span><span class="line"><span class="cl">created by testing.(*T).Run
+</span></span><span class="line"><span class="cl">   /usr/local/go/src/testing/testing.go:1178 +0x386
+</span></span><span class="line"><span class="cl">FAIL   github.com/pingcap-incubator/tinykv/kv/test_raftstore  12.695s
+</span></span><span class="line"><span class="cl">FAIL
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>为什么会是随机的呢？我发现我开启日志之后，几乎每次测试都是PASS，FAIL出现的比例大概是1/17，开启了log之后，失败的概率大幅增加，我觉得这是因为开启了log之后，在操作之间的间隔时间增加了，所以被隔离的节点能够更快地进行日志的append了，所以PASS的概率会大很多。</p>
+<p>这显然是不对的，对于被少数分区隔离的leader不管延迟如何他都应该返回正确的且是最新的结果。例如进行get的时候，应该先确认他是不是leader，这时如果不是，就应该将查询转移到leader那边去查询才对。</p>
+<p>看了下测试中的源码，MustGetCf的实现是尝试300次，每次间隔20ms，直接从engine.kv中获取key/value。这个时间老实说已经够久的了，所以还是打印日志看看到底是发生了什么。有两千九百多行的日志。</p>
+<p>定位到是raft模块出了问题，在这种存在分区的情况产生了错误的结果。</p>
+<p>定位到Append成功之后，滞后的旧leader返回的lastIndex一直都是比实际应该的lastIndex小1，导致新的leader一直进行append。</p>
+<p>然后找到了两个bug：</p>
+<ol>
+<li>在maybeAppend的实现里，return应该是 newLastIndex 而不应该是 l.LastIndex()！l.LastIndex()可能更大。因为是Append会覆盖，没有把后面的都删除掉，所以新的合法的lastIndex是newLastIndex。</li>
+<li>而是分区恢复之后，旧leader（term 6）向其他节点（非leader，term 9）发送append，然后这个节点同意了它的append，导致append成功然后它append了log并且commit了，但是本不应该同意，因为这个节点的term 9更大！这是因为在Step的时候，m.Term &lt; r.Term时没有return，导致term小的旧leader的msg生效了。</li>
+</ol>
+<h2 id="2c">2C</h2>
+<p>这部分是给raft增加快照的功能。主要是实现ApplySnapshot方法。</p>
+<h3 id="snapshot发送流程">snapshot发送流程</h3>
+<p>（1）<code>raft.go</code> 中的 <code>sendAppend</code> 函数中，调用 <code>raftLog.storage.Snapshot()</code> 函数，新建一个 <code>RegionTaskGen</code> 的任务，异步产生快照，并且将 <code>snapState</code> 的状态改为 <code>Generating</code> 表示正在产生快照。另外，这次调用应该返回一个快照暂时不能获得的Error。</p>
+<p>（2） <code>region_task.go</code> 中的 <code>handleGen</code> 函数负责产生快照，调用 <code>doSnapshot</code> 产生快照。</p>
+<p>（3）当下次调用 <code>Snapshot()</code> 的时候，如果快照已经产生了，则接收并验证快照，返回结果。</p>
+<p>（4）那么 <code>raft.go</code> 中 <code>snapshotMsg</code> 被存储在了 <code>msgs</code> 中。等待通过 <code>Ready</code> 处理。</p>
+<p>（5） <code>HandleRaftReady</code> 中通过调用 <code>send</code> 通过 <code>transport</code> 将消息封装成 <code>RaftMessage</code> 发送到对应的store。</p>
+<p>（6）通过 <code>transport.go</code> 中 <code>ServerTransport</code> 的 <code>send</code> 函数发送。在 <code>SendStore</code> 中调用 <code>Resolve</code> ，产生一个 <code>resolveAddrTask</code> 任务，通过 <code>Handle</code> 中 <code>getAddr</code> 获得StoreId的地址，并通过 <code>callback</code> 更新 <code>raftClient</code> 的 <code>addrs</code> 。</p>
+<p>（7）在 <code>WriteData</code> 函数中，由于是发送快照的消息，所以通过 <code>SendSnapshotSock</code> 函数建立一个 <code>sendSnapTask</code> 任务。</p>
+<p>（8）在 <code>snap_runner.go</code> 中，通过 <code>sendSnap</code> 发送快照</p>
+<h3 id="applysnapshot方法的实现">ApplySnapshot方法的实现</h3>
+<ol>
+<li>首先判断peerStorage是否是刚创建的，如果不是，那么通过 <code>ps.clearMeta</code> 和 <code>ps.clearExtraData()</code> 清除原来的数据，因为新的 snapshot 会包含新的 meta 信息，需要先清除老的。</li>
+<li>然后根据snapshot设置raftState和applyState</li>
+<li>发送 <code>RegionTaskApply</code> 到 <code>regionSched</code> 安装 snapshot。</li>
+</ol>
+<h2 id="总结">总结</h2>
+<p>Project2非常具有挑战性，它实现了raft库，然后基于raft实现了一个K/V存储，并且还实现了snapshot功能。其中raft库中的代码较多，需要详细阅读raft论文。代码可以参考ETCD的raft库。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">姬小野</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-07-24
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="../../tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <a href="../../tags/raft/">raft</a>
+          <a href="../../tags/%E4%BA%8B%E5%8A%A1/">事务</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="../../post/tinykv-project3-multi-raft-leader%E8%BF%81%E7%A7%BB-%E8%8A%82%E7%82%B9%E5%8F%98%E6%9B%B4-region-balance/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">TinyKV Project3: Multi Raft, Leader迁移, 节点变更, Region Balance</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="../../post/mit-6.824/raft%E6%8F%90%E4%BA%A4%E4%B9%8B%E5%89%8D%E4%BB%BB%E6%9C%9F%E5%86%85%E7%9A%84%E6%97%A5%E5%BF%97%E6%9D%A1%E7%9B%AE/">
+            <span class="next-text nav-default">Raft提交之前任期内的日志条目</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://blog.csdn.net/wjh2622075127" class="iconfont icon-csdn" title="csdn"></a>
+      <a href="https://github.com/JameyWoo" class="iconfont icon-github" title="github"></a>
+  <a href="https://fiveplus.top/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

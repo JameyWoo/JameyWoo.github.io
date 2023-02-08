@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>TinyKV Project3: Multi Raft, Leader迁移, 节点变更, Region Balance - 姬小野的部落</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="姬小野" /><meta name="description" content="project3 目录 project3 目录 project3 题解 概述 3A TransferLeader 节点变更 addNode removeNode 3B TransferLeader ConfChange 特殊情况 split 实现 3C region心跳收集 region balance 调度程序 总结 project3 题解 概述 project3有三个部分，Par" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
+
+
+<link rel="canonical" href="https://fiveplus.top/post/tinykv-project3-multi-raft-leader%E8%BF%81%E7%A7%BB-%E8%8A%82%E7%82%B9%E5%8F%98%E6%9B%B4-region-balance/" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+<link rel="manifest" href="../../manifest.json">
+<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="../../sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="TinyKV Project3: Multi Raft, Leader迁移, 节点变更, Region Balance" />
+<meta property="og:description" content="project3 目录 project3 目录 project3 题解 概述 3A TransferLeader 节点变更 addNode removeNode 3B TransferLeader ConfChange 特殊情况 split 实现 3C region心跳收集 region balance 调度程序 总结 project3 题解 概述 project3有三个部分，Par" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveplus.top/post/tinykv-project3-multi-raft-leader%E8%BF%81%E7%A7%BB-%E8%8A%82%E7%82%B9%E5%8F%98%E6%9B%B4-region-balance/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-26T13:08:11+08:00" />
+<meta property="article:modified_time" content="2022-07-26T13:08:11+08:00" />
+
+<meta itemprop="name" content="TinyKV Project3: Multi Raft, Leader迁移, 节点变更, Region Balance">
+<meta itemprop="description" content="project3 目录 project3 目录 project3 题解 概述 3A TransferLeader 节点变更 addNode removeNode 3B TransferLeader ConfChange 特殊情况 split 实现 3C region心跳收集 region balance 调度程序 总结 project3 题解 概述 project3有三个部分，Par"><meta itemprop="datePublished" content="2022-07-26T13:08:11+08:00" />
+<meta itemprop="dateModified" content="2022-07-26T13:08:11+08:00" />
+<meta itemprop="wordCount" content="6062">
+<meta itemprop="keywords" content="数据库,raft," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TinyKV Project3: Multi Raft, Leader迁移, 节点变更, Region Balance"/>
+<meta name="twitter:description" content="project3 目录 project3 目录 project3 题解 概述 3A TransferLeader 节点变更 addNode removeNode 3B TransferLeader ConfChange 特殊情况 split 实现 3C region心跳收集 region balance 调度程序 总结 project3 题解 概述 project3有三个部分，Par"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="../../" class="logo">姬小野</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="../../">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="../../post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="../../tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="../../categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="../../about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="../../" class="logo">姬小野</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="../../">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">TinyKV Project3: Multi Raft, Leader迁移, 节点变更, Region Balance</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-07-26 </span>
+        <div class="post-category">
+            <a href="../../categories/%E5%88%86%E5%B8%83%E5%BC%8F/"> 分布式 </a>
+            </div>
+          <span class="more-meta"> 6062 words </span>
+          <span class="more-meta"> 13 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#目录">目录</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#3a">3A</a>
+      <ul>
+        <li><a href="#transferleader">TransferLeader</a></li>
+        <li><a href="#节点变更">节点变更</a></li>
+      </ul>
+    </li>
+    <li><a href="#3b">3B</a>
+      <ul>
+        <li><a href="#transferleader-1">TransferLeader</a></li>
+        <li><a href="#confchange">ConfChange</a></li>
+        <li><a href="#split">split</a></li>
+      </ul>
+    </li>
+    <li><a href="#3c">3C</a>
+      <ul>
+        <li><a href="#region心跳收集">region心跳收集</a></li>
+        <li><a href="#region-balance-调度程序">region balance 调度程序</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="project3">project3</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#project3">project3</a>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+</ul>
+</li>
+<li><a href="#project3-%E9%A2%98%E8%A7%A3">project3 题解</a>
+<ul>
+<li><a href="#%E6%A6%82%E8%BF%B0">概述</a></li>
+<li><a href="#3a">3A</a>
+<ul>
+<li><a href="#transferleader">TransferLeader</a></li>
+<li><a href="#%E8%8A%82%E7%82%B9%E5%8F%98%E6%9B%B4">节点变更</a>
+<ul>
+<li><a href="#addnode">addNode</a></li>
+<li><a href="#removenode">removeNode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#3b">3B</a>
+<ul>
+<li><a href="#transferleader-1">TransferLeader</a></li>
+<li><a href="#confchange">ConfChange</a>
+<ul>
+<li><a href="#%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5">特殊情况</a></li>
+</ul>
+</li>
+<li><a href="#split">split</a>
+<ul>
+<li><a href="#%E5%AE%9E%E7%8E%B0">实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#3c">3C</a>
+<ul>
+<li><a href="#region%E5%BF%83%E8%B7%B3%E6%94%B6%E9%9B%86">region心跳收集</a></li>
+<li><a href="#region-balance-%E8%B0%83%E5%BA%A6%E7%A8%8B%E5%BA%8F">region balance 调度程序</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="project3-题解">project3 题解</h1>
+<h2 id="概述">概述</h2>
+<p>project3有三个部分，Part-A和Part-B是比较相关的，目的是实现TransferLeader和ConfChange和Split三个功能。</p>
+<p>其中Part-A是在raft库中实现对以上功能的支持，因此代码修改主要在raft库里，需要实现的有TransferLeader的逻辑，以及节点更改的逻辑（addNode，removeNode）。</p>
+<p>Part-B则是在raft库之外，实现完整的三个功能。通常有两个步骤，一个是在进入raft库之前，接收来自客户端的命令，然后将其封装成消息并propose给raft。第二部是这个消息在raft中commit之后，需要进行apply，完成ConfChange和Split的apply逻辑。</p>
+<p>Part-C相对A和B来说比较独立，是实现scheduler部分（即TiDB的PD）的代码，有两个功能：收集集群regions的心跳和实现region balance调度程序。</p>
+<h2 id="3a">3A</h2>
+<p>3A需要在raft库中实现领导迁移（TransferLeader）和节点的增加和删除（addNode和removeNode）。</p>
+<h3 id="transferleader">TransferLeader</h3>
+<p>raft库中有两条leader转移相关消息：MsgTransferLeader 和 MsgTimeoutNow。</p>
+<p>进行TransferLeader的步骤如下：</p>
+<ol>
+<li>节点收到 <code>AdminCmdType_TransferLeader</code> 请求，在proposeRaftCommand中调用 <code>d.RaftGroup.TransferLeader()</code>。</li>
+<li>通过 <code>Step()</code> 函数向 Raft中输入一个类型为MessageType_MsgTransferLeader的消息。</li>
+<li>如果follower接收到了这个消息，那么直接转发给自己的leader。如果是leader接收到消息，那么处理消息，并进行领导迁移。</li>
+<li>leader接收到消息，判断目标节点是否是自己，如果是，那么直接返回（忽略消息）。</li>
+<li>否则，判断leadTransferee是否为None，如果不是那么判断是否为当前消息的目标节点，如果不是则终止当前transfer，并且开始新的leader迁移。</li>
+<li>判断目标节点是否最新，如果是和自己一样，则发送 <code>pb.MessageType_MsgTimeoutNow</code> 到目标节点。否则启动 append 流程同步日志，在收到MessageType_MsgAppendResponse时判断是否同步完成后再发送 <code>pb.MessageType_MsgTimeoutNow</code>。</li>
+<li>如果在一个 <code>electionTimeout</code> 时间内都没有转移成功，则放弃本次转移并重置 <code>leadTransferee</code>。因为可能接收者断网了，或者落后太久超时时间内没有同步好。</li>
+<li><strong>目标节点收到 <strong><strong><code>pb.MessageType_MsgTimeoutNow</code></strong></strong> 时，应该立刻重置自己的状态并开始选举。</strong></li>
+</ol>
+<h3 id="节点变更">节点变更</h3>
+<p>这部分是在raft库中实现两个方法：addNode、removeNode。</p>
+<h4 id="addnode">addNode</h4>
+<p>添加一个新的节点到集群中。主要修改Prs和Votes，在这两个结构中添加新的节点。</p>
+<h4 id="removenode">removeNode</h4>
+<p>将一个节点从集群中删除。需要注意的是，删除节点后quorum会发生变化，因此需要调用maybeCommit，让一些在新配置下满足条件的log进行commit。之后还需要广播append，从而通知其他节点更新的commit信息。</p>
+<p>并且如果当前正在进行transfer，那么终止。</p>
+<h2 id="3b">3B</h2>
+<p>3B从测试上来看被分为三个部分，分别是：</p>
+<ol>
+<li>TransferLeader：只有一个测试</li>
+<li>ConfChange：配置更改的，有7个测试，从basic到其他情况如recovery，unreliable，concurrent的</li>
+<li>Split：region分裂，有7个测试，同样包含各种特殊情况（环境）下的测试</li>
+</ol>
+<p>3B也是TinyKV中实现最复杂的，因为特殊情况非常多，需要考虑很多边界条件。并且依赖于之前的实现，如raft库，snapshot等逻辑。有一些错误被发现是raft中实现的bug，当时没有测出来而在这里体现出来。</p>
+<h3 id="transferleader-1">TransferLeader</h3>
+<p>见3A部分。</p>
+<h3 id="confchange">ConfChange</h3>
+<p>需要修改的地方有三处：</p>
+<ol>
+<li>raft内对conf change的支持（addNode，removeNode）</li>
+<li>proposeRaftCommand处，处理AdminCmdType_ChangePeer类型的命令，需要调用ProposeConfChange</li>
+<li>HandleRaftReady处，这时ChangePeer已经经过了raft的提交，需要进行apply</li>
+</ol>
+<p>Region表示一个raft group，他有一个key的范围，用StartKey和EndKey表示，区间为 [StartKey, EndKey) 左闭右开。一个Region中有多个peer，这些peer分布在不同的store中，因此每个peer都有它特定的Id，以所属的StoreId。Region还包含一个RegionEpoch结构来表示版本，并且每个region会以心跳的形式定期地向。</p>
+<p>了解RegionEpoch的概念，他有两个值：ConfVer和Version。ConfVer表示Conf change version，在 ConfChange 期间增加。而在Split期间 Version 增加。用于保证一个Region中的两个Leader在网络隔离下的最新Region信息。</p>
+<p>ConfChange是通过发送AdminCmdType_ChangePeer类型的消息。ChangePeerRequest的结构有ChangeType表示是remoteNode还是addNode，以及Peer表示被修改的peer。</p>
+<p>在3A中实现的addNode和remoteNode上在apply的时候通过RawNode.ApplyConfChange调用的，</p>
+<p>在commit之后，process具体entry的时候调用processConfChange，执行以下操作：</p>
+<ol>
+<li>更改 RegionLocalState，包括 RegionEpoch 和 Region 中的 Peers</li>
+<li>调用 raft.RawNode 的 ApplyConfChange()，实施raft的removeNode/addNode</li>
+<li>对于 removeNode，显式调用 destroyPeer() 以停止 Raft 模块。</li>
+<li>更新 GlobalContext 的 storeMeta 中的region state</li>
+</ol>
+<h4 id="特殊情况">特殊情况</h4>
+<p><strong>remove leader导致最后节点超时</strong></p>
+<p>会有一种情况，当region中只剩下两个节点，并且removeNode的时候还是remote的leader，这个时候如果直接remove leader会导致leader的消息同步不到剩下的那个，因此最后节点并不知道ConfChange的entry已经commit了，导致该节点以为leader还在region中，于是当他发现leader无法访问后一直无法获取多数投票。</p>
+<p>我的解决方法是当检测到这种情况的时候，让leader向另一个节点发送多次HeartBeat，尽量保证该节点接收到leader最新的commit index，从而让他知道该ConfChange entry已经被commit，并进行自己的节点变更。</p>
+<p>还有一种方法是在检测到这种情况时，leader执行TransferLeader给另一个节点。</p>
+<p><strong>忽略相同confChange的命令</strong></p>
+<p>如果不忽略重复执行的confChange命令将会出错。我有两种实现。一种是使用raft的PendingConfIndex，当进行ConfChange时，设置PendingConfIndex为对应entry的index。如果这时又有新的ConfChange到达的话，直接忽略，避免重复执行ConfChange。第二种方式是在apply的时候，判断当前的操作remove或者add是否会导致重复。如remove一个已经被remove掉的节点，意味着这个操作可能是之前操作的重复操作，这个时候直接忽略。</p>
+<p>如果没有忽略相同ConfChange命令，将会出现一个 panic: should only one conf change问题。</p>
+<h3 id="split">split</h3>
+<p>split的时候并不会迁移数据，split出来的两个peer（属于不同的region）都在同一个store中，而同一个store上的peer都是<strong>共用内部的kv存储引擎的</strong>，因此不会迁移数据。那么什么时候会发生数据迁移呢？当触发balance（balanceLeader或者balanceRegion）的时候，就可能发生peer的迁移，这时数据也会迁移。</p>
+<p>要修改哪些代码？需要修改process一个entry时对AdminRequest进行处理的代码逻辑，即Split进行apply的代码。</p>
+<p><strong>触发split region的过程</strong>：</p>
+<ul>
+<li>因为<code>peer_msg_handler.go</code> 中的 <code>onTick()</code> 定时检查，调用 <code>onSplitRegionCheckTick()</code> 方法，它会生成一个 <code>SplitCheckTask</code> 任务发送到 <code>split_checker.go</code> 中。</li>
+<li>而split_checker.go的handle方法中会处理这个任务，然后找出划分该region的中间key，并通过router发送一个MsgTypeSplitRegion类型的消息。</li>
+<li>在 <code>peer_msg_handler.go</code> 中的 <code>HandleMsg()</code> 方法中处理这个消息，并调用 <code>onPrepareSplitRegion()</code>，发送 <code>SchedulerAskSplitTask</code> 请求到 <code>scheduler_task.go</code> 中，申请其分配新的 region id 和 peer id。</li>
+<li>申请成功后其会发起一个 <code>AdminCmdType_Split</code> 的 AdminRequest 到 region 中。</li>
+<li>之后就和RaftCmdRequest的处理流程一样，在经过propose之后，将split指令复制到大多数节点然后被commit，进行apply操作。</li>
+</ul>
+<h4 id="实现">实现</h4>
+<p>实现流程如下：</p>
+<ol>
+<li>对AdminRequest的消息进行处理，判断是否是AdminCmdType_Split</li>
+<li>获取源region的startKey和endKey，以及splitRequest中的splitKey</li>
+<li>将RegionEpoch的Version递增</li>
+<li>根据源region的peers生成新的peers</li>
+<li>设置源region和新region的startKey和endKey（根据splitKey划分）</li>
+<li>得到新的region结构体，并且在storeMeta中设置</li>
+<li>更新storeMeta中的regionRanges，即每个region的范围</li>
+<li>创建新的peer，并且在router中注册，并且通过router发送消息</li>
+<li>将源region和新region持久化</li>
+</ol>
+<p><strong>no region问题</strong></p>
+<p>当进行一些请求的时候，找不到对应的key的region。</p>
+<p>这是因为在split之后，新的region没有及时地选出leader而导致new region没有向scheduler发送心跳，于是scheduler不知道有这个region，导致no region。可以增加超时时间或者次数，用来给新的region更多的时间缓冲从而让他及时发送心跳，避免这个问题。</p>
+<h2 id="3c">3C</h2>
+<p>这个部分有两个点需要实现：<strong>收集集群regions的心跳和实现region balance调度程序</strong>。需要阅读文档，理解这两个模块的含义和需要实现的内容。TinyKV的scheduler相当于TiDB的PD（Placement Driver），负责集群的调度。scheduler需要不断收集来自region的心跳信息，心跳信息中包含region的元数据，通过这些数据，scheduler可以更好地进行调度，负载均衡。</p>
+<h3 id="region心跳收集">region心跳收集</h3>
+<p>这部分需要实现processRegionHeartbeat函数。</p>
+<p>region会定时发送regionInfo到scheduler，因此需要心跳信息是否更新，如果没有更新那么可以跳过，否则就需要修改scheduler本地保存的信息。</p>
+<p>RegionEpoch代表一个region的版本，他有两个重要的值，一个是ConfVer，表示region配置的版本，在3B中，如果有ConfChange，这个version将会增加；第二个是Version，当region发生split或者merge的时候，这个值将会增加。</p>
+<p>在processRegionHeartbeat中，需要通过心跳的RegionEpoch判断出region是否更新，只有更新的心跳才需要进行处理，过时的心跳直接跳过。</p>
+<p>具体实现为以下步骤：</p>
+<ol>
+<li>检查本地存储中是否有相同Id的region。如果存在且至少有一个心跳的 conf_ver 和version小于它，则该心跳区域已过时。</li>
+<li>如果没有，扫描与其重叠的所有区域。 heartbeat 的 conf_ver 和 version 应该大于或等于所有这些，否则该区域已过时。</li>
+</ol>
+<p>那么调度器如何判断<strong>是否可以跳过这个更新（是否过时）呢</strong>？我们可以列出一些简单的条件：</p>
+<ul>
+<li>如果新的version或conf_ver大于原版本，则不能跳过</li>
+<li>如果leader发生变化，则不能跳过</li>
+<li>如果新的或原来的有待处理的对等点，它不能被跳过</li>
+<li>如果 ApproximateSize 发生变化，则不能跳过</li>
+</ul>
+<p>实际上，冗余的更新并不会带来错误，所以这个条件并不是充分必要条件。甚至对所有心跳都尝试更新也是可以的。</p>
+<h3 id="region-balance-调度程序">region balance 调度程序</h3>
+<p>这个部分是实现Schedule方法，他是一个按region大小（即peer大小）进行调度的算法。因为一个store上可能有多个region的peer，而每个peer的大小上不一样的。有的store上的peers的大小总和非常大，有的非常小，这就导致了负载不均衡，balance-region调度器就是根据大小来进行调度，将peer从region多的store迁移到region少的store中。</p>
+<p>具体方法是：</p>
+<ol>
+<li>选择所有合适的 store，然后根据它们的region大小对它们进行排序。然后调度程序尝试从具有最大region大小的store中找到要移动的region。</li>
+<li>首先，它会尝试选择一个pending region，因为pending可能意味着磁盘过载。如果没有待处理的region，它将尝试找到一个follower region。如果仍然无法挑选出一个region，它将尝试挑选leader区域。最后，它将选择要移动的region，或者调度程序将尝试下一个具有较小区域大小的store，直到尝试完所有store。</li>
+<li>之后Scheduler 需要选择被移动的目标store。优先选择 region size 最小的 store。然后调度器会通过检查原始存储和目标存储的区域大小的差异来判断这个移动是否有价值。如果差异足够大，调度程序应该在目标存储上分配一个新的peer并创建一个移动peer的Operator。</li>
+</ol>
+<p>Q：<strong>什么是合适的store呢？</strong></p>
+<p>A：一个合适的 store 应该是 up的 并且 downTime不能长于集群的 MaxStoreDownTime（可以通过 cluster.GetMaxStoreDownTime() 获取）。</p>
+<p>Q：<strong>如何选择移动的region？</strong></p>
+<p>A：Scheduler 框架提供了三种获取区域的方法。：GetPendingRegionsWithLock、GetFollowersWithLock 和 GetLeadersWithLock。 Scheduler 可以从中获取相关区域，然后可以选择其中的一个随机区域。</p>
+<p>Q：<strong>如何判断移动是否有价值呢？</strong></p>
+<p>A：源store和目标store的大小差值差值必须大于区域近似大小的两倍，这个移动才有价值。因为如果源 store 和目标 store 的 region size 相差太小，那么在我们将 region 从源 store 移动到目标 store 之后，Scheduler 下次可能要再次移动回来。</p>
+<h2 id="总结">总结</h2>
+<p>这个project3是TinyKV中最难实现的project，需要ConfChange，Split在Recovery，Unreliable，Snapshot等情况下依然能正常运行并通过测试，这是这个project中最具有挑战的。由于很多测试具有随机性，因此有时候一种问题需要很多次才能复现，需要输出日志并且逐行调试才能定位问题。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">姬小野</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-07-26
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="../../tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <a href="../../tags/raft/">raft</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="../../post/tinykv-project4-percolator%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">TinyKV Project4: Percolator分布式事务</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="../../post/tinykv-project2-raft%E5%BA%93%E4%B8%8E%E5%9F%BA%E4%BA%8Eraft%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8Fkv%E5%AD%98%E5%82%A8/">
+            <span class="next-text nav-default">TinyKV Project2: Raft库与基于raft的分布式kv存储</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://blog.csdn.net/wjh2622075127" class="iconfont icon-csdn" title="csdn"></a>
+      <a href="https://github.com/JameyWoo" class="iconfont icon-github" title="github"></a>
+  <a href="https://fiveplus.top/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

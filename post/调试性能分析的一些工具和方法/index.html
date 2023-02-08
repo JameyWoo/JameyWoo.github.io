@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>程序开发、调试、性能分析的一些工具和方法 - 姬小野的部落</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="姬小野" /><meta name="description" content="目录 目录 概述 开发工具 git tmux zsh man tldr chatGPT copilot 调试 gdb core dump valgrind Sanitizer objdump 性能分析 perf perf trace call-graph perf c2c TLB分析 Branch Misses分析 Page Faults分析 火焰图 speedscope bcc strace fio time iostat vmstat iotop 总" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
+
+
+<link rel="canonical" href="https://fiveplus.top/post/%E8%B0%83%E8%AF%95%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E5%92%8C%E6%96%B9%E6%B3%95/" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+<link rel="manifest" href="../../manifest.json">
+<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="../../sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="程序开发、调试、性能分析的一些工具和方法" />
+<meta property="og:description" content="目录 目录 概述 开发工具 git tmux zsh man tldr chatGPT copilot 调试 gdb core dump valgrind Sanitizer objdump 性能分析 perf perf trace call-graph perf c2c TLB分析 Branch Misses分析 Page Faults分析 火焰图 speedscope bcc strace fio time iostat vmstat iotop 总" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveplus.top/post/%E8%B0%83%E8%AF%95%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E5%92%8C%E6%96%B9%E6%B3%95/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-01-14T19:51:31+08:00" />
+<meta property="article:modified_time" content="2023-01-14T19:51:31+08:00" />
+
+<meta itemprop="name" content="程序开发、调试、性能分析的一些工具和方法">
+<meta itemprop="description" content="目录 目录 概述 开发工具 git tmux zsh man tldr chatGPT copilot 调试 gdb core dump valgrind Sanitizer objdump 性能分析 perf perf trace call-graph perf c2c TLB分析 Branch Misses分析 Page Faults分析 火焰图 speedscope bcc strace fio time iostat vmstat iotop 总"><meta itemprop="datePublished" content="2023-01-14T19:51:31+08:00" />
+<meta itemprop="dateModified" content="2023-01-14T19:51:31+08:00" />
+<meta itemprop="wordCount" content="4975">
+<meta itemprop="keywords" content="调试," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="程序开发、调试、性能分析的一些工具和方法"/>
+<meta name="twitter:description" content="目录 目录 概述 开发工具 git tmux zsh man tldr chatGPT copilot 调试 gdb core dump valgrind Sanitizer objdump 性能分析 perf perf trace call-graph perf c2c TLB分析 Branch Misses分析 Page Faults分析 火焰图 speedscope bcc strace fio time iostat vmstat iotop 总"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="../../" class="logo">姬小野</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="../../">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="../../post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="../../tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="../../categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="../../about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="../../" class="logo">姬小野</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="../../">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">程序开发、调试、性能分析的一些工具和方法</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2023-01-14 </span>
+        <div class="post-category">
+            <a href="../../categories/%E8%B0%83%E8%AF%95/"> 调试 </a>
+            </div>
+          <span class="more-meta"> 4975 words </span>
+          <span class="more-meta"> 10 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#目录">目录</a></li>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#开发工具">开发工具</a>
+      <ul>
+        <li><a href="#git">git</a></li>
+        <li><a href="#tmux">tmux</a></li>
+        <li><a href="#zsh">zsh</a></li>
+        <li><a href="#man">man</a></li>
+        <li><a href="#tldr">tldr</a></li>
+        <li><a href="#chatgpt">chatGPT</a></li>
+        <li><a href="#copilot">copilot</a></li>
+      </ul>
+    </li>
+    <li><a href="#调试">调试</a>
+      <ul>
+        <li><a href="#gdb">gdb</a></li>
+        <li><a href="#core-dump">core dump</a></li>
+        <li><a href="#valgrind">valgrind</a></li>
+        <li><a href="#sanitizer">Sanitizer</a></li>
+        <li><a href="#objdump">objdump</a></li>
+      </ul>
+    </li>
+    <li><a href="#性能分析">性能分析</a>
+      <ul>
+        <li><a href="#perf">perf</a></li>
+        <li><a href="#火焰图">火焰图</a></li>
+        <li><a href="#speedscope">speedscope</a></li>
+        <li><a href="#bcc">bcc</a></li>
+        <li><a href="#strace">strace</a></li>
+        <li><a href="#fio">fio</a></li>
+        <li><a href="#time">time</a></li>
+        <li><a href="#iostat">iostat</a></li>
+        <li><a href="#vmstat">vmstat</a></li>
+        <li><a href="#iotop">iotop</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="目录">目录</h2>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+<li><a href="#%E6%A6%82%E8%BF%B0">概述</a></li>
+<li><a href="#%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7">开发工具</a>
+<ul>
+<li><a href="#git">git</a></li>
+<li><a href="#tmux">tmux</a></li>
+<li><a href="#zsh">zsh</a></li>
+<li><a href="#man">man</a></li>
+<li><a href="#tldr">tldr</a></li>
+<li><a href="#chatgpt">chatGPT</a></li>
+<li><a href="#copilot">copilot</a></li>
+</ul>
+</li>
+<li><a href="#%E8%B0%83%E8%AF%95">调试</a>
+<ul>
+<li><a href="#gdb">gdb</a></li>
+<li><a href="#core-dump">core dump</a></li>
+<li><a href="#valgrind">valgrind</a></li>
+<li><a href="#sanitizer">Sanitizer</a></li>
+<li><a href="#objdump">objdump</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90">性能分析</a>
+<ul>
+<li><a href="#perf">perf</a>
+<ul>
+<li><a href="#perf-trace">perf trace</a></li>
+<li><a href="#call-graph">call-graph</a></li>
+<li><a href="#perf-c2c">perf c2c</a></li>
+<li><a href="#tlb%E5%88%86%E6%9E%90">TLB分析</a></li>
+<li><a href="#branch-misses%E5%88%86%E6%9E%90">Branch Misses分析</a></li>
+<li><a href="#page-faults%E5%88%86%E6%9E%90">Page Faults分析</a></li>
+</ul>
+</li>
+<li><a href="#%E7%81%AB%E7%84%B0%E5%9B%BE">火焰图</a></li>
+<li><a href="#speedscope">speedscope</a></li>
+<li><a href="#bcc">bcc</a></li>
+<li><a href="#strace">strace</a></li>
+<li><a href="#fio">fio</a></li>
+<li><a href="#time">time</a></li>
+<li><a href="#iostat">iostat</a></li>
+<li><a href="#vmstat">vmstat</a></li>
+<li><a href="#iotop">iotop</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+<h2 id="概述">概述</h2>
+<p>所谓：工欲善其事，必先利其器。</p>
+<p>本文总结一些本人在开发时使用过的一些开发、调试、性能分析的一些工具和方法，包括tmux、tldr、gdb、Sanitizer、perf、bcc、火焰图、strace、fio、vmstat等。本文不会对这些工具进行详细地介绍，而是简要介绍其功能，旨在让读者知道存在这些工具，需要实现某些目的的时候能想起这些工具。</p>
+<p>使用这些工具，能实现包括但不限于以下目的：</p>
+<ol>
+<li>更高效地进行开发。</li>
+<li>多种方式调试程序的方法，如远程调试，调试运行中的程序，调试崩溃的程序。</li>
+<li>发现C++程序的内存问题（内存泄露、非法访问）、并发（Data Races、死锁）问题。</li>
+<li>分析程序性能瓶颈，如on-cpu瓶颈，off-cpu 瓶颈，IO瓶颈，及其可视化展示。</li>
+<li>分析程序的TLB miss，Cache miss，Page Faults，Context Switch等情况并进行针对性的优化。</li>
+<li>分析程序各部分的组成，获取程序的汇编以进行底层分析。</li>
+<li>获取C++程序的函数调用图 Call Graph，帮助阅读源码。</li>
+<li>监控计算机的运行状态（CPU、IO）及各类IO的性能。</li>
+<li>其它。。。</li>
+</ol>
+<h2 id="开发工具">开发工具</h2>
+<h3 id="git">git</h3>
+<p>版本控制工具，不多说了。</p>
+<h3 id="tmux">tmux</h3>
+<p>Tmux 是一个终端复用器（terminal multiplexer），是我平时日常开发中一直开着的软件。他能够对终端进行管理，例如分屏等等。</p>
+<p>在开发中有一个场景，就是我本地用ssh连接远程服务器，开了多个终端并且打开到不同的目录里。下班后本地计算机断网了，这些ssh连接就断开了，导致第二天要重新打开这些终端然后cd到对应的目录，经常这样做感觉非常麻烦。</p>
+<p>而tmux可以将会话与窗口的&quot;解绑&quot;，用tmux建立一个session之后，在该session内建立的多个窗口在断网后还可以保留（甚至可以设置重启后还能恢复），每次只要在本地ssh进服务器，然后重新进入到tmux的session，就能恢复到之前的工作环境，可以节省不少时间。</p>
+<h3 id="zsh">zsh</h3>
+<p>zsh是一个替代bash的shell，它的功能非常强大，支持很多插件，能提高开发效率，安装oh my <em>zsh</em>后还可以让终端变得好看。</p>
+<p>我最常用的插件有：</p>
+<ol>
+<li>
+<p>zsh-autosuggestions：自动输入建议。</p>
+<p>输入一部分命令就会提示之前输入过的命令。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_W6h_r_Misx.png" alt=""></p>
+</li>
+<li>
+<p>Z：对，这就是它的名字，输入z+dirname 就能快速cd到一个该dirname代表的文件夹。不需要全名，只需要输入部分名称就会智能识别出你最曾去的目录下。</p>
+</li>
+</ol>
+<h3 id="man">man</h3>
+<p>进行开发的时候，经常需要查看文档，如系统调用的文档，那么就可以用man来查看，不同标号表示不同的类型：</p>
+<ul>
+<li>1 用户命令， 可由任何人启动的。</li>
+<li>2 系统调用， 即由内核提供的函数。</li>
+<li>3 例程， 即库函数，比如标准C库libc。</li>
+<li>4 设备， 即/dev目录下的特殊文件。</li>
+<li>5 文件格式描述， 例如/etc/passwd。</li>
+<li>6 游戏， 不用解释啦！</li>
+<li>7 杂项， 例如宏命令包、惯例等。</li>
+<li>8 系统管理员工具， 只能由root启动。</li>
+<li>9 其他（ Linux 特定的）， 用来存放内核例行程序的文档。</li>
+<li>n 新文档， 可能要移到更适合的领域。</li>
+<li>o 老文档， 可能会在一段期限内保留。</li>
+<li>l 本地文档， 与本特定系统有关的。</li>
+</ul>
+<h3 id="tldr">tldr</h3>
+<p>tldr的意思是Too Long Didn&rsquo;t Read的缩写，说的是man page太长了，不要看。tldr是也是一个文档工具，用于查看linux命令的使用方法。它比较简短，通常是给出了一些常用的例子，让人能够快速地使用，而不是查阅复杂的文档。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_7J1yKLVyvm.png" alt=""></p>
+<h3 id="chatgpt">chatGPT</h3>
+<p>chatGPT刚推出的时候非常火爆，问他很多专业问题它都能给出解决方案。遇事不决问一问chatGPT，没准会有惊喜。我认为使用chatGPT对于启发思路来说是不错的。当然，有时候它的回答是它&quot;杜撰&quot;的，如要使用还需验证。</p>
+<h3 id="copilot">copilot</h3>
+<p>copilot是一个代码补全工具，由OpenAI和Github联合出品，是一个写代码神器。它的提示功能非常强大，输入部分代码或者是注释，他就能提示出很长的代码，节省大量的时间，非常适合写一些工具类、模板化的代码。</p>
+<p>他像一个代码检索库，当你开发一个功能时，很可能类似的东西别人已经实现过了，copilot能够给出比较好的代码建议。当然，代码并不一定正确，还需要仔细甄别。</p>
+<h2 id="调试">调试</h2>
+<h3 id="gdb">gdb</h3>
+<p>gdb是一个功能强大的调试工具，全称叫做 The GNU Debugger。在LLVM平台有一个lldb，和gdb类似。</p>
+<p>gdb的功能非常强大，可以调试不同状态下的程序，如：</p>
+<p>gdb attach pid 可以调试正在运行的进程。</p>
+<p>gdbserver可以远程调试。</p>
+<p>gdb program coredump 可以调试崩溃后生成coredump的程序，分析其崩溃的原因从而找到bug。</p>
+<h3 id="core-dump">core dump</h3>
+<p>core dump即核心转储文件。当操作系统配置了开启coredump功能后，程序发生异常崩溃退出时就会产生一个core dump。</p>
+<p>core dump文件包含运行时的进程地址空间的内容以及有关进程状态的其他信息，通常用于调试程序。有时候程序的bug是隐秘而且运行很长时间才能出错，很难复现bug，用常规的调试方法很难调试，这时就可以利用core dump调试程序。</p>
+<p>例如使用gdb调试：gdb program coredump。</p>
+<h3 id="valgrind">valgrind</h3>
+<p>Valgrind是一款用于内存调试、内存泄漏检测以及性能分析、检测线程错误的软件开发工具。</p>
+<p>Valgrind 是运行在Linux上的多用途代码剖析和内存调试软件。主要包括Memcheck、Callgrind、Cachegrind 等工具，每个工具都能完成一项任务调试、检测或分析。可以检测内存泄露、线程违例和Cache 的使用等。</p>
+<p>valgrind可以发现一系列非法使用内存问题, 如访问未初始化的内存、访问数组时越界、忘记释放动态内存等问题。</p>
+<p>检查内存泄漏命令 valgrind &ndash;tool=memcheck &ndash;leak-check=full ./demo_cpp。编译时使用 -g 参数 (可以知道是哪行, 否则好像不好定位)。</p>
+<p>Callgrind工具可以用于生成函数调用关系图，能够获取每个函数的调用次数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">valgrind</span> <span class="o">--</span><span class="n">tool</span><span class="o">=</span><span class="n">callgrind</span> <span class="p">.</span><span class="o">/</span><span class="n">valgrind_callgrind</span>
+</span></span><span class="line"><span class="cl"><span class="n">python3</span> <span class="n">gprof2dot</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">callgrind</span> <span class="o">-</span><span class="n">n10</span> <span class="o">-</span><span class="n">s</span> <span class="p">..</span><span class="o">/</span><span class="n">callgrind</span><span class="p">.</span><span class="n">out</span><span class="mf">.2437614</span> <span class="o">&gt;</span> <span class="n">call_graph</span><span class="p">.</span><span class="n">dot</span>
+</span></span><span class="line"><span class="cl"><span class="n">dot</span> <span class="o">-</span><span class="n">Tpng</span> <span class="n">call_graph</span><span class="p">.</span><span class="n">dot</span> <span class="o">-</span><span class="n">o</span> <span class="n">valgrind</span><span class="p">.</span><span class="n">png</span>
+</span></span><span class="line"><span class="cl"><span class="err">环境</span> <span class="err">（</span><span class="n">dot</span> <span class="err">和</span> <span class="n">gprof2dot</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">graphviz</span>
+</span></span><span class="line"><span class="cl">    <span class="n">git</span> <span class="n">clone</span> <span class="nl">https</span><span class="p">:</span><span class="c1">//github.com/jrfonseca/gprof2dot.git 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="sanitizer">Sanitizer</h3>
+<p>Sanitizer已经集成在gcc或者clang以及golang里面，使用asan或者tsan并不需要额外的工具，只需在gcc或者g++里面增加编译选项，增加一个连接库即可。Sanitizer是基于运行时的检查.</p>
+<p>Sanitizer有很多种，用于分析不同的问题：</p>
+<ul>
+<li>AddressSanitizer (detects addressability issues) and LeakSanitizer (detects memory leaks 内存泄漏)  。</li>
+<li>ThreadSanitizer (detects data races and deadlocks) for <a href="https://github.com/google/sanitizers/wiki/ThreadSanitizerCppManual" title="C++">C++</a> and <a href="https://github.com/google/sanitizers/wiki/ThreadSanitizerGoManual" title="Go">Go</a> 。go语言的race就是使用 ThreadSanitizer 来实现的竟态检测; c和c++(gcc, g++)也可以使用这个工具来进行竟态检测。</li>
+<li>MemorySanitizer (detects use of uninitialized memory)。</li>
+</ul>
+<h3 id="objdump">objdump</h3>
+<p>objdump能对二进制文件进行分析和反汇编。</p>
+<p>例如能获取它每个段的大小和偏移。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_2BAVGaTUP1.png" alt=""></p>
+<p>参数 -d 可以将指令进行反汇编，进行深入底层的调试。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_LuX0-M_hP3.png" alt=""></p>
+<h2 id="性能分析">性能分析</h2>
+<h3 id="perf">perf</h3>
+<p>perf是我分析程序性能时最常使用的工具，它的功能非常丰富， 可以对程序的各个方面进行性能分析。用tldr工具查看perf就可以看到它的常用功能。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_djGHaXONC8.png" alt=""></p>
+<h4 id="perf-trace">perf trace</h4>
+<p>perf trace能准确地显示每个系统调用占用的时间。包括阻塞off cpu的时间。</p>
+<p>perf trace会给出每个线程的系统调用。</p>
+<p>通过对线程系统调用的占用时间的分析，可以判断出其主要消耗在什么syscall上，从而进行针对性而优化。</p>
+<p>例如对一个执行文件write+sync的线程进行trace分析，发现该线程主要时间在futex上，比fdatasync消耗的时间都要多，说明锁的冲突较多，锁成为了该线程的一个瓶颈。从而可以针对性地优化。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_DiEE9EkDC4.png" alt=""></p>
+<p>Linux还有一个工具叫做strace，也是对syscall进行监控和统计，不过我个人更喜欢使用perf trace。</p>
+<h4 id="call-graph">call-graph</h4>
+<p>perf能够获取到程序的call graph，配个gprof2dot和dot工具能够展示为svg图。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">perf</span> <span class="o">--</span><span class="n">call</span><span class="o">-</span><span class="n">graph</span> <span class="n">dwarf</span> <span class="n">your</span><span class="o">-</span><span class="n">program</span> <span class="n">program</span><span class="o">-</span><span class="n">arguments</span>
+</span></span><span class="line"><span class="cl"><span class="n">perf</span> <span class="n">script</span> <span class="o">|</span> <span class="n">gprof2dot</span><span class="p">.</span><span class="n">py</span> <span class="o">--</span><span class="n">format</span><span class="o">=</span><span class="n">perf</span> <span class="o">|</span> <span class="n">dot</span> <span class="o">-</span><span class="n">Tsvg</span> <span class="o">&gt;</span> <span class="n">profile_graph</span><span class="p">.</span><span class="n">svg</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这种call graph不仅包含函数调用关系，还包含每个函数的on-cpu执行时间，对程序的性能分析非常有帮助。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_JAH1MYdT4t.png" alt=""></p>
+<h4 id="perf-c2c">perf c2c</h4>
+<p>perf c2c的c指的是cache，可以对cpu cache进行监测。</p>
+<p>借助perf c2c可以发现伪共享问题。</p>
+<p>它的输出如<a href="https://github.com/joemario/perf-c2c-usage-files/blob/master/c2c_example_report.out" title="https://github.com/joemario/perf-c2c-usage-files/blob/master/c2c_example_report.out">https://github.com/joemario/perf-c2c-usage-files/blob/master/c2c_example_report.out</a>所示：</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_nh9dwddYzC.png" alt=""></p>
+<h4 id="tlb分析">TLB分析</h4>
+<p>perf能够监控各种events，只需要添加参数 <code>-e event</code> 即可。</p>
+<p>例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">perf</span> <span class="n">stat</span> <span class="o">-</span><span class="n">e</span> <span class="n">dTLB</span><span class="o">-</span><span class="n">loads</span><span class="p">,</span><span class="n">dTLB</span><span class="o">-</span><span class="n">load</span><span class="o">-</span><span class="n">misses</span><span class="p">,</span><span class="n">iTLB</span><span class="o">-</span><span class="n">loads</span><span class="p">,</span><span class="n">iTLB</span><span class="o">-</span><span class="n">load</span><span class="o">-</span><span class="n">misses</span><span class="p">,</span><span class="n">L1</span><span class="o">-</span><span class="n">icache</span><span class="o">-</span><span class="n">load</span><span class="o">-</span><span class="n">misses</span> <span class="p">.</span><span class="o">/</span><span class="n">mem</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_EppGBgQOZJ.png" alt=""></p>
+<p>我们可以根据perf对这些情况的分析结果，进行程序调整。</p>
+<h4 id="branch-misses分析">Branch Misses分析</h4>
+<p>perf可以对branch misses进行分析。</p>
+<p>为了优化分支预测，可以对不同的分支情况使用likely宏，然后用perf分析branch misses数量，从而对如何使用likely宏进行指导。</p>
+<h4 id="page-faults分析">Page Faults分析</h4>
+<p>page faults除了可以用perf分析，还可以用ps分析，如：ps -o majflt,minflt -C program。</p>
+<p>Page Faults分为majflt和minflt。majflt代表major fault，中文名叫大错误，minflt代表minor fault，中文名叫小错误。这两个数值表示一个进程自启动以来所发生的缺页中断的次数。 当一个进程发生缺页中断的时候，进程会陷入内核态，执行以下操作：</p>
+<ul>
+<li>检查要访问的虚拟地址是否合法</li>
+<li>查找/分配一个物理页</li>
+<li>填充物理页内容（读取磁盘，或者直接置0，或者啥也不干）</li>
+<li>建立映射关系（虚拟地址到物理地址）</li>
+<li>重新执行发生缺页中断的那条指令</li>
+<li><strong>如果第3步，需要读取磁盘，那么这次缺页中断就是</strong><code>majflt</code><strong>，否则就是</strong><code>minflt</code>。</li>
+</ul>
+<h3 id="火焰图">火焰图</h3>
+<p>火焰图是非常重要的性能调优工具，它能够将perf record得到的信息可视化地展示。</p>
+<p>为什么要用火焰图? 因为即使是我们自己写的程序, 我们也不清楚各个模块具体消耗的CPU的比例。而火焰图在通过perf采样后, 能够得到调用栈信息以及比例, 能够体现出程序的性能瓶颈。</p>
+<p>常见的火焰图类型有 On-CPU，Off-CPU，还有 Memory，Hot/Cold，Differential 等等 </p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_TfHKezrcqW.png" alt=""></p>
+<p>不同类型火焰图适合优化的场景不同，比如 on-cpu 火焰图适合分析 cpu 占用高的问题函数，off-cpu 火焰图适合解决阻塞和锁抢占问题。</p>
+<p>火焰图示例：</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_MoL_igKrDd.png" alt=""></p>
+<h3 id="speedscope">speedscope</h3>
+<p>speedscope是一个可视化工具，可以用来替代火焰图，他比火焰图的svg图更灵活，功能更丰富。例如可以按时间序列看，可以分线程看。可以将perf生成的数据导入到speedscope中。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_znis_PQ7GH.png" alt=""></p>
+<h3 id="bcc">bcc</h3>
+<p><code>BPF Compiler Collection</code> (<code>BCC</code>)是基于<code>eBPF</code>的<code>Linux</code>内核分析、跟踪、网络监控工具。它的工具非常多，能够分析系统的各个方面。如图：</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_41P57411Tq.png" alt=""></p>
+<p>我用他的offcputime工具获取过程序的off-cpu数据，用于分析程序的阻塞，从而找出瓶颈进行优化。</p>
+<h3 id="strace">strace</h3>
+<p>strace是linux的syscall追踪工具，和前面介绍的perf trace功能类似。用于分析程序的系统调用情况。</p>
+<h3 id="fio">fio</h3>
+<p>fio是一个IO测试工具，支持非常多的io类型。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_O6MmQK9BvY.png" alt=""></p>
+<p>通过fio，可以测出计算机在某种IO负载下的性能（压测）。根据这个性能结果去和我们的程序的IO（数据库）性能进行对比，如果和fio的结果差距较大，那么说明没有充分利用硬件资源，还有较大的提升空间。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_PY0enle3_H.png" alt=""></p>
+<p>值得一提的是，fio的作者Jens Axboe正是Linux内核异步IO框架io_uring的作者。尴尬的是我的mac（M1 Pro芯片）的ubuntu 20.04虚拟机的fio却无法测试io_uring。</p>
+<h3 id="time">time</h3>
+<p>time可以获取一个程序的三种时间。通常来说，用户时间+系统时间代表了进程所消耗的实际 CPU时间。不过，有时候想知道的恰恰是阻塞的时间。</p>
+<ul>
+<li>真实时间 - 从程序开始到结束流失掉的真实时间，包括其他进程的执行时间以及阻塞消耗的时间（例如等待 I/O或网络）；</li>
+<li><em>User</em> - CPU 执行用户代码所花费的时间；</li>
+<li><em>Sys</em> - CPU 执行系统内核代码所花费的时间。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"> <span class="err">✗</span> <span class="n">time</span> <span class="n">sleep</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="n">sleep</span> <span class="mi">3</span>  <span class="mf">0.00</span><span class="n">s</span> <span class="n">user</span> <span class="mf">0.00</span><span class="n">s</span> <span class="n">system</span> <span class="mi">0</span><span class="o">%</span> <span class="n">cpu</span> <span class="mf">3.007</span> <span class="n">tota</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="iostat">iostat</h3>
+<p>iostat能监控计算机的磁盘和cpu信息，例如让它每秒输出一次：</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_Py4I2ZPloW.png" alt=""></p>
+<h3 id="vmstat">vmstat</h3>
+<p>vmstat可以监控processes, memory, paging, block IO, traps, disks and CPU 活动等的信息。</p>
+<p>例如：</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_zg6nmv9KQK.png" alt=""></p>
+<h3 id="iotop">iotop</h3>
+<p>iotop像top一样，不过它针对的是IO，可以获取进程的实时IO。</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_1qlcL-1vn0.png" alt=""></p>
+<h2 id="总结">总结</h2>
+<p>好用的工具可以帮助我们高效地进行开发、调试，帮助我们快速找出程序的瓶颈并进行优化。</p>
+<p>推荐一些比较好的资料：</p>
+<ol>
+<li>The Missing Semester of Your CS Education（课程）</li>
+<li>《性能之巅》</li>
+<li>《提高C++性能的编程技术》</li>
+<li>《C++性能优化指南》</li>
+<li>《调试九法》</li>
+<li>《C/C++代码调试的艺术》</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">姬小野</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2023-01-14
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="../../tags/%E8%B0%83%E8%AF%95/">调试</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="../../post/%E5%85%B3%E4%BA%8E2pc3pc%E5%92%8Cpercolator%E7%9A%84%E4%B8%80%E4%BA%9B%E5%AF%B9%E6%AF%94%E5%92%8C%E7%90%86%E8%A7%A3/">
+            <span class="next-text nav-default">关于2PC、3PC和Percolator的一些对比和理解</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://blog.csdn.net/wjh2622075127" class="iconfont icon-csdn" title="csdn"></a>
+      <a href="https://github.com/JameyWoo" class="iconfont icon-github" title="github"></a>
+  <a href="https://fiveplus.top/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

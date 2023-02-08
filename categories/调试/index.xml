@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>调试 on 姬小野的部落</title>
+    <link>https://fiveplus.top/categories/%E8%B0%83%E8%AF%95/</link>
+    <description>Recent content in 调试 on 姬小野的部落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 14 Jan 2023 19:51:31 +0800</lastBuildDate><atom:link href="https://fiveplus.top/categories/%E8%B0%83%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>程序开发、调试、性能分析的一些工具和方法</title>
+      <link>https://fiveplus.top/post/%E8%B0%83%E8%AF%95%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E5%92%8C%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Sat, 14 Jan 2023 19:51:31 +0800</pubDate>
+      
+      <guid>https://fiveplus.top/post/%E8%B0%83%E8%AF%95%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E5%92%8C%E6%96%B9%E6%B3%95/</guid>
+      <description>目录 目录 概述 开发工具 git tmux zsh man tldr chatGPT copilot 调试 gdb core dump valgrind Sanitizer objdump 性能分析 perf perf trace call-graph perf c2c TLB分析 Branch Misses分析 Page Faults分析 火焰图 speedscope bcc strace fio time iostat vmstat iotop 总</description>
+    </item>
+    
+  </channel>
+</rss>

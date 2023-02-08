@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CMU 15 445 课程内容总结 - 姬小野的部落</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="姬小野" /><meta name="description" content="15-445课程总结 目录 15-445课程总结 目录 课程内容 1. 关系型数据模型 2. 高级SQL 3. 数据库存储器 4. buffer pools 5. hash tables 6. tree indexes 7. 索引并发控制 8. 查询处理" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.104.3 with theme even" />
+
+
+<link rel="canonical" href="https://fiveplus.top/post/cmu15-445/cmu-15-445-%E8%AF%BE%E7%A8%8B%E5%86%85%E5%AE%B9%E6%80%BB%E7%BB%93/" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../../favicon-16x16.png">
+<link rel="manifest" href="../../../manifest.json">
+<link rel="mask-icon" href="../../../safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="../../../sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CMU 15 445 课程内容总结" />
+<meta property="og:description" content="15-445课程总结 目录 15-445课程总结 目录 课程内容 1. 关系型数据模型 2. 高级SQL 3. 数据库存储器 4. buffer pools 5. hash tables 6. tree indexes 7. 索引并发控制 8. 查询处理" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fiveplus.top/post/cmu15-445/cmu-15-445-%E8%AF%BE%E7%A8%8B%E5%86%85%E5%AE%B9%E6%80%BB%E7%BB%93/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-10-21T21:11:54+08:00" />
+<meta property="article:modified_time" content="2022-10-21T21:11:54+08:00" />
+
+<meta itemprop="name" content="CMU 15 445 课程内容总结">
+<meta itemprop="description" content="15-445课程总结 目录 15-445课程总结 目录 课程内容 1. 关系型数据模型 2. 高级SQL 3. 数据库存储器 4. buffer pools 5. hash tables 6. tree indexes 7. 索引并发控制 8. 查询处理"><meta itemprop="datePublished" content="2022-10-21T21:11:54+08:00" />
+<meta itemprop="dateModified" content="2022-10-21T21:11:54+08:00" />
+<meta itemprop="wordCount" content="4888">
+<meta itemprop="keywords" content="数据库,CMU 15-445," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CMU 15 445 课程内容总结"/>
+<meta name="twitter:description" content="15-445课程总结 目录 15-445课程总结 目录 课程内容 1. 关系型数据模型 2. 高级SQL 3. 数据库存储器 4. buffer pools 5. hash tables 6. tree indexes 7. 索引并发控制 8. 查询处理"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="../../../" class="logo">姬小野</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="../../../">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="../../../post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="../../../tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="../../../categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="../../../about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="../../../" class="logo">姬小野</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="../../../">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="../../../about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CMU 15 445 课程内容总结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-10-21 </span>
+        <div class="post-category">
+            <a href="../../../categories/cmu-15-445%E7%B3%BB%E5%88%97/"> CMU 15-445系列 </a>
+            </div>
+          <span class="more-meta"> 4888 words </span>
+          <span class="more-meta"> 10 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#目录">目录</a></li>
+    <li><a href="#课程内容">课程内容</a>
+      <ul>
+        <li><a href="#1-关系型数据模型">1. 关系型数据模型</a></li>
+        <li><a href="#2-高级sql">2. 高级SQL</a></li>
+        <li><a href="#3-数据库存储器">3. 数据库存储器</a></li>
+        <li><a href="#4-buffer-pools">4. buffer pools</a></li>
+        <li><a href="#5-hash-tables">5. hash tables</a></li>
+        <li><a href="#6-tree-indexes">6. tree indexes</a></li>
+        <li><a href="#7-索引并发控制">7. 索引并发控制</a></li>
+        <li><a href="#8-查询处理查询执行">8. 查询处理（查询执行）</a></li>
+        <li><a href="#9-排序和聚合">9. 排序和聚合</a></li>
+        <li><a href="#10-join算法">10. join算法</a></li>
+        <li><a href="#11-查询优化">11. 查询优化</a></li>
+        <li><a href="#12-并行执行">12. 并行执行</a></li>
+        <li><a href="#13-并发控制理论">13. 并发控制理论</a></li>
+        <li><a href="#14-两阶段锁2pl">14. 两阶段锁2PL</a></li>
+        <li><a href="#15-1时间戳顺序并发控制-basic-to">15. 1时间戳顺序并发控制 Basic T/O</a></li>
+        <li><a href="#152乐观并发协议-occ">15.2乐观并发协议 OCC</a></li>
+        <li><a href="#16-mvcc">16. MVCC</a></li>
+        <li><a href="#17-logging方案x20">17. logging方案 </a></li>
+        <li><a href="#18-数据库恢复-database-recovery">18. 数据库恢复 Database Recovery</a></li>
+        <li><a href="#19-分布式数据库导论">19. 分布式数据库导论</a></li>
+        <li><a href="#20-分布式oltp数据库">20. 分布式OLTP数据库</a></li>
+        <li><a href="#21-分布式olap数据库">21. 分布式OLAP数据库</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="15-445课程总结">15-445课程总结</h1>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#15-445%E8%AF%BE%E7%A8%8B%E6%80%BB%E7%BB%93">15-445课程总结</a>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+<li><a href="#%E8%AF%BE%E7%A8%8B%E5%86%85%E5%AE%B9">课程内容</a>
+<ul>
+<li><a href="#1-%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B">1. 关系型数据模型</a></li>
+<li><a href="#2-%E9%AB%98%E7%BA%A7sql">2. 高级SQL</a></li>
+<li><a href="#3-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%98%E5%82%A8%E5%99%A8">3. 数据库存储器</a></li>
+<li><a href="#4-buffer-pools">4. buffer pools</a></li>
+<li><a href="#5-hash-tables">5. hash tables</a></li>
+<li><a href="#6-tree-indexes">6. tree indexes</a></li>
+<li><a href="#7-%E7%B4%A2%E5%BC%95%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6">7. 索引并发控制</a></li>
+<li><a href="#8-%E6%9F%A5%E8%AF%A2%E5%A4%84%E7%90%86%E6%9F%A5%E8%AF%A2%E6%89%A7%E8%A1%8C">8. 查询处理（查询执行）</a></li>
+<li><a href="#9-%E6%8E%92%E5%BA%8F%E5%92%8C%E8%81%9A%E5%90%88">9. 排序和聚合</a></li>
+<li><a href="#10-join%E7%AE%97%E6%B3%95">10. join算法</a>
+<ul>
+<li><a href="#hash-join%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9">hash join的优缺点</a></li>
+<li><a href="#merge-sort%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9">merge sort的优缺点</a></li>
+</ul>
+</li>
+<li><a href="#11-%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96">11. 查询优化</a></li>
+<li><a href="#12-%E5%B9%B6%E8%A1%8C%E6%89%A7%E8%A1%8C">12. 并行执行</a></li>
+<li><a href="#13-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA">13. 并发控制理论</a></li>
+<li><a href="#14-%E4%B8%A4%E9%98%B6%E6%AE%B5%E9%94%812pl">14. 两阶段锁2PL</a></li>
+<li><a href="#15-1%E6%97%B6%E9%97%B4%E6%88%B3%E9%A1%BA%E5%BA%8F%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6-basic-to">15. 1时间戳顺序并发控制 Basic T/O</a></li>
+<li><a href="#152%E4%B9%90%E8%A7%82%E5%B9%B6%E5%8F%91%E5%8D%8F%E8%AE%AE-occ">15.2乐观并发协议 OCC</a></li>
+<li><a href="#16-mvcc">16. MVCC</a></li>
+<li><a href="#17-logging%E6%96%B9%E6%A1%88-">17. logging方案 </a></li>
+<li><a href="#18-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%81%A2%E5%A4%8D-database-recovery">18. 数据库恢复 Database Recovery</a>
+<ul>
+<li><a href="#checkpoint">checkpoint</a></li>
+<li><a href="#aries%E5%8D%8F%E8%AE%AEalgorithms-for-recovery-and-isolation-exploiting-semantics">ARIES协议（Algorithms for Recovery and Isolation Exploiting Semantics）</a></li>
+</ul>
+</li>
+<li><a href="#19-%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%BC%E8%AE%BA">19. 分布式数据库导论</a></li>
+<li><a href="#20-%E5%88%86%E5%B8%83%E5%BC%8Foltp%E6%95%B0%E6%8D%AE%E5%BA%93">20. 分布式OLTP数据库</a></li>
+<li><a href="#21-%E5%88%86%E5%B8%83%E5%BC%8Folap%E6%95%B0%E6%8D%AE%E5%BA%93">21. 分布式OLAP数据库</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="课程内容">课程内容</h2>
+<h3 id="1-关系型数据模型">1. 关系型数据模型</h3>
+<p>基本的关系型数据模型</p>
+<p>DDL：定义，Create, Alter, Drop</p>
+<p>DML: 操作, Manipulation，Insert, Update, Select</p>
+<p>DCL：数据库控制语言，Grant，Revoke</p>
+<p>TCL：事务控制语言，SAVEPOINT，SET TRANSACTION，ROLLBACK</p>
+<h3 id="2-高级sql">2. 高级SQL</h3>
+<p>Aggregates</p>
+<ul>
+<li>AVG(col)</li>
+<li>MIN(col)</li>
+<li>MAX(col)</li>
+<li>SUM(col)</li>
+<li>COUNT(col)</li>
+</ul>
+<p>Group By：把记录按某种方式分成多组，对每组记录分别做 aggregates 操作</p>
+<p>Having：基于 aggregation 结果的过滤条件不能写在 WHERE 中，而应放在 HAVING 中。</p>
+<p>Output Control</p>
+<ul>
+<li>order by</li>
+<li>limit</li>
+</ul>
+<p>Nested Queries：ANY，ALL，IN，EXIST</p>
+<p>Common Table Expressions</p>
+<h3 id="3-数据库存储器">3. 数据库存储器</h3>
+<p>存储器层次：</p>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_07Rx3whXAk.png" alt=""></p>
+<ul>
+<li>
+<p>File Storage</p>
+<ul>
+<li>Hardware Page：通常大小为 4KB</li>
+<li>OS Page: 通常大小为 4KB</li>
+<li>Database Page：(1-16KB)</li>
+<li><em>Page Directory</em></li>
+</ul>
+</li>
+<li>
+<p>Page Layout</p>
+<ul>
+<li>分为两个部分：header 和 data</li>
+</ul>
+</li>
+<li>
+<p>Data Layout</p>
+<ul>
+<li>Tuple Oriented（B+Tree那种）：<em>Slotted Pages</em></li>
+<li>Log Structured（LSM-Tree那种）</li>
+</ul>
+</li>
+<li>
+<p>Tuple Storage 和 Layout</p>
+<p>tuple 中还可以分为 header 和 data 两部分</p>
+</li>
+<li>
+<p><strong>System Catalogs</strong></p>
+<p>除了数据本身，DBMS 还需要存储数据的元数据，即数据字典，它们包括：</p>
+<ul>
+<li>Table, columns, indexes, views</li>
+<li>Users, permissions</li>
+<li>Internal statistics
+几乎所有 DBMSs 都将这些元数据也存储在一个特定的数据库中，它们本身也会被存储为 table、tuple。</li>
+</ul>
+</li>
+<li>
+<p>Data Storage Models</p>
+<ul>
+<li>行存储：N-ary Storage Model (NSM)</li>
+<li>列存储：Decomposition Storage Model (DSM)</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-buffer-pools">4. buffer pools</h3>
+<h3 id="5-hash-tables">5. hash tables</h3>
+<ol>
+<li>hash table的设计</li>
+<li>hash函数</li>
+<li>hash scheme: 解决hash碰撞的机制
+<ul>
+<li>开放地址法</li>
+<li>robin hood hashing
+<ul>
+<li>罗宾汉是一个劫富济贫的故事, 在这里是想让节点充分地靠近它本来应该在的位置  </li>
+</ul>
+</li>
+<li>cuckoo hashing  </li>
+<li>拉链法</li>
+</ul>
+</li>
+<li>可扩展哈希(Extendible Hashing)的实现，即动态hash，有点像多级页表</li>
+</ol>
+<h3 id="6-tree-indexes">6. tree indexes</h3>
+<p>看mubu的笔记吧</p>
+<ul>
+<li>B-Tree 1971</li>
+<li>B+Tree 1973 IBM 这节课主要介绍这个，填充因子</li>
+<li>B*Tree 1977 ：为了减少分裂次数设计，非并发</li>
+<li>B^link-Tree CMU：针对并发设计</li>
+</ul>
+<p> &lt;Modern B-Tree Techniques&gt;</p>
+<p>在CMU 15-721中，介绍的更深入和多：BW-tree，ART，MassTree</p>
+<h3 id="7-索引并发控制">7. 索引并发控制</h3>
+<p>讲B+Tree的并发。主要是蟹行协议和他的优化。</p>
+<h3 id="8-查询处理查询执行">8. 查询处理（查询执行）</h3>
+<p>三个处理模型：</p>
+<ol>
+<li>火山模型即迭代器模型，一条条处理和输出结果（Next）。有的操作不能一条条只能一次性如sort。</li>
+<li>物化模型，一整个处理和输出结果</li>
+<li>向量化模型，一批一批处理（batch）</li>
+</ol>
+<p>存取方法：</p>
+<ol>
+<li>顺序扫描（最差，有一些优化）</li>
+<li>index scan</li>
+<li>multi-index scan，多个索引一起用然后合并结果</li>
+</ol>
+<h3 id="9-排序和聚合">9. 排序和聚合</h3>
+<ul>
+<li>外部归并排序 External Merge Sort</li>
+<li>aggregation 就是对一组 tuples 的某些值做统计，转化成一个标量，如平均值、最大值、最小值等。
+通常通过 sorting或者hashing实现。</li>
+</ul>
+<h3 id="10-join算法">10. join算法</h3>
+<ol>
+<li>Nested Loop Join 嵌套循环join。可以分为最简单的，按block的（磁盘），按索引的三种。</li>
+<li>Sort-Merge Join 先sort再merge，快很多</li>
+<li>Hash Join</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/JameyWoo/FigureBed/master/hugo_imgsimage_xRl74WH1o7.png" alt=""></p>
+<h4 id="hash-join的优缺点">hash join的优缺点</h4>
+<p><a href="https://www.csdn.net/tags/MtTaAg2sNzg2MjgyLWJsb2cO0O0O.html" title="https://www.csdn.net/tags/MtTaAg2sNzg2MjgyLWJsb2cO0O0O.html">https://www.csdn.net/tags/MtTaAg2sNzg2MjgyLWJsb2cO0O0O.html</a></p>
+<p>1、优点：在做等值查询的时候，在没有hash冲突的情况下通过hash索引访问数据是非常快的</p>
+<p>2、缺点：</p>
+<p>2.1 哈希索引只包含了哈希值和行指针，不存储字段值，所以不能使用索引中的值来避免读取行。</p>
+<p>2.2 哈希索引只支持等值查询，不支持任何的范围查询和部分索引列的匹配查找</p>
+<p>2.3 哈希索引数据不是按照索引值顺序存储的，所以也无法用于排序</p>
+<p>2.4 如果发生哈希冲突，存储引擎就必须遍历链表来逐行比较，直到找到符合条件的所有行</p>
+<p>2.5 如果内存中无法存下哈希表，那么性能会下降很大。（相比而言merge sort更适合预读！）</p>
+<h4 id="merge-sort的优缺点">merge sort的优缺点</h4>
+<p><a href="https://www.cnblogs.com/ryanw/articles/11540774.html" title="https://www.cnblogs.com/ryanw/articles/11540774.html">https://www.cnblogs.com/ryanw/articles/11540774.html</a></p>
+<p><strong>优点：</strong></p>
+<ol>
+<li>支持不等式的连接条件。（hash join不支持）</li>
+<li>经过初始的排序后，合并过程是已经经过优化的了，在生成输出行的时候要更快</li>
+<li>可以利用索引。如果有索引的话，那么第一个数据集就能够避免使用排序。</li>
+<li>（我加的）更适合将磁盘数据预读到内存。</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>排序的成本很高</li>
+</ol>
+<p>在以下情况，优化器在连接大数据集的时候会考虑使用排序合并连接来替代哈希连接：</p>
+<ul>
+<li>连接条件是不等式，比如：&lt;，&lt;=，&gt;或者&gt;=，相对应的，哈希连接要求是等式条件。</li>
+<li>因为其他的一些操作要求排序，优化器会认为使用排序合并连接的成本更低。同时，<strong>如果有索引的话，那么第一个数据集就能够避免使用排序</strong>。但是，第二个数据集不论有没有索引，都会要求排序</li>
+</ul>
+<p>相对于嵌套循环连接来说，排序合并连接和哈希连接有着同样的优点：直接在PGA里面拿数据，不需要在SGA里面反复加闩锁，然后再读取缓存，减少了不必要的I/O。</p>
+<p>一般情况下，哈希连接的性能是要比排序合并好的，因为排序的成本很高。</p>
+<p>但是，<strong>排序合并也有它的优点</strong>：</p>
+<ul>
+<li>经过初始的排序后，合并过程是已经经过优化的了，在生成输出行的时候要更快</li>
+<li>当哈希连接过程中的哈希表无法一次性完整构建在PGA里面的时候，排序合并的成本性能比要优于哈希连接。</li>
+</ul>
+<h3 id="11-查询优化">11. 查询优化</h3>
+<p>略</p>
+<h3 id="12-并行执行">12. 并行执行</h3>
+<p>略</p>
+<h3 id="13-并发控制理论">13. 并发控制理论</h3>
+<p>事务：满足ACID特性</p>
+<ul>
+<li>原子性</li>
+<li>一致性</li>
+<li>隔离性</li>
+<li>持久性</li>
+</ul>
+<p>冲突问题：</p>
+<ul>
+<li>Read-Write Conflicts (R-W)：读在前写在后，可能导致不可重复读</li>
+<li>Write-Read Conflicts (W-R)：写在前读在后，可能导致脏读</li>
+<li>Write-Write Conflicts (W-W)：可能导致前面的W不生效。</li>
+</ul>
+<p>Conflict Serializability 冲突可串行性：如果通过交换不同 transactions 中连续的 non-conflicting operations 可以将 S 转化成 serial schedule，则称 S 是 conflict serializable</p>
+<p>并发控制协议：</p>
+<ul>
+<li>2PL</li>
+<li>Basic T/O</li>
+<li>OCC</li>
+</ul>
+<h3 id="14-两阶段锁2pl">14. 两阶段锁2PL</h3>
+<ol>
+<li>共享锁（S锁，读锁）和互斥锁（X锁，写锁），更新锁（Upgrade锁）</li>
+<li>两阶段锁协议2PL，其优缺点，S2PL，SS2PL</li>
+<li>2PL无法避免死锁，需要配合死锁检测：用资源等待图判环，用Wound-Wait，wait-die策略回滚</li>
+<li>其它锁协议：一次性锁协议，顺序锁，时间戳顺序↓</li>
+</ol>
+<h3 id="15-1时间戳顺序并发控制-basic-to">15. 1时间戳顺序并发控制 Basic T/O</h3>
+<p>每行数据都带有两个时间戳：</p>
+<ul>
+<li>W-TS(X)：最后一次写 X 发生的时间戳</li>
+<li>R-TS(X)：最后一次读 X 发生的时间戳</li>
+</ul>
+<p>进行读写时，根据记录的W-ts和R-ts来判断是否有读写冲突，如果有冲突则需要回滚。</p>
+<p>优点：</p>
+<ul>
+<li>不会造成死锁，因为没有事务需要等待</li>
+<li>如果单个事务涉及的数据不多、不同事务涉及的数据基本不相同 (OLTP)，可以节省 2PL 中控制锁的额外成本，提高事务并发度</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>长事务容易因为与短事务冲突而饿死（长事务操作数据时，发现被短事务先修改了。。）</li>
+<li>复制数据，维护、更新时间戳存在额外成本</li>
+<li>可能产生不可恢复的 schedule</li>
+</ul>
+<p>可能导致脏读（读取一个正在进行的事务write的数据后，自己先commit了，前者的abort了）</p>
+<p>可以拷贝一份数据，用于保证 Repeatable Read。</p>
+<h3 id="152乐观并发协议-occ">15.2乐观并发协议 OCC</h3>
+<p>会拷贝一份数据，然后进行操作，在提交前进行验证，如果验证成功，那么就可以commit。</p>
+<p>每条数据有一个Write时间戳表示最近commit的事务的ts。</p>
+<p>OCC分为三个阶段（RVW）：</p>
+<ol>
+<li>Read Phase：追踪、记录每个事务的读、写集合，并存储到私有空间中。将 read set 存放在 private workspace 中用来保证 repeatable read，将 write set 存放在 private workspace 中用来作冲突检测。</li>
+<li>Validation Phase：当事务提交时，检查冲突。有Backward Validation和Forward Validation。</li>
+<li>Write Phase：如果校验成功，则合并数据；否则中止并重启事务</li>
+</ol>
+<p>适用于读多写少的场景。</p>
+<p>优点：</p>
+<ul>
+<li>OCC成功解决了所有读写冲突的问题</li>
+<li>没有2PL的锁竞争（但有latch）</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>在 private workspace 与 global database 之间移动、合并数据开销大</li>
+<li>Validation/Write Phase 需要在一个全局的 critical section 中完成，可能造成瓶颈</li>
+<li>在 Validation Phase 中，待提交事务需要和其它事务做冲突检查，即便实际上并没有冲突，这里也有很多获取 latch 的成本 (锁住其它事务的 private workspace，对比是否有冲突，再释放锁)</li>
+<li>事务中止的成本比 2PL 高，因为 OCC 在事务执行快结束时才检查数据冲突</li>
+</ul>
+<h3 id="16-mvcc">16. MVCC</h3>
+<p>可以和2PL，TO，OCC结合，产生：</p>
+<ul>
+<li>MV2PL, MVS2PL, MVSS2PL</li>
+<li>MVOCC</li>
+<li>MVTO</li>
+</ul>
+<p>四个部分：</p>
+<ol>
+<li>并发控制协议</li>
+<li>版本存储：Append-only, Timer-travel, Delta Storage</li>
+<li>垃圾回收 （旧版本回收）</li>
+<li>索引管理</li>
+</ol>
+<p>注意关键词：可见性</p>
+<h3 id="17-logging方案x20">17. logging方案 </h3>
+<ul>
+<li>
+<p>Failure Classification 故障分类</p>
+<ul>
+<li>事务故障 (Transaction Failures)</li>
+<li>系统故障 (System Failures)</li>
+<li>存储介质故障 (Storage Media Failures)</li>
+</ul>
+</li>
+<li>
+<p><strong>Buffer Pool Policies</strong></p>
+<ul>
+<li>Steal Policy：DBMS 是否允许一个<strong>未提交事务</strong>修改持久化存储中的数据？</li>
+<li>Force Policy：DBMS 是否强制要求一个<strong>提交完毕事务</strong>的所有数据改动都反映在持久化存储中？
+形成四种组合，实践中主要有这两种：主要是 No-Steal + Force 和 Steal + No-Force（性能最高，基本都用这个）
+如果Steal故障时需要用到undo log，如果no Force故障时需要用到redo log。</li>
+</ul>
+</li>
+<li>
+<p>Shadow Paging</p>
+<p>No-Steal + Force策略组合的实现，这种组合无法写入大于buffer pool容量的数据。</p>
+<p>它维护两份数据库数据：</p>
+<ul>
+<li>Master：包含所有已经提交事务的数据</li>
+<li>Shadow：在 Master 之上增加未提交事务的数据变动
+正在执行的事务都只将修改的数据写到 shadow copy 中，当事务提交时，再<strong>原子</strong>地把 shadow copy 修改成新的 master。（不知道怎么原子地修改，那么多分散的数据。。）</li>
+</ul>
+</li>
+<li>
+<p><strong>Write-Ahead Log</strong></p>
+<ul>
+<li>Steal + No-Force策略组合的实现。</li>
+<li>WAL 中的每条日志记录都需要包含一个全局唯一的 log sequence number (LSN)。LSN有很多种。</li>
+<li>内容：
+<ul>
+<li>Transaction Id (事务 id)</li>
+<li>Object Id (数据记录 id)</li>
+<li>Before Value (修改前的值)，用于 undo 操作</li>
+<li>After Value (修改后的值)，用于 redo 操作</li>
+</ul>
+</li>
+<li>WAL Group Commit</li>
+</ul>
+</li>
+<li>
+<p>Logging Schemes</p>
+<ul>
+<li>physical logging：记录物理数据的变化，类似 git diff 做的事情，记录 xx page xx 偏移量上的数据发生 xx 改动</li>
+<li>logical logging：记录逻辑操作内容，如 UPDATE、DELETE 和 INSERT 语句等等</li>
+<li>physiological logging：混合策略，记录 xx page 上的 id 为 xx 的数据发生 xx 改动，不需要关心 data page 在磁盘上的布局（如offset）。<strong>是当下最流行的方案。</strong></li>
+</ul>
+</li>
+<li>
+<p>Checkpoints （下一节更详细）</p>
+<ul>
+<li>避免wal无限增长，DBMS 需要周期性地记录 checkpoint</li>
+<li>checkpoints生成的频率，时机</li>
+<li>生成checkpoints时是否需要暂停事务</li>
+</ul>
+</li>
+</ul>
+<h3 id="18-数据库恢复-database-recovery">18. 数据库恢复 Database Recovery</h3>
+<h4 id="checkpoint">checkpoint</h4>
+<ul>
+<li>
+<p>no fuzzy（需要停止事务）</p>
+<ol>
+<li>停止任何新的事务</li>
+<li>等待所有活跃事务执行完毕</li>
+<li>将所有脏页落盘
+no fuzzy还有个优化版，暂停新的写事务，但不需要等待已经开始的事务结束：</li>
+<li>暂停写事务，阻止写事务获取数据或索引的写锁 (write latch)</li>
+<li>维护 活跃事务表：Active Transaction Table (ATT)和 脏页表：Dirty Page Table (DPT)</li>
+</ol>
+</li>
+<li>
+<p>fuzzy（不需要停止事务）实践中都是用这个方法</p>
+<p>fuzzy checkpoint 允许任何活跃事务在它落盘的过程中执行。用一个区间CHECKPOINT-BEGIN和CHECKPOINT-END来表示checkpoint过程。</p>
+<p>当 checkpoint 成功完成时，CHECKPOINT-BEGIN 记录的 LSN 才被写入到数据库的 MasterRecord 中，任何在 checkpoint 之后才启动的事务不会被记录在 CHECKPOINT-END 的 ATT 中。</p>
+</li>
+</ul>
+<h4 id="aries协议algorithms-for-recovery-and-isolation-exploiting-semantics">ARIES协议（Algorithms for Recovery and Isolation Exploiting Semantics）</h4>
+<p>基于：WAL（redo undo log），fuzzy checkpoint，</p>
+<p>通过 MasterRecord 找到最后一个 BEGIN-CHECKPOINT 记录，然后进行三个步骤：</p>
+<ul>
+<li>
+<p>分析 (analysis)：从 WAL 中读取最近一次 checkpoint，找到 buffer pool 中相应的脏页以及故障时的活跃事务。</p>
+</li>
+<li>
+<p>重做 (redo)：从正确的日志点开始重做所有操作，包括将要中止的事务。</p>
+<blockquote>
+<p>Q：如果 DBMS 在故障恢复的 Redo Phase 崩溃怎么办？
+A：无所谓，再重做所有操作即可，操作是幂等的</p>
+</blockquote>
+</li>
+<li>
+<p>撤销 (undo)：将故障前未提交的事务的操作撤销</p>
+<p>将所有 Analysis Phase 判定为 U (candidate for undo) 状态的事务的所有操作按执行顺序倒序撤销，并且为每个 undo 操作写一条 CLR。CLR是 补偿日志。</p>
+</li>
+</ul>
+<p>ARIES核心：</p>
+<ul>
+<li>WAL with Steal/No-Force</li>
+<li>Fuzzy Checkpoints</li>
+<li>Redo everything since the earliest dirty page</li>
+<li>Undo txns that never commit</li>
+<li>Write CLRs when undoing, to survive failures during restarts</li>
+</ul>
+<h3 id="19-分布式数据库导论">19. 分布式数据库导论</h3>
+<p>讲一些比较高层的体系思路</p>
+<ol>
+<li>
+<p>系统架构</p>
+<ul>
+<li>Shared Memory</li>
+<li>Shared Disk</li>
+<li>Shared Nothing</li>
+</ul>
+</li>
+<li>
+<p>同质节点 (Homogeneous Node)和异质节点（Heterogeneous Node）
+如果系统中的每个节点角色、权限相同，那就是同质节点 (Homogeneous Node)；如果不同，就是异质节点。</p>
+</li>
+<li>
+<p>数据库分区</p>
+<ul>
+<li>Naive Table Partitioning 按表进行分区，不会划分表而是将不同的表分在不同的节点上</li>
+<li>Horizontal Partitioning 水平分区，将表划分成没有交集的集合</li>
+</ul>
+</li>
+<li>
+<p>事务协调</p>
+<ul>
+<li>Centralized Coordinator </li>
+<li>Middleware</li>
+<li>Decentralized Coordinator 可以选择一个分片作为coordinator</li>
+</ul>
+</li>
+<li>
+<p>分布式并发控制</p>
+<p>Percolator</p>
+</li>
+<li>
+<p>副本</p>
+<p>raft协议进行日志复制从而实现多副本容错。主副本故障可以从副本中快速选出新主副本。</p>
+</li>
+</ol>
+<h3 id="20-分布式oltp数据库">20. 分布式OLTP数据库</h3>
+<blockquote>
+<p>这一节好复杂，直接看那个笔记好一点</p>
+</blockquote>
+<ol>
+<li>Atomic Commit Protocols 原子提交协议
+<ul>
+<li>2PC</li>
+<li>3PC</li>
+<li>Paxos</li>
+<li>Raft</li>
+<li>ZAB (Apache Zookeeper)</li>
+<li>Viewstamped Replication</li>
+</ul>
+</li>
+<li>Replication
+<ul>
+<li>Replica Configuration</li>
+<li>Propagation Scheme</li>
+<li>Propagation Timing</li>
+<li>Update Method</li>
+</ul>
+</li>
+<li>Consistency Issues (CAP)</li>
+<li>Federated Databases</li>
+</ol>
+<h3 id="21-分布式olap数据库">21. 分布式OLAP数据库</h3>
+<p>略</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">姬小野</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-10-21
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="../../../tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <a href="../../../tags/cmu-15-445/">CMU 15-445</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="../../../post/raft%E5%8D%9A%E5%A3%AB%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Raft博士论文总结</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="../../../post/tinykv-project4-percolator%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
+            <span class="next-text nav-default">TinyKV Project4: Percolator分布式事务</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://blog.csdn.net/wjh2622075127" class="iconfont icon-csdn" title="csdn"></a>
+      <a href="https://github.com/JameyWoo" class="iconfont icon-github" title="github"></a>
+  <a href="https://fiveplus.top/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>姬小野</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="../../../js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
